@@ -1,0 +1,27 @@
+@import '~antd/dist/antd.css';
+
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: 8px !important;
+    border-color: #EBEDF0 !important;
+}
+
+.ant-input {
+    border-radius: 8px !important;
+    border-color: #EBEDF0 !important;
+}
+
+// .ant-modal-body {
+//     padding: 45px;
+// }
+
+.ant-progress-circle .ant-progress-text {
+    color: #9C40CF;
+}
+
+.fileContainer{
+    box-shadow: unset !important;
+    border: unset !important;
+    display: unset !important;
+    padding: 0 !important;
+}
