@@ -29,7 +29,7 @@ const SellDashboard = () => {
   const callback=(key: string)=>{
     console.log(key);
   }
-  const collectedNumber = 10;
+
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl px-3">
@@ -40,7 +40,7 @@ const SellDashboard = () => {
               {assets.ownedNfts? (
                 <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                   { assets?.ownedNfts.map((item, id)=>{
-                    return(<div key={id} tw="text-gray-300"><SellNftCard nft={item}></SellNftCard></div>)
+                    return(<div key={id}>{(item.tokenUri.raw!=="" && item.tokenUri.raw) && <SellNftCard nft={item}></SellNftCard>}</div>)
                   })}
                 </div>
               ):(

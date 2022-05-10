@@ -151,3 +151,49 @@ export function addressFormat(address: string){
 export function joinDateFormat(date: string| Date){
   return moment(date).format("DD MMM · YYYY")
 }
+
+export function leftDate(createdDate: number, duration: number){
+  const endDate = createdDate + duration;
+  const currentDate = Number(moment().format("X"));
+  const diff = endDate - currentDate;
+
+  let days = Math.floor(diff/3600/24);
+  let hours = Math.floor(diff/3600);
+  let minutes = Math.floor((diff % 3600)/60);
+
+  if ( diff < 0 ){ days = 0; hours = 0; minutes = 0; return `${days}h ${hours}d`;}
+  if (days = 0) { return `${hours}h ${minutes}m`; }
+    else { return `${days}d ${hours}h`; }  
+}
+
+export function leftDateDetail(createdDate: number, duration: number){
+  const endDate = createdDate + duration;
+  const currentDate = Number(moment().format("X"));
+  const diff = endDate - currentDate;
+
+  let days = Math.floor(diff/3600/24);
+  let hours = Math.floor(diff/3600);
+  let minutes = Math.floor((diff % 3600)/60);
+  let seconde = (diff % 3600)%60;
+
+  if ( diff < 0 ){ days = 12; hours = 12; minutes = 12; seconde =12;}
+
+  const leftTIme = {
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconde: seconde
+  }
+  return leftTIme
+}
+
+export function getRafflePrice(price: number){
+  return new BigNumber(price).shiftedBy(-18).toNumber();
+}
+
+export function getEndDate(createdDate: number, duration: number){
+  const endDate = createdDate + duration;
+  const day = moment(endDate*1000).format("LLL z");
+  return day;
+}
+

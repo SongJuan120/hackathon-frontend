@@ -12,7 +12,7 @@ export interface GOwnedNft {
     description: string;
     tokenUri: GTokenUri;
     media: GMedia[];
-    metadata: GMetadata;
+    metadata?: GMetadata;
     timeLastUpdated: string;
 }
 
@@ -40,8 +40,10 @@ export interface GMedia {
 }
 
 export interface GMetadata {
-    name: string;
+    name?: string;
     image: string;
+    description?: string;
+    external_url?: string;
     attributes: GAttributes[];
 }
 

@@ -1,35 +1,58 @@
 import ProgressBar from '@ramonak/react-progress-bar';
-import Icon from 'react-crypto-icons';
 import tw from 'twin.macro';
 
-import img1 from '../assets/images/1.jpg';
-import img2 from '../assets/images/2.jpg';
-import img3 from '../assets/images/3.jpg';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { assetsService } from '../services';
+import { GRaffles, GOwnedNft } from '../types';
+import { leftDate, getRafflePrice } from '../utils/helpers';
+import { getRafflesById } from '../store/raffles/raffles.actions';
+import { selectNftByTokenId } from "../store/raffles/raffles.selectors";
+
 import img4 from '../assets/images/lower-bg.jpg';
-import { NFTMODEL, NFTProps } from '../model/NFTModel';
 
 
-const NftCard = (props: NFTProps) => {
-  const nft: NFTMODEL = props.nft;
+const NftCard = (props: {raffle: GRaffles}) => {
+  const dispatch = useDispatch();
+  const raffle: GRaffles = props.raffle;
+  const [nftInfo, setNftInfo] = useState<any>();
+  
+  useEffect(() => {
+    getNftInfo();
+  }, [dispatch]);
 
+  // const nft = useSelector(selectNftByTokenId);
+  const getNftInfo = async() => {
+    const nft = await assetsService.getAssetById(raffle.nftAddress, raffle.tokenId);
+    setNftInfo(nft);
+  }
+  
+
+  const leftTime = leftDate(Number(raffle.created), Number(raffle.duration));
+
+  const goRaffleDetail = () => {
+    window.location.href = `/buy/raffles/${raffle.raffleId}`;
+  }
+  
   return (
-    <div tw="bg-[#fbfbfb] border border-solid border-zinc-200 rounded-lg">
+    <div tw="bg-[#fbfbfb] border border-solid border-zinc-200 rounded-lg cursor-pointer" onClick={goRaffleDetail}>
       <img
         alt="metamask"
-        src={img4}
+        src={nftInfo?.metadata?.image}
         tw="w-full h-52 rounded-t-lg"
       />
-      <div tw="p-4">
+      <div tw="p-2">
         <div tw="grid grid-cols-3 gap-2 mb-4">
             <div>
               <div tw="text-zinc-400 text-xs text-center">Time left</div>
-              <div tw="text-gray-400 text-sm text-center">{nft.time}</div>
+              <div tw="text-gray-400 text-sm text-center font-semibold">{leftTime}</div>
             </div>
-            <NftCoin label={'Time left'} value={nft.eth}></NftCoin>
-            <NftCoin label={'Time left'} value={nft.eth}></NftCoin>
+            <NftCoin label={'Ticket price'} value={getRafflePrice(Number(raffle.ticketPrice))}></NftCoin>
+            <NftCoin label={'Total price'} value={getRafflePrice(Number(raffle.totalPrice))}></NftCoin>
         </div>
         <div>
-          <Progress label={'Remaining tickets'} value={nft.progress}></Progress>
+          <Progress label={'Remaining tickets'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
         </div>
       </div>
     </div>
@@ -44,19 +67,19 @@ export const NftCoin = (props: {label: string, value: number})=>{
       <div>
         {/* <FontAwesomeIcon icon={['fab', 'ethereum']} size={'xs'} /> */}
         {/* <Icon name="btc" size={25} /> */}
-        <div tw="text-gray-400 text-sm text-center">{props.value}</div>
+        <div tw="text-gray-400 text-sm text-center font-semibold">{props.value}</div>
       </div>
       
     </div>
   )
 }
 
-export const Progress = (props: {label: string, value: number})=>{
+export const Progress = (props: {label: string, value: number, total:number})=>{
   return(
     <div>
       <div tw="flex justify-between mb-1">
         <div tw="text-zinc-400 text-xs">{props.label}</div>
-        <div tw="text-gray-400 text-xs">{props.value}/100</div>
+        <div tw="text-gray-400 text-xs">{props.value}/{props.total}</div>
       </div>
       <ProgressBar completed={props.value} isLabelVisible={false} height="4px"/>
     </div>

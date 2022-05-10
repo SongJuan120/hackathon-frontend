@@ -1,6 +1,11 @@
 import tw, { styled } from 'twin.macro';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import NftCard from '../components/NftCard';
 import { Divider, Select, Input } from 'antd';
+import { selectRaffles } from "../store/raffles/raffles.selectors";
+import { getAllRaffles } from '../store/raffles/raffles.actions';
 
 const StyledPage = styled.div`
   ${tw`w-full bg-[#ffffff]`}
@@ -10,44 +15,23 @@ const StyledPage = styled.div`
 const LiveRaffles = () => {
   const { Option } = Select;
 
+  const dispatch = useDispatch();
+  const raffles = useSelector(selectRaffles);
+
+  useEffect(() => {
+    dispatch(getAllRaffles());
+  }, [dispatch]);
+
+
   function handleChange(value: string) {
     console.log(`selected ${value}`);
   }
 
-  const temp = [{
-    id: 1,
-    image:'../assets/images/3.jpg',
-    time: '12h 30m',
-    eth: 0.3,
-    price: 30,
-    progress: 88,
-  },{
-    id: 2,
-    image:'../assets/images/3.jpg',
-    time: '12h 30m',
-    eth: 0.3,
-    price: 30,
-    progress: 88,
-  },{
-    id: 3,
-    image:'../assets/images/3.jpg',
-    time: '12h 30m',
-    eth: 0.3,
-    price: 30,
-    progress: 88,
-  },{
-    id: 4,
-    image:'../assets/images/3.jpg',
-    time: '12h 30m',
-    eth: 0.3,
-    price: 30,
-    progress: 88,
-  }];
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl px-3 pt-14">
         <div tw="flex justify-between items-center mb-10">
-          <div tw="text-gray-300 text-3xl font-semibold">Live raffles</div>
+          <div tw="text-gray-300 text-3xl font-semibold">Current raffle lisitings</div>
           <div tw="flex">
             <Select defaultValue="Sort" tw="w-full rounded-lg" onChange={handleChange}>
               <Option value="jack">Sort</Option>
@@ -59,9 +43,13 @@ const LiveRaffles = () => {
         </div>
 
         <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {temp.map(item=>{
-            return(<div key={item.id} tw="text-gray-300"><NftCard nft={item}></NftCard></div>)
+          {raffles && raffles.map((item, index)=>{
+            return(<div key={index} tw="text-gray-300"><NftCard raffle={item}></NftCard></div>)
           })}
+          {!raffles && ( 
+            <div tw="flex justify-center mt-20 text-[#818181] text-4xl font-semibold">
+              No items to display
+            </div>)}
         </div>
       </div>
     </StyledPage>

@@ -38,32 +38,32 @@ const SellRaffleInfo = () => {
       <div tw="font-semibold text-2xl text-gray-300">List item for sale</div>
       <div tw="flex justify-between items-center mb-1 mt-5">
         <div tw="font-semibold text-base">Type</div>
-        <img alt="metamask" src={tooltip} tw="w-4 h-4"/>
+        <img alt="metamask" src={tooltip} tw="w-4 h-4 cursor-pointer"/>
       </div>
       <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
         <div tw="grid grid-cols-3">
-          <div tw="border-solid border-r pt-4 pb-3 bg-zinc-100">
+          <div tw="border-solid border-r rounded-l-lg pt-4 pb-3 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
-              <img alt="metamask" src={raffle} tw="w-7 h-7"/>
+              <img alt="raffle" src={raffle} tw="w-[22px] lg:w-7 lg:h-7"/>
             </div>
             <div tw="flex justify-center">
-              <div tw="text-gray-800 text-center text-base">Raffle</div>
+              <div tw="text-gray-800 text-center text-xs lg:text-base">Raffle</div>
             </div>
           </div>
-          <div tw="border-solid border-r py-4">
+          <div tw="border-solid border-r py-4 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
-              <img alt="metamask" src={dollar} tw="w-4"/>
+              <img alt="dollar" src={dollar} tw="w-[12px] lg:w-4"/>
             </div>
             <div tw="flex justify-center">
-              <div tw="text-gray-800 text-center text-base">Fixed price</div>
+              <div tw="text-gray-800 text-center text-xs lg:text-base">Fixed price</div>
             </div>
           </div>
-          <div tw="py-4">
+          <div tw="py-4 rounded-r-lg hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
-              <img alt="metamask" src={hummer} tw="w-8"/>
+              <img alt="hummer" src={hummer} tw="w-[22px] lg:w-8"/>
             </div>
             <div tw="flex justify-center">
-              <div tw="text-gray-800 text-center text-base">Auction</div>
+              <div tw="text-gray-800 text-center text-xs lg:text-base">Auction</div>
             </div>
           </div>
         </div>
@@ -88,37 +88,36 @@ const SellRaffleInfo = () => {
     
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Ticket quantity</div>
-        <img alt="metamask" src={tooltip} tw="w-4 h-4"/>
+        <img alt="metamask" src={tooltip} tw="w-4 h-4 cursor-pointer"/>
       </div>
 
-      <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
-        <div tw="grid grid-cols-3">
-          <div tw="border-solid border-r py-4 bg-zinc-100">
-            <div tw="text-gray-300 text-center text-2xl font-semibold">{total.toLocaleString()}</div>
+
+        <div tw="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 border-solid border border-zinc-300 rounded-lg w-full">
+          <div tw="border-solid border-b rounded-t-lg lg:rounded-t-none lg:rounded-l-lg lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
+            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
             <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-base ml-2">0.03 per ticket</div>
+              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
             </div>
           </div>
-          <div tw="border-solid border-r py-4">
-            <div tw="text-gray-300 text-center text-2xl font-semibold">{total.toLocaleString()}</div>
+          <div tw="border-solid border-b lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
+            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
             <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-base ml-2">0.03 per ticket</div>
+              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
             </div>
           </div>
-          <div tw="py-4">
-            <div tw="text-gray-300 text-center text-2xl font-semibold">{total.toLocaleString()}</div>
+          <div tw="py-4 hover:bg-zinc-100 cursor-pointer rounded-b-lg lg:rounded-b-none lg:rounded-r-lg">
+            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
             <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-base ml-2">0.03 per ticket</div>
+              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
             </div>
           </div>
         </div>
-      </div>
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Duration</div>
-        <img alt="metamask" src={tooltip} tw="w-4 h-4"/>
+        <img alt="metamask" src={tooltip} tw="w-4 h-4 cursor-pointer"/>
       </div>
       <Select defaultValue="lucy" tw="w-full rounded-lg" onChange={handleChange}>
         <Option value="jack">Jack</Option>
@@ -142,7 +141,7 @@ const SellRaffleInfo = () => {
         <div tw="text-base text-gray-800">5%</div>
       </div>
       <div tw="flex justify-end mt-10">
-        <button onClick={showModal} tw="bg-[#9C40CF] text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+        <button onClick={showModal} tw="bg-[#9C40CF] w-full lg:w-auto text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
           Complete listing
         </button>
         <SellRaffleComponentModal isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}></SellRaffleComponentModal>
