@@ -32,7 +32,7 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
   }))
 
   const goSell = () => {
-    window.location.href = `/sell/detail/${nft.contract.address}/${nft.id.tokenId}`;
+    window.location.href = `/sell/detail/${nft.contract.address}/${Number(nft.id.tokenId)}`;
   }
   
   return (

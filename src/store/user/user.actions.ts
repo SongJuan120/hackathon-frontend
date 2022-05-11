@@ -37,7 +37,9 @@ export const getUsers = () => async (dispatch: Dispatch) => {
 
 export const updateUser = (address: string, payload: IUser) => async (dispatch: Dispatch) => {
     try {
+        dispatch(showLoading());
         const res = await userService.updateUser(address, payload);
+        dispatch(hideLoading());
         localStorage.clear();
         setLocalStorageForAUth(res);
         dispatch({
@@ -49,6 +51,7 @@ export const updateUser = (address: string, payload: IUser) => async (dispatch: 
             },
         });
     } catch (error: any) {
+        dispatch(hideLoading());
         errorHandler(error, USER_UPDATE)
     }
 }

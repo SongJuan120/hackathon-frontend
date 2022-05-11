@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { hideLoading } from 'react-redux-loading-bar';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 import { ASSETS_GET_ALL, ASSETS_GET_BY_ID } from '../action-types';
 import errorHandler from '../error-handler';
@@ -8,7 +8,10 @@ import { GNftData } from '../../types';
 
 export const getAllAssets = (address: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(showLoading());
         const res = await assetsService.getAssets(address);
+        dispatch(hideLoading());
+
         dispatch({
             type: ASSETS_GET_ALL,
             payload: {
@@ -21,9 +24,12 @@ export const getAllAssets = (address: string) => async (dispatch: Dispatch) => {
     }
 }
 
-export const getAssetById = (address: string, id: string) => async (dispatch: Dispatch) => {
+export const getAssetById = (address: string, id: number) => async (dispatch: Dispatch) => {
     try {
+        dispatch(showLoading());
         const res = await assetsService.getAssetById(address, id);
+        dispatch(hideLoading());
+        
         dispatch({
             type: ASSETS_GET_BY_ID,
             payload: {

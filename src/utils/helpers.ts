@@ -88,8 +88,8 @@ export function copyToClipBoard(text: string) {
   navigator.clipboard.writeText(text);
   message.success({ content: 'copied to clipboard' });
 }
-
 export function showNotification(
+
   message: string,
   type: 'success' | 'error' | 'info' = 'success',
   placement: NotificationPlacement = 'bottomRight'
@@ -196,4 +196,10 @@ export function getEndDate(createdDate: number, duration: number){
   const day = moment(endDate*1000).format("LLL z");
   return day;
 }
+
+export function getDateBySecond(seconde: number){
+  const day = moment(seconde*1000).format("DD/MM/YYYY");
+  return day;
+}
+
 

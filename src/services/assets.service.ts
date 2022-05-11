@@ -10,7 +10,7 @@ class AssetsService {
     return res.data;
   }
 
-  async getAssetById (address: string, id: string) {
+  async getAssetById (address: string, id: number) {
     const res = await http.get<GNftData>(`/nfts/getAsset/${address}/${id}`)
     return res.data;
   }

@@ -24,7 +24,7 @@ const NftDetailInfo = (props:{nft: GOwnedNft}) => {
       </div> 
       <div tw="flex justify-between mt-8">
         <div tw="text-gray-800 text-xs font-bold">Contract Address:</div>   
-        <div tw="text-blue-100 text-xs">{addressFormat(nft?.contract?.address)}</div>
+        <a tw="text-blue-100 text-xs cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${nft?.contract?.address}`}>{addressFormat(nft?.contract?.address)}</a>
       </div>
       <div tw="flex justify-between mt-5">
         <div tw="text-gray-800 text-xs font-bold">Token ID</div>   

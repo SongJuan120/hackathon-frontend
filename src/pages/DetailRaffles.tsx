@@ -60,7 +60,7 @@ const DetailRaffles = () => {
             </div>
               <RaffleInfo raffle={raffle}></RaffleInfo>
             <div tw="mt-7">
-              <NftHistoryInfo></NftHistoryInfo>
+              <NftHistoryInfo raffle={raffle}></NftHistoryInfo>
             </div>
           </div>
           <div tw="mt-6 lg:hidden">

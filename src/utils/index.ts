@@ -244,3 +244,6 @@ export type AnyObject = { [key: string]: any };
 
 export * from './validator'
 export * from './collector'
+export * from './web3'
+export * from './numeric'
+export * from './init'

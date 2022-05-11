@@ -3,6 +3,7 @@ import { handleActions } from 'redux-actions';
 
 import { GNftData, GOwnedNft } from '../../types';
 import { ASSETS_GET_ALL, ASSETS_GET_BY_ID } from '../action-types';
+import { ASSET, ASSETS} from '../../utils'
 
 export interface AssetsState {
   assets: GNftData;
@@ -17,38 +18,8 @@ interface AssetsAction extends Action {
 }
 
 const initialState: AssetsState = {
-  assets: {
-    blockHash:'0x00000000000000000000000000000000000000000000000000',
-    ownedNfts: [],
-    totalCount: 0
-  },
-  asset: {
-    contract: {
-      address: "0x00000000000000000000000000000000000000000000000000"
-    },
-    id: {
-      tokenId: "",
-      tokenMetadata: {
-        tokenType: ""
-      },
-    },
-    balance: "",
-    title: "",
-    description: "",
-    tokenUri: {
-      raw: "",
-      gateway: ""
-    },
-    media: [],
-    metadata: {
-      name: "",
-      image: "",
-      description: "",
-      external_url: "",
-      attributes: []
-    },
-    timeLastUpdated: ""
-  } 
+  assets: ASSETS,
+  asset: ASSET
 }
 
 export const assetsReducer: Reducer<AssetsState, AssetsAction> = handleActions(

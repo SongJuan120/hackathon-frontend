@@ -1,9 +1,9 @@
 import tw from 'twin.macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { Divider, Select, Input } from 'antd';
-
-import eth from '../assets/images/icon/eth-icon.svg';
+import { usePresaleDeposit } from '../hooks';
+import { useERC721Approve } from '../hooks';
 import ethSmall from '../assets/images/icon/eth-small.png';
 import tooltip from '../assets/images/icon/tooltip.png';
 import SellRaffleComponentModal from './Modal/SellRaffleComponentModal'
@@ -11,15 +11,30 @@ import raffle from '../assets/images/icon/raffle.png';
 import dollar from '../assets/images/icon/dollar.png';
 import hummer from '../assets/images/icon/hummer.png';
 
-const SellRaffleInfo = () => {
+
+const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const { Option } = Select;
+  const total1 = 10;
+  const total2 = 100;
+  const total3 = 1000;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSelectType, setSelectType] = useState('raffle');
+  const [isSelectNumber, setSelectNumber] = useState(10);
+  const [amount, setAmount] = useState(0);
+  const { deposit, isDepositing } = usePresaleDeposit();
+  const { isApproved, isApproving, approve } = useERC721Approve(props.address, props.tokenId);
+  
+  useEffect(() => {
+    console.log('this is isApproving', isApproved, isApproving);
+  }, [isApproved, isApproving]);
 
   function handleChange(value: string) {
     console.log(`selected ${value}`);
   }
 
-  const showModal = () => {
+  const onTicketSell = () => {
+    // deposit(amount, "ETH");
+    approve();
     setIsModalVisible(true);
   };
 
@@ -30,9 +45,19 @@ const SellRaffleInfo = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+ 
+  const onSeletType = (key: string) => {
+    setSelectType(key);
+  }
 
-  const price = 10000;
-  const total = 100;
+  const onSeletNumber = (key: number) => {
+    setSelectNumber(key);
+  }
+
+  const onChangeAmount = (e: any) => {
+    setAmount(e.target.value);
+  }
+  
   return (
     <div>
       <div tw="font-semibold text-2xl text-gray-300">List item for sale</div>
@@ -42,7 +67,7 @@ const SellRaffleInfo = () => {
       </div>
       <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
         <div tw="grid grid-cols-3">
-          <div tw="border-solid border-r rounded-l-lg pt-4 pb-3 hover:bg-zinc-100 cursor-pointer">
+          <div onClick={()=>onSeletType('raffle')} style={isSelectType=='raffle'?{background:'#FBF8FB'}:{}} tw="border-solid border-r rounded-l-lg pt-4 pb-3 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="raffle" src={raffle} tw="w-[22px] lg:w-7 lg:h-7"/>
             </div>
@@ -50,7 +75,7 @@ const SellRaffleInfo = () => {
               <div tw="text-gray-800 text-center text-xs lg:text-base">Raffle</div>
             </div>
           </div>
-          <div tw="border-solid border-r py-4 hover:bg-zinc-100 cursor-pointer">
+          <div onClick={()=>onSeletType('fixprice')} style={isSelectType=='fixprice'?{background:'#FBF8FB'}:{}} tw="border-solid border-r py-4 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="dollar" src={dollar} tw="w-[12px] lg:w-4"/>
             </div>
@@ -58,7 +83,7 @@ const SellRaffleInfo = () => {
               <div tw="text-gray-800 text-center text-xs lg:text-base">Fixed price</div>
             </div>
           </div>
-          <div tw="py-4 rounded-r-lg hover:bg-zinc-100 cursor-pointer">
+          <div onClick={()=>onSeletType('auction')} style={isSelectType=='auction'?{background:'#FBF8FB'}:{}} tw="py-4 rounded-r-lg hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="hummer" src={hummer} tw="w-[22px] lg:w-8"/>
             </div>
@@ -75,46 +100,48 @@ const SellRaffleInfo = () => {
       </div>
 
       <div tw="flex justify-between items-center">
-        <Select defaultValue="lucy" tw="w-48 mr-2 rounded-lg" onChange={handleChange}>
+        {/* <Select defaultValue="lucy" tw="w-48 mr-2 rounded-lg" onChange={handleChange}>
           <Option value="jack">Jack</Option>
           <Option value="lucy">Lucy</Option>
           <Option value="disabled" disabled>
             Disabled
           </Option>
           <Option value="Yiminghe">yiminghe</Option>
-        </Select>
-        <Input type="number" />
+        </Select> */}
+        <div tw="flex border-solid border border-zinc-300 rounded-lg px-6 py-0.5 mr-2">
+          <img alt="metamask" src={ethSmall} tw="w-[8px] lg:w-[10px] mb-1 mr-3"/>
+          <div>ETH</div>
+        </div>
+        <Input type="number" min={0} value={amount} onChange={(e)=>onChangeAmount(e)}/>
       </div>
     
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Ticket quantity</div>
         <img alt="metamask" src={tooltip} tw="w-4 h-4 cursor-pointer"/>
       </div>
-
-
-        <div tw="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 border-solid border border-zinc-300 rounded-lg w-full">
-          <div tw="border-solid border-b rounded-t-lg lg:rounded-t-none lg:rounded-l-lg lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
-            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
-            <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
-            </div>
-          </div>
-          <div tw="border-solid border-b lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
-            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
-            <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
-            </div>
-          </div>
-          <div tw="py-4 hover:bg-zinc-100 cursor-pointer rounded-b-lg lg:rounded-b-none lg:rounded-r-lg">
-            <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total.toLocaleString()}</div>
-            <div tw="flex justify-center items-center">
-              <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-              <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
-            </div>
+      <div tw="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 border-solid border border-zinc-300 rounded-lg w-full">
+        <div onClick={()=>onSeletNumber(10)} style={isSelectNumber==10?{background:'#FBF8FB'}:{}} tw="border-solid border-b rounded-t-lg lg:rounded-t-none lg:rounded-l-lg lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
+          <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total1.toLocaleString()}</div>
+          <div tw="flex justify-center items-center">
+            <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
           </div>
         </div>
+        <div onClick={()=>onSeletNumber(100)} style={isSelectNumber==100?{background:'#FBF8FB'}:{}} tw="border-solid border-b lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
+          <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total2.toLocaleString()}</div>
+          <div tw="flex justify-center items-center">
+            <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
+          </div>
+        </div>
+        <div onClick={()=>onSeletNumber(1000)} style={isSelectNumber==1000?{background:'#FBF8FB'}:{}} tw="py-4 hover:bg-zinc-100 cursor-pointer rounded-b-lg lg:rounded-b-none lg:rounded-r-lg">
+          <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total3.toLocaleString()}</div>
+          <div tw="flex justify-center items-center">
+            <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">0.03 per ticket</div>
+          </div>
+        </div>
+      </div>
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Duration</div>
         <img alt="metamask" src={tooltip} tw="w-4 h-4 cursor-pointer"/>
@@ -141,7 +168,7 @@ const SellRaffleInfo = () => {
         <div tw="text-base text-gray-800">5%</div>
       </div>
       <div tw="flex justify-end mt-10">
-        <button onClick={showModal} tw="bg-[#9C40CF] w-full lg:w-auto text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+        <button onClick={onTicketSell} tw="bg-[#9C40CF] w-full lg:w-auto text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
           Complete listing
         </button>
         <SellRaffleComponentModal isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}></SellRaffleComponentModal>

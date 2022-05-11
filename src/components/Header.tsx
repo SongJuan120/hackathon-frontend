@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useMessageForSignature} from '../../src/hooks';
 import { STATUS_SUCCESS } from '../utils/constants'
 import {showNotification} from '../utils/helpers';
 
@@ -42,7 +41,6 @@ const Header = ({ menuOpened, onToggleMenu,}: {
 }) => {
   
   const dispatch = useDispatch();
-  const {message, signMessage, connectWallet, wallet} = useMessageForSignature();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // useEffect(() => {

@@ -27,9 +27,9 @@ interface Params {
 const SellDetailNft = () => {
   const dispatch = useDispatch();
   const params: Params = useParams();
-
+  const tokenId = Number(params?.token_id);
   useEffect(() => {
-    dispatch(getAssetById(params?.address, params?.token_id));
+    dispatch(getAssetById(params?.address, tokenId));
   }, [dispatch]);
 
   const asset = useSelector(selectAssetById);
@@ -46,7 +46,7 @@ const SellDetailNft = () => {
           </div>
           <div tw="col-span-full lg:col-start-3 lg:col-end-6  text-gray-300">
             <div tw="mt-9">
-              <SellRaffleInfo></SellRaffleInfo>
+              <SellRaffleInfo address={params.address} tokenId={tokenId}></SellRaffleInfo>
             </div>
           </div>
         </div>

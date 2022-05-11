@@ -1,6 +1,7 @@
 import { http } from './api'
 import {
   GRaffles,
+  GSoldHistory
 } from '../types'
 
 class RafflesService {
@@ -12,10 +13,14 @@ class RafflesService {
 
   async getRafflesById (id: number) {
     const res = await http.get<GRaffles>(`/raffles/getByRaffleid/${id}`)
-    console.log('this is rafflesModule', res);
     return res.data;
   }
 
+  async getSoldHistory (id: number) {
+    const res = await http.get<GSoldHistory[]>(`/raffles/getSoldHistory/${id}`)
+    console.log('this is getSoldHistory', res);
+    return res.data;
+  }
 }
 
 export const rafflesService = new RafflesService()

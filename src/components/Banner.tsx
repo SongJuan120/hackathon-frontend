@@ -1,7 +1,6 @@
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMessageForSignature } from '../../src/hooks';
 import { STATUS_SUCCESS } from '../utils/constants'
 import { showNotification } from '../utils/helpers';
 import { login } from '../store/auth/auth.actions';

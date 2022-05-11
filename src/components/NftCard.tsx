@@ -14,21 +14,19 @@ import img4 from '../assets/images/lower-bg.jpg';
 
 
 const NftCard = (props: {raffle: GRaffles}) => {
-  const dispatch = useDispatch();
   const raffle: GRaffles = props.raffle;
   const [nftInfo, setNftInfo] = useState<any>();
   
   useEffect(() => {
     getNftInfo();
-  }, [dispatch]);
+  }, []);
 
   // const nft = useSelector(selectNftByTokenId);
   const getNftInfo = async() => {
-    const nft = await assetsService.getAssetById(raffle.nftAddress, raffle.tokenId);
+    const nft = await assetsService.getAssetById(raffle.nftAddress, Number(raffle.tokenId));
     setNftInfo(nft);
   }
   
-
   const leftTime = leftDate(Number(raffle.created), Number(raffle.duration));
 
   const goRaffleDetail = () => {

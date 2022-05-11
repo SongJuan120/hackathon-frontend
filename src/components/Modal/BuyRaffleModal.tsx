@@ -1,5 +1,8 @@
 import tw from 'twin.macro';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Modal, Button } from 'antd';
 import img1 from '../../assets/images/icon/nftSample.svg';
 import img2 from '../../assets/images/sample/sample_avatar2.png';
@@ -8,10 +11,16 @@ import minuseButton from '../../assets/images/icon/minuse_button.svg'
 import plusButton from '../../assets/images/icon/plus_button.svg'
 import eth from '../../assets/images/icon/eth-icon.svg';
 import BuyConfirmModal from './BuyConfirmModal'
+import { selectRaffleById, selectNftByTokenId } from "../../store/raffles/raffles.selectors";
+import { leftDateDetail, getRafflePrice, getEndDate } from '../../utils/helpers';
 
 const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
-  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [count, setCount] = useState(0);
+
+  const raffle = useSelector(selectRaffleById);
+  const nft = useSelector(selectNftByTokenId);
   const showModal = () => {
     setIsConfirmModalVisible(true);
     // props.handleCancel(); 
@@ -25,8 +34,20 @@ const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, han
     setIsConfirmModalVisible(false);
   };
 
+  const onCountPlus = () => {
+    const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
+    if (count >= remainTickets) 
+      { setCount(count)} 
+      else {setCount(count + 1)};
+  }
+
+  const onCountMinuse = () => {
+    if (count <= 0) 
+    { setCount(count)} 
+    else {setCount(count - 1)};
+  }
+
   const price = 10000;
-  const total = 0.3;
 
   return(
     <Modal visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
@@ -34,16 +55,16 @@ const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, han
         Buy raffle tickets
       </div>
       <div tw="flex items-center mt-3 relative">
-        <img alt="metamask" src={img2} tw="w-[72px] h-[72px] rounded-[12px]"/>
+        <img alt="metamask" src={nft.metadata?.image} tw="w-[72px] h-[72px] rounded-[12px]"/>
         <div tw="absolute top-8 left-[60px]"><img alt="metamask" src={img1} tw="w-6 h-6 rounded-full"/></div>
         
         <div tw="mr-4 ml-5">
-          <div tw="text-base font-semibold text-gray-300">Azuki #1162</div>
+          <div tw="text-base font-semibold text-gray-300">{nft.title}</div>
           <div tw="flex">
             <div tw="flex items-center">
               <div tw="text-gray-50 text-sm">Collection:</div>
               <img alt="metamask" src={checkMarkBlue} tw="w-3 h-3 mx-1.5"/>
-              <div tw="text-blue-100 pr-1.5 text-sm">Azuki</div>  
+              <div tw="text-blue-100 pr-1.5 text-sm">{nft.title}</div>  
             </div>  
             <div tw="text-gray-50 px-3">·</div>
             <div tw="flex items-center">
@@ -58,24 +79,24 @@ const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, han
           <div tw="text-gray-800 text-center text-base mb-1">Ticket price</div>
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-4 h-4 mr-1"/>
-            <div tw="text-gray-300 text-center text-[22px] font-semibold">{total.toLocaleString()}</div>
+            <div tw="text-gray-300 text-center text-[22px] font-semibold">{getRafflePrice(Number(raffle.ticketPrice)).toLocaleString()}</div>
             <div tw="text-gray-800 text-center text-sm ml-2">(${price.toLocaleString()})</div>
           </div>
         </div>
         <div>
           <div tw="text-gray-800 text-center text-base mb-1">Quantity</div>
           <div tw="flex justify-between items-center px-7">
-            <img alt="metamask" src={minuseButton} tw="w-5 h-5 border border-transparent hover:border-white"/>
-            <div tw="text-gray-300 text-center text-[22px] font-semibold">2</div>
-            <img alt="metamask" src={plusButton} tw="w-5 h-5 border border-transparent hover:border-white"/>
+            <img alt="metamask" onClick={onCountMinuse} src={minuseButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
+            <div tw="text-gray-300 text-center text-[22px] font-semibold">{count}</div>
+            <img alt="metamask" onClick={onCountPlus} src={plusButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
           </div>
         </div>
         
         <div>
           <div tw="text-gray-800 text-center text-base mb-1">Total</div>
           <div tw="flex justify-center items-baseline">
-            <img alt="metamask" src={eth} tw="w-4 h-4 mr-1"/>
-            <div tw="text-gray-300 text-center text-[22px] font-semibold">{total.toLocaleString()}</div>
+            <img alt="metamask" src={eth} tw="w-4 h-4 mr-1 cursor-pointer"/>
+            <div tw="text-gray-300 text-center text-[22px] font-semibold">{getRafflePrice(Number(raffle.totalPrice)).toLocaleString()}</div>
             <div tw="text-gray-800 text-center text-sm ml-2">(${price.toLocaleString()})</div>
           </div>
         </div>

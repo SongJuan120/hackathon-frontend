@@ -12,3 +12,20 @@ export interface GRaffles {
     soldTickets: string,
     raffleState: string
 }
+
+export interface GSoldHistory {
+    history: GSoldHistoryInfo,
+    buyer: string | null
+} 
+
+export interface GSoldHistoryInfo {
+    _id: string,
+    blockNumber: number,
+    txHash: string,
+    raffleId: string,
+    buyer: string,
+    tickets: string,
+    timestamp: number,
+    __v: number
+}
+

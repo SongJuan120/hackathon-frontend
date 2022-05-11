@@ -1,6 +1,7 @@
 import tw from 'twin.macro';
 
 import { GNftData, GOwnedNft } from '../types';
+import { addressFormat } from '../utils/helpers'
 
 import img1 from '../assets/images/icon/nftSample.svg';
 import img2 from '../assets/images/icon/check-mark-blue.svg';
@@ -26,15 +27,15 @@ const NftInfo = (props:{nft: GOwnedNft}) => {
             </div>
             <div tw="text-gray-50 px-3">·</div>
             <div tw="flex items-center">
-              <div tw="text-gray-50 text-sm">Created by</div>
+              <div tw="text-gray-50 text-sm">Created by:</div>
               <img alt="metamask" src={img2} tw="w-3 h-3 mx-1.5"/>
-              <div tw="text-blue-100 pr-1.5 text-sm">TeamAzuki</div>  
+              <div tw="text-blue-100 pr-1.5 text-sm"></div>  
             </div>
             <div tw="text-gray-50 px-3">·</div>
             <div tw="flex items-center">
-              <div tw="text-gray-50 text-sm">Owned by</div>
+              <div tw="text-gray-50 text-sm">Owned by:</div>
               {/* <img alt="metamask" src={img2} tw="w-3 h-3 mx-1.5"/> */}
-              <div tw="text-blue-100 pr-1.5 text-sm mx-1.5">LeylaGul</div>  
+              <a tw="text-blue-100 pr-1.5 text-sm mx-1.5 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${nft?.owneraccount}`}>{nft?.owner?.name?nft?.owner?.name:addressFormat(nft?.owneraccount)}</a>  
             </div>
           </div>
         </div>            
@@ -67,7 +68,7 @@ const NftInfo = (props:{nft: GOwnedNft}) => {
           <div tw="">
             <div tw="text-gray-50 text-sm mb-1">Owned by:</div>
             {/* <img alt="metamask" src={img2} tw="w-3 h-3 mx-1.5"/> */}
-            <div tw="text-blue-100 text-sm mx-1.5">LeylaGul</div>  
+            <a tw="text-blue-100 text-sm mx-1.5 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${nft?.owneraccount}`}>{nft?.owner?.name?nft?.owner?.name:addressFormat(nft?.owneraccount)}</a>  
           </div>
         </div>
       </div>
