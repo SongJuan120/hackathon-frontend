@@ -1,40 +1,70 @@
 import tw, { styled } from 'twin.macro';
 
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+
 import DetailImage from '../components/DetailImage';
 import NftInfo from '../components/NftInfo';
 import RaffleInfo from '../components/RaffleInfo';
 import NftHistoryInfo from '../components/NftHistoryInfo';
 import NftDetailInfo from '../components/NftDetailInfo';
+import { getRafflesById } from '../store/raffles/raffles.actions';
+import { selectRaffleById, selectNftByTokenId } from "../store/raffles/raffles.selectors";
+
 
 const StyledPage = styled.div`
   ${tw`w-full`}
   height: calc(100vh - 110px);
-  background: linear-gradient(180deg, #FBF8FB 105px, #FFFFFF 105px) !important;
+  background: linear-gradient(180deg, #FBF8FB 350px, #FFFFFF 350px) !important;
+  
+  @media (min-width: 768px) {
+    background: linear-gradient(180deg, #FBF8FB 105px, #FFFFFF 105px) !important;
+  }
 `;
+interface Params {
+  raffle_id: string
+}
 
 const DetailRaffles = () => {
+  const dispatch = useDispatch();
+  const params: Params = useParams();
+
+  useEffect(() => {
+    dispatch(getRafflesById(Number(params?.raffle_id)));
+  }, [dispatch]);
+
+  const raffle = useSelector(selectRaffleById);
+  const nft = useSelector(selectNftByTokenId);
+
   const status = {
     views:  1280,
     likes: 243
   }
+
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl pt-4 px-3 pb-32">
-        <div tw="grid grid-cols-5 gap-8">
-          <div tw="col-start-1 col-span-2 text-gray-300">
-            <DetailImage detailStatus={status}></DetailImage>
-            <div tw="mt-6">
-              <NftDetailInfo></NftDetailInfo>
+        <div tw="lg:grid grid-cols-5 gap-8">
+          <div tw="col-start-3 col-end-6 text-gray-300">
+            <NftInfo nft={nft}></NftInfo>
+          </div>
+          <div tw="col-start-1 col-span-2 text-gray-300 mt-4 lg:mt-[-90px] px-2 lg:px-0">
+            <DetailImage status={status} image={nft?.metadata?.image}></DetailImage>
+            <div tw="mt-6 hidden lg:block">
+              <NftDetailInfo nft={nft}></NftDetailInfo>
             </div>
           </div>
           <div tw="col-start-3 col-end-6 text-gray-300">
-            <NftInfo></NftInfo>
-            <div tw="mt-16">
-              <RaffleInfo></RaffleInfo>
+            <div tw="mt-10">
             </div>
+              <RaffleInfo raffle={raffle}></RaffleInfo>
             <div tw="mt-7">
-              <NftHistoryInfo></NftHistoryInfo>
+              <NftHistoryInfo raffle={raffle}></NftHistoryInfo>
             </div>
+          </div>
+          <div tw="mt-6 lg:hidden">
+            <NftDetailInfo nft={nft}></NftDetailInfo>
           </div>
         </div>
       </div>

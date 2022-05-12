@@ -2,9 +2,7 @@ import { Link } from 'react-router-dom';
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useMessageForSignature} from '../../src/hooks';
-import { STATUS_SUCCESS } from '../utils/constants'
-import {showNotification} from '../utils/helpers';
+import LoadingBar from 'react-redux-loading-bar'
 
 import { logout, login } from '../store/auth/auth.actions';
 import { selectUser } from "../store/auth/auth.selectors";
@@ -42,7 +40,6 @@ const Header = ({ menuOpened, onToggleMenu,}: {
 }) => {
   
   const dispatch = useDispatch();
-  const {message, signMessage, connectWallet, wallet} = useMessageForSignature();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // useEffect(() => {
@@ -74,6 +71,7 @@ const Header = ({ menuOpened, onToggleMenu,}: {
   return (
     <>
       <header tw="px-[5%] w-full sticky top-0 bg-[#FBF8FB] z-30">
+        <LoadingBar />
         <div tw="w-full h-[110px] flex justify-between items-center">
           <div tw="flex items-center cursor-pointer">
             <img alt="logo" onClick={goBanner} src={imgLogo} tw="w-[114px]"/>

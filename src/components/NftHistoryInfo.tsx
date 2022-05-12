@@ -1,58 +1,58 @@
 import tw from 'twin.macro';
-
+import { useState, useEffect } from 'react';
+import { rafflesService } from '../services';
 import showMark from '../assets/images/icon/show-mark2.svg';
 import openDetail from '../assets/images/icon/open-detail.svg';
-import img3 from '../assets/images/3.jpg';
-import img4 from '../assets/images/lower-bg.jpg';
-import ProgressBar from '@ramonak/react-progress-bar';
+import { GRaffles, GSoldHistory } from '../types';
+import { getDateBySecond, addressFormat } from '../utils/helpers'
 
-const NftHistoryInfo = () => {
+const NftHistoryInfo = (props: {raffle: GRaffles}) => {
+  const raffle: GRaffles = props.raffle;
+  const [raffleHistory, setRaffleHistory] = useState<GSoldHistory[]>([]);
+  useEffect(() => {
+    getNftInfo();
+  }, []);
+  
+  const getNftInfo = async() => {
+    const history = await rafflesService.getSoldHistory(raffle.raffleId);
+    setRaffleHistory(history);
+  }
   return (
     <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
       <div tw="flex items-center justify-between py-3 px-4">
-        <div tw="flex">
+        <div tw="flex items-center">
           <img alt="metamask" src={showMark} tw="w-6 h-6 mr-1.5"/>
-          <div tw="text-gray-300 text-base">Tickets sold</div>
+          <div tw="text-gray-300 text-xs lg:text-base">Tickets sold</div>
         </div>
-        <div tw="text-gray-300 text-base">
-          88/100
+        <div tw="text-gray-300 text-xs lg:text-base">
+          {raffle.soldTickets}/{raffle.totalTickets}
         </div>
       </div>
       <div>
         <table tw="table-auto w-full">
           <thead tw="border-solid border-t border-zinc-300 h-8 bg-zinc-100"> 
             <tr>
-              <th tw="text-[#848484] text-sm font-normal">Quantity</th>
-              <th tw="text-[#848484] text-sm font-normal">Date</th>
-              <th tw="text-[#848484] text-sm font-normal">Buyer</th>
-              <th tw="text-[#848484] text-sm font-normal"></th>
+              <th tw="text-[#848484] text-xs lg:text-sm font-normal">Quantity</th>
+              <th tw="text-[#848484] text-xs lg:text-sm font-normal">Date</th>
+              <th tw="text-[#848484] text-xs lg:text-sm font-normal">Buyer</th>
+              <th tw="text-[#848484] text-xs lg:text-sm font-normal"></th>
             </tr>
           </thead>
           <tbody>
-            <tr tw="border-solid border-t border-zinc-300 h-12">
-              <td tw="text-gray-800 text-sm font-normal text-center">1</td>
-              <td tw="text-gray-800 text-sm font-normal text-center">21/4/2022</td>
-              <td tw="text-blue-100 text-sm font-normal text-center">LeylaGul</td>
-              <td>
-                <img alt="metamask" src={openDetail} tw="w-4 h-4"/>
-              </td>
-            </tr> 
-            <tr tw="border-solid border-t border-zinc-300 py-3 h-12">
-              <td tw="text-gray-800 text-sm font-normal text-center">1</td>
-              <td tw="text-gray-800 text-sm font-normal text-center">21/4/2022</td>
-              <td tw="text-blue-100 text-sm font-normal text-center">LeylaGul</td>
-              <td>
-                <img alt="metamask" src={openDetail} tw="w-4 h-4"/>
-              </td>
-            </tr> 
-            <tr tw="border-solid border-t border-zinc-300 py-3 h-12">
-              <td tw="text-gray-800 text-sm font-normal text-center">1</td>
-              <td tw="text-gray-800 text-sm font-normal text-center">21/4/2022</td>
-              <td tw="text-blue-100 text-sm font-normal text-center">LeylaGul</td>
-              <td>
-                <img alt="metamask" src={openDetail} tw="w-4 h-4"/>
-              </td>
-            </tr>   
+            {raffleHistory && raffleHistory.map((item, index)=>{
+              return(
+                <tr key={index} tw="border-solid border-t border-zinc-300 h-12">
+                  <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{item?.history?.tickets}</td>
+                  <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{getDateBySecond(item?.history?.timestamp)}</td>
+                  <td tw="text-blue-100 text-xs lg:text-sm font-normal text-center">{item.buyer?item.buyer:addressFormat(item?.history?.buyer)}</td>
+                  <td>
+                  <a tw="text-base text-violet-200 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.history?.buyer}`}>
+                    <img alt="metamask" src={openDetail} tw="w-4 h-4"/>
+                  </a>  
+                  </td>
+                </tr> 
+              )})
+            }
           </tbody>
         </table>
       </div>

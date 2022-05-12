@@ -33,7 +33,7 @@ const SellUserInfo = () => {
           <div tw="flex items-center px-6 py-0.5"> 
             <a tw="text-base text-violet-200 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${user?.account}`}>{addressFormat(user?.account)}</a>
             <CopyToClipboard text={user?.account}>
-              <img alt="metamask" src={copyImg} tw="w-5 h-5 ml-3 mt-1 cursor-pointer   " onClick={onCopy}/>
+              <img alt="metamask" src={copyImg} tw="w-5 h-5 ml-3 mt-1 cursor-pointer" onClick={onCopy}/>
             </CopyToClipboard>
             <div tw="text-gray-600 text-xs ml-3">Joined {joinDateFormat(user?.created)}</div> 
           </div>

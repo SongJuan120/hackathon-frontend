@@ -26,7 +26,7 @@ export const routes = {
       exact: true
     },
     {
-      path: "/buy/detail",
+      path: "/buy/raffles/:raffle_id",
       component: DetailRaffles,
       exact: true
     },
@@ -36,7 +36,7 @@ export const routes = {
       exact: true
     },
     {
-      path: "/sell/detail",
+      path: "/sell/detail/:address/:token_id",
       component: SellDetailNft,
       exact: true
     },

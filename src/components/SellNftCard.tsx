@@ -32,12 +32,13 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
   }))
 
   const goSell = () => {
-    
+    window.location.href = `/sell/detail/${nft.contract.address}/${Number(nft.id.tokenId)}`;
   }
   
   return (
     <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} tw="relative bg-[#fbfbfb] border border-solid border-zinc-200 rounded-lg">
-      <CardImage>
+      {selectCardImg !==''?(
+        <CardImage>
         {selectCard && 
           <div tw="grid grid-cols-2 gap-2 mx-3 pt-[200px]">
             <button onClick={goSell} tw="bg-white text-violet-200 font-semibold text-xs mx-1 py-2 px-5 rounded border border-solid border-white">
@@ -47,7 +48,8 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
               Transfer
             </button>
           </div>}
-      </CardImage>
+      </CardImage>)
+      :(<div tw="w-full h-52 rounded-t-lg bg-zinc-300 animate-pulse"></div>)}
       <div tw="px-3 py-3">
         <div tw="flex justify-between">
           <div tw="flex items-center">

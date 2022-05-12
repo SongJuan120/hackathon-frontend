@@ -1,13 +1,11 @@
 import tw from 'twin.macro';
 import { useState } from 'react';
-import { useMessageForSignature } from '../../hooks';
 
 import { Modal, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from '../../utils/helpers';
 import { selectUser } from "../../store/auth/auth.selectors";
 import { Divider, Select, Input } from 'antd';
-import { blockchain } from '../../blockchain';
 
 import ethIcon from '../../assets/images/icon/eth-small.png';
 import ethPinkIcon from '../../assets/images/icon/eth-pink.png'
@@ -15,8 +13,6 @@ import ethPinkIcon from '../../assets/images/icon/eth-pink.png'
 const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   
   const { Option } = Select;
-
-  const { disconnectWallet } = useMessageForSignature();
 
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 

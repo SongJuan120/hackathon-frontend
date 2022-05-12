@@ -7,15 +7,20 @@ import group from '../assets/images/icon/group.svg';
 import showEye from '../assets/images/icon/show-eye.svg';
 import heart from '../assets/images/icon/heart.svg';
 import img4 from '../assets/images/sample/sample_avatar2.png';
-import { DetailStatusMODEL, DetailStatusProps } from '../model/DetailStatusModel';
+interface DetailStatusMODEL {
+  views: number,
+  likes: number,
+}
 
-
-const DetailImage = (props: DetailStatusProps) => {
-  const status: DetailStatusMODEL = props.detailStatus;
+const DetailImage = (props:{status: DetailStatusMODEL, image: string | undefined} ) => {
+  const status: DetailStatusMODEL = props.status;
 
   return (
-    <div tw="">
-      <img alt="metamask" src={img4} tw="w-full rounded-2xl h-[424px] shadow-xl"/>
+    <div>
+      {props?.image?
+      (<img alt="metamask" src={props?.image} tw="w-full rounded-2xl h-auto shadow-xl"/>)
+      :(<div tw="w-full rounded-2xl h-[432px] bg-zinc-300 animate-pulse"></div>)
+      }
       <div tw="pt-4">
         <div tw="flex justify-between">
           <div tw="flex">

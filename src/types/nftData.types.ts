@@ -12,8 +12,10 @@ export interface GOwnedNft {
     description: string;
     tokenUri: GTokenUri;
     media: GMedia[];
-    metadata: GMetadata;
+    metadata?: GMetadata;
     timeLastUpdated: string;
+    owneraccount: string;
+    owner: GOwner;
 }
 
 export interface GContract {
@@ -40,12 +42,30 @@ export interface GMedia {
 }
 
 export interface GMetadata {
-    name: string;
+    name?: string;
     image: string;
+    description?: string;
+    external_url?: string;
     attributes: GAttributes[];
 }
 
 export interface GAttributes {
     value: string;
     trait_type: string;
+}
+
+export interface GAttributes {
+    value: string;
+    trait_type: string;
+}
+
+export interface GOwner {
+    _id: string,
+    name: string | null,
+    avatar: string,
+    bio: string,
+    account: string,
+    created: Date | string,
+    updated: Date | string,
+    __v: number
 }
