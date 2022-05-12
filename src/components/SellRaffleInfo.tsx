@@ -2,7 +2,6 @@ import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { Divider, Select, Input } from 'antd';
-import { usePresaleDeposit } from '../hooks';
 import { useERC721Approve } from '../hooks';
 import ethSmall from '../assets/images/icon/eth-small.png';
 import tooltip from '../assets/images/icon/tooltip.png';
@@ -10,7 +9,6 @@ import SellRaffleComponentModal from './Modal/SellRaffleComponentModal'
 import raffle from '../assets/images/icon/raffle.png';
 import dollar from '../assets/images/icon/dollar.png';
 import hummer from '../assets/images/icon/hummer.png';
-
 
 const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const { Option } = Select;
@@ -21,20 +19,12 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const [isSelectType, setSelectType] = useState('raffle');
   const [isSelectNumber, setSelectNumber] = useState(10);
   const [amount, setAmount] = useState(0);
-  const { deposit, isDepositing } = usePresaleDeposit();
-  const { isApproved, isApproving, approve } = useERC721Approve(props.address, props.tokenId);
-  
-  useEffect(() => {
-    console.log('this is isApproving', isApproved, isApproving);
-  }, [isApproved, isApproving]);
 
   function handleChange(value: string) {
     console.log(`selected ${value}`);
   }
 
   const onTicketSell = () => {
-    // deposit(amount, "ETH");
-    approve();
     setIsModalVisible(true);
   };
 

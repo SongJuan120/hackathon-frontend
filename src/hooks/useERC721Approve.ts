@@ -20,14 +20,13 @@ export const useERC721Approve = (address: string, tokenId: number) => {
       erc721Contract
         .approve(RAFFLEMARKETPLACE_ADDRESS, tokenId)
         .then((txPreHash: any) => txPreHash.wait())
-        .then((txHash: any) => {
+        .then(async (txHash: any) => {
           if (isMounted.current) {
             setIsApproved(true);
             // triggerToast('SUCCESS');
           }
         })
         .catch((err: any) => {
-          console.log('thsi is isApproving++++++++++1', err);
           // triggerToast('ERROR');
         })
         .then(() => {
@@ -50,7 +49,6 @@ export const useERC721Approve = (address: string, tokenId: number) => {
           }
         })
         .catch((err: any) => {
-          console.log('thsi is isApproving++++++++++2', err);
           // triggerToast('ERROR');
         })
     }

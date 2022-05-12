@@ -35,11 +35,15 @@ const NftCard = (props: {raffle: GRaffles}) => {
   
   return (
     <div tw="bg-[#fbfbfb] border border-solid border-zinc-200 rounded-lg cursor-pointer" onClick={goRaffleDetail}>
-      <img
-        alt="metamask"
-        src={nftInfo?.metadata?.image}
-        tw="w-full h-52 rounded-t-lg"
-      />
+      {nftInfo?.metadata?.image?(
+        <img
+          alt="metamask"
+          src={nftInfo?.metadata?.image}
+          tw="w-full h-52 rounded-t-lg"
+        />
+      ):(
+        <div tw="w-full h-52 rounded-t-lg bg-zinc-300 animate-pulse"></div>  
+      )}
       <div tw="p-2">
         <div tw="grid grid-cols-3 gap-2 mb-4">
             <div>

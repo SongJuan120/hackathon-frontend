@@ -30,8 +30,9 @@ export const useWeb3Provider = () => {
   const connect = useCallback(
     async (connectorType: Connector) => {
       setLoading(true);
-
+      
       const connector = getConnector(connectorType);
+
       if (connectorType === 'WalletConnect') {
         const walletConnectProvider =
           await WALLETCONNECT_CONNECTOR.getProvider();

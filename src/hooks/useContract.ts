@@ -14,9 +14,6 @@ export const useContract = (
   const network = useNetworkConnector();
 
   return useMemo(() => {
-    if (withSigner) {
-      console.log('------------withSigner:', account, library)
-    }
     const networkLibrary = getNetworkLibrary(network);
     return address
       ? new Contract(

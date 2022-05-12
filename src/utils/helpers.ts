@@ -198,7 +198,7 @@ export function getEndDate(createdDate: number, duration: number){
 }
 
 export function getDateBySecond(seconde: number){
-  const day = moment(seconde*1000).format("DD/MM/YYYY");
+  const day = moment(seconde*1000).format("DD/MM/.YYYY");
   return day;
 }
 

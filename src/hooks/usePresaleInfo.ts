@@ -1,7 +1,7 @@
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 
-import DIYFactoryABI from '../constants/ABI/RaffleMarketPlace.json';
+import RaffleMarketPlaceABI from '../constants/ABI/RaffleMarketPlace.json';
 import {
   RAFFLEMARKETPLACE_ADDRESS,
   DIYTOKEN_DECIMALS,
@@ -14,7 +14,7 @@ import { useNetworkConnector } from './useNetworkConnector';
 import { useWeb3Provider } from './useWeb3Provider';
 
 export const usePresaleInfo = () => {
-  const presaleContract = useContract(RAFFLEMARKETPLACE_ADDRESS, DIYFactoryABI);
+  const presaleContract = useContract(RAFFLEMARKETPLACE_ADDRESS, RaffleMarketPlaceABI);
   const isMounted = useIsMounted();
   const { account } = useWeb3Provider();
   const network = useNetworkConnector();
@@ -140,13 +140,13 @@ export const usePresaleInfo = () => {
     // }
   }, [account, isMounted, presaleContract]);
 
-  useEffect(() => {
-    fetchPresaleInfo();
-    const timer = setInterval(() => fetchPresaleInfo(), 3000);
-    return () => {
-      clearInterval(timer);
-    };
-  }, [fetchPresaleInfo]);
+  // useEffect(() => {
+  //   fetchPresaleInfo();
+  //   const timer = setInterval(() => fetchPresaleInfo(), 3000);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, [fetchPresaleInfo]);
 
   return presaleInfo;
 };

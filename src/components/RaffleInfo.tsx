@@ -1,5 +1,5 @@
 import tw from 'twin.macro';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Modal, Button } from 'antd';
 import ProgressBar from '@ramonak/react-progress-bar';
 
@@ -9,11 +9,47 @@ import { leftDateDetail, getRafflePrice, getEndDate } from '../utils/helpers';
 import BuyRaffleModal from './Modal/BuyRaffleModal';
 import showMark from '../assets/images/icon/show-mark.svg';
 import eth from '../assets/images/icon/eth-icon.svg';
+import moment from 'moment';
+
 
 const RaffleInfo = (props: {raffle: GRaffles}) => {
   const raffle: GRaffles = props.raffle;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const leftTIme = leftDateDetail(Number(raffle.created), Number(raffle.duration));
+  const [presaleDuration, setPresaleDuration] = useState<{
+    days: number;
+    hours: number;
+    mins: number;
+    secs: number;
+  }>({ days: 0, hours: 0, mins: 0, secs: 0});
+
+  const leftDateDetail = useCallback(()=>{
+    const endDate = Number(raffle.created) + Number(raffle.duration);
+    const currentDate = Number(moment().format("X"));
+    const diff = endDate - currentDate;
+  
+    let days = Math.floor(diff/3600/24);
+    let hours = Math.floor(diff/3600);
+    let minutes = Math.floor((diff % 3600)/60);
+    let seconde = (diff % 3600)%60;
+  
+    if ( diff < 0 ){ days = 0; hours = 0; minutes = 0; seconde = 0;}
+
+    setPresaleDuration({
+      days: days,
+      hours: hours,
+      mins: minutes,
+      secs: seconde,
+    })
+  },[raffle])
+
+  useEffect(() => {
+    leftDateDetail();
+    const timer = setInterval(() => leftDateDetail(), 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [leftDateDetail]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -67,19 +103,19 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
                 <div tw="text-gray-800 text-center text-xs lg:text-base">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
               </div>
               <div tw="flex items-baseline mt-2 justify-center lg:justify-start">
-                {leftTIme.days !== 0 && (
+                {presaleDuration.days !== 0 && (
                   <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{leftTIme.days}</div>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.days}</div>
                     <div tw="text-gray-800 text-center text-xs lg:text-base">Days</div>
                   </>
                 )}
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{leftTIme.hours}</div>
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.hours}</div>
                 <div tw="text-gray-800 text-center text-xs lg:text-base">Hours</div>
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{leftTIme.minutes}</div>
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.mins}</div>
                 <div tw="text-gray-800 text-center text-xs lg:text-base">Minutes</div>
-                {leftTIme.days === 0 && (
+                {presaleDuration.days === 0 && (
                   <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{leftTIme.seconde}</div>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.secs}</div>
                     <div tw="text-gray-800 text-center text-xs lg:text-base">Seconds</div>
                   </>
                 )}

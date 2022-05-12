@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import NftInfo from '../components/NftInfo';
 import { getAssetById } from '../store/assets/assets.actions';
 import { selectAssetById } from '../store/assets/assets.selectors';
+import { useEagerConnect, useWeb3Listener } from '../hooks';
 import SellRaffleInfo from '../components/SellRaffleInfo';
 import img4 from '../assets/images/sample/sample_avatar2.png';
 
@@ -25,6 +26,10 @@ interface Params {
 }
 
 const SellDetailNft = () => {
+  
+  useEagerConnect();
+  useWeb3Listener();
+
   const dispatch = useDispatch();
   const params: Params = useParams();
   const tokenId = Number(params?.token_id);
@@ -42,7 +47,12 @@ const SellDetailNft = () => {
             <NftInfo nft={asset}></NftInfo>
           </div>
           <div tw="col-span-full px-2 lg:px-0 mt-4 text-gray-300 lg:col-span-2 lg:mt-[-90px] ">
-            <img alt="metamask" src={asset?.metadata?.image} tw="w-full rounded-2xl h-auto shadow-xl"/>
+            {asset?.metadata?.image?(
+              <img alt="metamask" src={asset?.metadata?.image} tw="w-full rounded-2xl h-auto shadow-xl"/>
+            ):(
+              <div tw="w-full rounded-2xl h-[432px] bg-zinc-300 animate-pulse"></div>
+            )}
+           
           </div>
           <div tw="col-span-full lg:col-start-3 lg:col-end-6  text-gray-300">
             <div tw="mt-9">
