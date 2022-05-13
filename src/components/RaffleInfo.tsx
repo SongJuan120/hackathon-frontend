@@ -5,8 +5,9 @@ import ProgressBar from '@ramonak/react-progress-bar';
 
 import { GRaffles } from '../types';
 import { leftDateDetail, getRafflePrice, getEndDate } from '../utils/helpers';
-
+import BuyPolicyModal from './Modal/BuyPolicyModal'
 import BuyRaffleModal from './Modal/BuyRaffleModal';
+import BuyConfirmModal from './Modal/BuyConfirmModal';
 import showMark from '../assets/images/icon/show-mark.svg';
 import eth from '../assets/images/icon/eth-icon.svg';
 import moment from 'moment';
@@ -14,8 +15,9 @@ import moment from 'moment';
 
 const RaffleInfo = (props: {raffle: GRaffles}) => {
   const raffle: GRaffles = props.raffle;
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isBuyModalVisible, setBuyModalVisible] = useState(false);
+  const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
+  const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [presaleDuration, setPresaleDuration] = useState<{
     days: number;
     hours: number;
@@ -51,16 +53,34 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     };
   }, [leftDateDetail]);
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const onBuyTicket = () => {
+    setPolicyModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handlePolicyOk = () => {
+    setPolicyModalVisible(false);
+    setBuyModalVisible(true);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handlePolicyCancel = () => {
+    setPolicyModalVisible(false);
+  };
+
+  const handleBuyOk = () => {
+    setConfirmModalVisible(true);
+    setBuyModalVisible(false);
+  };
+
+  const handleBuyCancel = () => {
+    setBuyModalVisible(false);
+  };
+
+  const handleConfirmOk = () => {
+    setConfirmModalVisible(false);
+  };
+
+  const handleConfirmCancel = () => {
+    setConfirmModalVisible(false);
   };
 
   const price = 10000;
@@ -122,10 +142,12 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
               </div>
             </div>
             <div>
-              <button onClick={showModal} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+              <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
                 Buy tickets
               </button>
-              <BuyRaffleModal isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}></BuyRaffleModal>
+              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
+              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={handleBuyOk} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
+              <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
             </div>  
           </div>
         </div>

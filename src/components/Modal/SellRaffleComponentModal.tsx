@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAssetById } from '../../store/assets/assets.selectors';
 import { Modal, Divider } from 'antd';
 import { SpinnerCircularFixed } from 'spinners-react';
-import { useERC721Approve } from '../../hooks';
-import { usePresaleDeposit } from '../../hooks';
+import { useERC721Approve, usePresaleDeposit } from '../../hooks';
+import { GTicket } from '../../types';
 import SellConfirmModal from './SellConfirmModal';
-import img2 from '../../assets/images/sample/sample_avatar2.png';
+import { getDurationDate } from '../../utils/helpers'
 import checkMarkBlue from '../../assets/images/icon/check-mark-blue.svg';
 import eth from '../../assets/images/icon/eth-icon.svg';
 import arrowDown from '../../assets/images/icon/arrow-down.png';
@@ -15,7 +15,7 @@ import arrowUp from '../../assets/images/icon/arrow-up.png';
 import check from '../../assets/images/icon/check.png';
 import error from '../../assets/images/icon/tooltip.png';
 
-const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
+const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTicket, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isDetail, setDetail] = useState(false);
   const asset = useSelector(selectAssetById);
@@ -25,7 +25,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=
   useEffect(() => {
     if (props.isModalVisible){
       console.log("this is isApproved:", isApproved, isApproving, asset);
-      if (!isApproved) {
+      if (!isApproved) { 
         approve();  
       }else{
         deposit(0, "ETH");
@@ -35,7 +35,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=
 
   useEffect(() => {
     if (props.isModalVisible){
-      console.log("this is isDepositing:", isDepositing)
+      console.log("this is isDepositing:", isDepositing)       
     }
     if (isDepositing) {
       setIsConfirmModalVisible(true);
@@ -83,7 +83,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=
               <div tw="text-sm text-gray-800">Price</div>
               <div tw="flex items-center justify-center my-1">
                 <img alt="metamask" src={eth} tw="w-4 h-4 mr-1"/>
-                <div tw="text-gray-300 text-center text-[22px] font-semibold">{total.toLocaleString()}</div>
+                <div tw="text-gray-300 text-center text-[22px] font-semibold">{(props.ticket?.totalPrice).toLocaleString()}</div>
               </div>
               <div tw="text-gray-800 text-center text-xs">(${price.toLocaleString()})</div>
             </div>
@@ -96,14 +96,14 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=
             <div tw="py-1 px-6">
               <div tw="flex justify-between mb-8">
                 <div tw="text-gray-300 text-sm font-semibold">Ticket quantity</div>
-                <div tw="text-gray-300 text-base font-semibold">x 100</div>
+                <div tw="text-gray-300 text-base font-semibold">x {(props.ticket?.quantity)}</div>
               </div>
               <div tw="flex justify-between mb-4">
                 <div tw="text-gray-300 text-sm font-semibold">Price per ticket</div>
                 <div>
                   <div tw="flex items-center justify-end">
                     <img alt="metamask" src={eth} tw="w-3 h-3 mr-1"/>
-                    <div tw="text-gray-300 text-center text-base font-semibold">{total.toLocaleString()}</div>
+                    <div tw="text-gray-300 text-center text-base font-semibold">{(props.ticket?.perPrice).toLocaleString()}</div>
                   </div>
                   <div tw="text-gray-800 text-right text-xs">(${price.toLocaleString()})</div>
                 </div>
@@ -111,8 +111,8 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, handleOk: ()=
               <div tw="flex justify-between">
                 <div tw="text-gray-300 text-sm font-semibold">Scheduled for</div>
                 <div>
-                  <div tw="text-gray-300 text-base font-semibold text-right">4 days</div>
-                  <div tw="text-xs text-gray-800 text-right">Apr 25, 2022 10:00AM - Apr 27, 2022 10:00AM</div>
+                  <div tw="text-gray-300 text-base font-semibold text-right">{(props.ticket?.duration)} days</div>
+                  <div tw="text-xs text-gray-800 text-right">{getDurationDate(props.ticket?.duration)}</div>
                 </div>
               </div>
             </div>

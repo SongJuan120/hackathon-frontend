@@ -14,25 +14,13 @@ import BuyConfirmModal from './BuyConfirmModal'
 import { selectRaffleById, selectNftByTokenId } from "../../store/raffles/raffles.selectors";
 import { leftDateDetail, getRafflePrice, getEndDate } from '../../utils/helpers';
 
-const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
+const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: ()=>void, handleBuyCancel: ()=>void }) =>{
 
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [count, setCount] = useState(0);
 
   const raffle = useSelector(selectRaffleById);
   const nft = useSelector(selectNftByTokenId);
-  const showModal = () => {
-    setIsConfirmModalVisible(true);
-    // props.handleCancel(); 
-  };  
-
-  const handleOk = () => {
-    setIsConfirmModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsConfirmModalVisible(false);
-  };
 
   const onCountPlus = () => {
     const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
@@ -50,7 +38,7 @@ const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, han
   const price = 10000;
 
   return(
-    <Modal visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
+    <Modal visible={props.isBuyModalVisible} onOk={props.handleBuyOk} onCancel={props.handleBuyOk} footer={null} width={620}>
       <div tw="text-gray-300 text-2xl font-semibold text-center">
         Buy raffle tickets
       </div>
@@ -102,10 +90,9 @@ const BuyRaffleModal = (props: {isModalVisible: boolean, handleOk: ()=>void, han
         </div>
       </div>
       <div tw="flex justify-center mt-10">
-        <button onClick={showModal} tw="text-white bg-[#9C40CF] text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+        <button onClick={props.handleBuyOk} tw="text-white bg-[#9C40CF] text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
           Buy tickets
         </button>
-        <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleOk={handleOk} handleCancel={handleCancel}></BuyConfirmModal>
       </div>
       
     </Modal>

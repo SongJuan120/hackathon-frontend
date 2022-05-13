@@ -148,7 +148,7 @@ export function addressFormat(address: string){
   return word1 + '...' + word2;
 }   
 
-export function joinDateFormat(date: string| Date){
+export function joinDateFormat(date: string | Date){
   return moment(date).format("DD MMM · YYYY")
 }
 
@@ -202,4 +202,8 @@ export function getDateBySecond(seconde: number){
   return day;
 }
 
-
+export function getDurationDate(duration: number){
+  const dateTo = moment().format('LLL');
+  const dateFrom = moment().add(duration,'d').format('LLL');
+  return dateTo + " - " + dateFrom;
+}
