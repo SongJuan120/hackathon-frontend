@@ -158,11 +158,11 @@ export function leftDate(createdDate: number, duration: number){
   const diff = endDate - currentDate;
 
   let days = Math.floor(diff/3600/24);
-  let hours = Math.floor(diff/3600);
+  let hours = Math.floor((diff/3600) % 24);
   let minutes = Math.floor((diff % 3600)/60);
 
-  if ( diff < 0 ){ days = 0; hours = 0; minutes = 0; return `${days}h ${hours}d`;}
-  if (days = 0) { return `${hours}h ${minutes}m`; }
+  if ( diff <= 0 ){ days = 0; hours = 0; minutes = 0; return `${days}h ${hours}d`;}
+  if (days == 0) { return `${hours}h ${minutes}m`; }
     else { return `${days}d ${hours}h`; }  
 }
 
@@ -172,11 +172,11 @@ export function leftDateDetail(createdDate: number, duration: number){
   const diff = endDate - currentDate;
 
   let days = Math.floor(diff/3600/24);
-  let hours = Math.floor(diff/3600);
+  let hours = Math.floor((diff/3600) % 24);
   let minutes = Math.floor((diff % 3600)/60);
   let seconde = (diff % 3600)%60;
 
-  if ( diff < 0 ){ days = 12; hours = 12; minutes = 12; seconde =12;}
+  if ( diff < 0 ){ days = 0; hours = 0; minutes = 0; seconde = 0;}
 
   const leftTIme = {
     days: days,
@@ -198,7 +198,7 @@ export function getEndDate(createdDate: number, duration: number){
 }
 
 export function getDateBySecond(seconde: number){
-  const day = moment(seconde*1000).format("DD/MM/.YYYY");
+  const day = moment(seconde*1000).format("DD/MM/YYYY");
   return day;
 }
 

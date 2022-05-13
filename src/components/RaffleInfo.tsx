@@ -31,7 +31,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     const diff = endDate - currentDate;
   
     let days = Math.floor(diff/3600/24);
-    let hours = Math.floor(diff/3600);
+    let hours = Math.floor((diff/3600) % 24);
     let minutes = Math.floor((diff % 3600)/60);
     let seconde = (diff % 3600)%60;
   

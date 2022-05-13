@@ -7,11 +7,12 @@ import { GRaffles, GSoldHistory } from '../types';
 import { getDateBySecond, addressFormat } from '../utils/helpers'
 
 const NftHistoryInfo = (props: {raffle: GRaffles}) => {
+ 
   const raffle: GRaffles = props.raffle;
   const [raffleHistory, setRaffleHistory] = useState<GSoldHistory[]>([]);
   useEffect(() => {
     getNftInfo();
-  }, []);
+  }, [raffle]);
   
   const getNftInfo = async() => {
     const history = await rafflesService.getSoldHistory(raffle.raffleId);
@@ -44,7 +45,7 @@ const NftHistoryInfo = (props: {raffle: GRaffles}) => {
                 <tr key={index} tw="border-solid border-t border-zinc-300 h-12">
                   <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{item?.history?.tickets}</td>
                   <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{getDateBySecond(item?.history?.timestamp)}</td>
-                  <td tw="text-blue-100 text-xs lg:text-sm font-normal text-center">{item.buyer?item.buyer:addressFormat(item?.history?.buyer)}</td>
+                  <td tw="text-blue-100 text-xs lg:text-sm font-normal text-center">{item.buyer?item?.buyer?.name:addressFormat(item?.history?.buyer)}</td>
                   <td>
                   <a tw="text-base text-violet-200 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.history?.buyer}`}>
                     <img alt="metamask" src={openDetail} tw="w-4 h-4"/>

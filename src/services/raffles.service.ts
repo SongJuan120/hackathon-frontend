@@ -7,7 +7,7 @@ import {
 class RafflesService {
 
   async getRaffles () {
-    const res = await http.get<GRaffles>(`/raffles/all`)
+    const res = await http.get<GRaffles>(`/raffles/filterByState/0,1`)
     return res.data;
   }
 

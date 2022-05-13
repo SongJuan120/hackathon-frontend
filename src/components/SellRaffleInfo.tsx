@@ -171,7 +171,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
         <div tw="text-base text-gray-800">1.5%</div>
       </div>
       <div tw="flex justify-between items-center mb-1 mt-2">
-        <div tw="text-base text-gray-800">Goobig fees</div>
+        <div tw="text-base text-gray-800">Creator fees</div>
         <div tw="text-base text-gray-800">5%</div>
       </div>
       <div tw="flex justify-end mt-10">

@@ -32,14 +32,14 @@ const LiveRaffles = () => {
       <div tw="mx-auto max-w-6xl px-3 pt-14">
         <div tw="flex justify-between items-center mb-10">
           <div tw="text-gray-300 text-3xl font-semibold">Current raffle lisitings</div>
-          <div tw="flex">
+          {/* <div tw="flex">
             <Select defaultValue="Sort" tw="w-full rounded-lg" onChange={handleChange}>
               <Option value="jack">Sort</Option>
             </Select>
             <Select defaultValue="Filter" tw="w-full rounded-lg ml-2" onChange={handleChange}>
               <Option value="jack">Filter</Option>
             </Select>
-          </div>
+          </div> */}
         </div>
 
         <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

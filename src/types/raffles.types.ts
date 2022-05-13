@@ -15,7 +15,7 @@ export interface GRaffles {
 
 export interface GSoldHistory {
     history: GSoldHistoryInfo,
-    buyer: string | null
+    buyer: GBuyer | null
 } 
 
 export interface GSoldHistoryInfo {
@@ -26,6 +26,16 @@ export interface GSoldHistoryInfo {
     buyer: string,
     tickets: string,
     timestamp: number,
+    __v: number
+}
+export interface GBuyer {
+    _id: string,
+    name: string,
+    avatar: string,
+    bio: string,
+    account: string,
+    created: string | Date,
+    updated: string | Date,
     __v: number
 }
 

@@ -1,4 +1,4 @@
-export const IS_TESTNET = window.location.hostname === 'localhost' || window.location.hostname === 'dev.toolboxtoken.com';
+export const IS_TESTNET = true;
 
 const variables = {
   mainnet: {

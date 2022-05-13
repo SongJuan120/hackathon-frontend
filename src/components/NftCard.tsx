@@ -10,7 +10,7 @@ import { leftDate, getRafflePrice } from '../utils/helpers';
 import { getRafflesById } from '../store/raffles/raffles.actions';
 import { selectNftByTokenId } from "../store/raffles/raffles.selectors";
 
-import img4 from '../assets/images/lower-bg.jpg';
+import eth from '../assets/images/icon/eth-icon.svg';
 
 
 const NftCard = (props: {raffle: GRaffles}) => {
@@ -66,12 +66,10 @@ export const NftCoin = (props: {label: string, value: number})=>{
   return(
     <div>
       <div tw="text-zinc-400 text-xs text-center">{props.label}</div>
-      <div>
-        {/* <FontAwesomeIcon icon={['fab', 'ethereum']} size={'xs'} /> */}
-        {/* <Icon name="btc" size={25} /> */}
+      <div tw="flex items-center justify-center">
+        <img alt="metamask" src={eth} tw="w-3 h-3 mr-1"/>
         <div tw="text-gray-400 text-sm text-center font-semibold">{props.value}</div>
       </div>
-      
     </div>
   )
 }
