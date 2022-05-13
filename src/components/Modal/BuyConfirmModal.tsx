@@ -7,13 +7,13 @@ import minuseButton from '../../assets/images/icon/minuse_button.svg'
 import plusButton from '../../assets/images/icon/plus_button.svg'
 import eth from '../../assets/images/icon/eth-icon.svg';
 
-const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
+const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
 
   const raffleNumber = '2 raffle tickets';
   const name = 'Azuki #1162';
 
   return(
-    <Modal visible={props.isConfirmModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null}>
+    <Modal visible={props.isConfirmModalVisible} onOk={props.handleConfirmOk} onCancel={props.handleConfirmCancel} footer={null}>
       <div tw="text-gray-300 text-2xl font-semibold text-center">
         Ticket purchase confirmed!
       </div>
