@@ -24,6 +24,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const [amount, setAmount] = useState(0);
   const [ticket, setTicket] = useState<GTicket>({
     type: "",
+    typeId: 0,
     totalPrice: 0,
     quantity: 0,
     perPrice: 0,
@@ -33,6 +34,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const onTicketSell = () => {
     setTicket({
       type: selectType,
+      typeId: selectNumber==10?0:selectNumber==100?1:2,
       totalPrice: amount,
       quantity: selectNumber, 
       perPrice: getPricePerTicket(selectNumber),
@@ -77,7 +79,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
       </div>
       <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
         <div tw="grid grid-cols-3">
-          <div onClick={()=>onSeletType('raffle')} style={selectType=='raffle'?{background:'#FBF8FB'}:{}} tw="border-solid border-r rounded-l-lg pt-4 pb-3 hover:bg-zinc-100 cursor-pointer">
+          <div style={selectType=='raffle'?{background:'#FBF8FB'}:{}} tw="border-solid border-r rounded-l-lg pt-4 pb-3 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="raffle" src={raffle} tw="w-[22px] lg:w-7 lg:h-7"/>
             </div>
@@ -85,7 +87,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
               <div tw="text-gray-800 text-center text-xs lg:text-base">Raffle</div>
             </div>
           </div>
-          <div onClick={()=>onSeletType('fixprice')} style={selectType=='fixprice'?{background:'#FBF8FB'}:{}} tw="border-solid border-r py-4 hover:bg-zinc-100 cursor-pointer">
+          <div style={selectType=='fixprice'?{background:'#FBF8FB'}:{}} tw="border-solid border-r py-4 hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="dollar" src={dollar} tw="w-[12px] lg:w-4"/>
             </div>
@@ -93,7 +95,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
               <div tw="text-gray-800 text-center text-xs lg:text-base">Fixed price</div>
             </div>
           </div>
-          <div onClick={()=>onSeletType('auction')} style={selectType=='auction'?{background:'#FBF8FB'}:{}} tw="py-4 rounded-r-lg hover:bg-zinc-100 cursor-pointer">
+          <div style={selectType=='auction'?{background:'#FBF8FB'}:{}} tw="py-4 rounded-r-lg hover:bg-zinc-100 cursor-pointer">
             <div tw="flex justify-center mb-2">
               <img alt="hummer" src={hummer} tw="w-[22px] lg:w-8"/>
             </div>
@@ -122,7 +124,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
           <img alt="metamask" src={ethSmall} tw="w-[8px] lg:w-[10px] mb-1 mr-3"/>
           <div>ETH</div>
         </div>
-        <Input type="number" min={0} value={amount} onChange={(e)=>onChangeAmount(e)}/>
+        <Input type="number" min={0} step ="any" onChange={(e)=>onChangeAmount(e)}/>
       </div>
     
       <div tw="flex justify-between items-center mb-1 mt-10">

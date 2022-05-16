@@ -33,3 +33,9 @@
     border-radius: 14px;
     animation: 2s ease-out 1s infinite normal none running hnGeRd;
 }
+
+.text-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

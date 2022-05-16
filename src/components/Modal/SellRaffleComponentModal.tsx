@@ -1,4 +1,5 @@
 import tw from 'twin.macro';
+import { parseEther } from 'ethers/lib/utils';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAssetById } from '../../store/assets/assets.selectors';
@@ -20,33 +21,39 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
   const [isDetail, setDetail] = useState(false);
   const asset = useSelector(selectAssetById);
   const { isApproved, isApproving, approve } = useERC721Approve(asset.contract.address , Number(asset.id.tokenId));
-  const { deposit, isDepositing } = usePresaleDeposit();
+  const { deposit, isDepositing, isDeposited } = usePresaleDeposit();
 
   useEffect(() => {
     if (props.isModalVisible){
-      console.log("this is isApproved:", isApproved, isApproving, asset);
       if (!isApproved) { 
         approve();  
       }else{
-        deposit(0, "ETH");
+        let depositData = {
+          registerRaffle: 0.01,
+          nftAddress: asset.contract.address,
+          tokenId: Number(asset.id.tokenId),
+          ticketType: props.ticket.typeId,
+          ticketPrice: props.ticket.perPrice,
+          duration: props.ticket.duration * 3600 * 24
+        }
+        deposit(depositData);
       }
     }
   }, [isApproved, isApproving, props.isModalVisible])
 
   useEffect(() => {
     if (props.isModalVisible){
-      console.log("this is isDepositing:", isDepositing)       
+      if (isDeposited) {
+        setIsConfirmModalVisible(true);
+      }
     }
-    if (isDepositing) {
-      setIsConfirmModalVisible(true);
-    }
-  }, [isDepositing, props.isModalVisible]);
+  }, [isDepositing, isDeposited, props.isModalVisible]);
 
-  const handleOk = () => {
+  const handleConfirmOk = () => {
     setIsConfirmModalVisible(false);
   };
 
-  const handleCancel = () => {
+  const handleConfirmCancel = () => {
     setIsConfirmModalVisible(false);
   };
 
@@ -59,8 +66,8 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
 
   return(
     <>
-      <SellConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
-        <Modal visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
+      <SellConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleOk={handleConfirmOk} handleCancel={handleConfirmCancel}/>
+      <Modal visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
         <div tw="text-gray-300 text-2xl font-semibold text-center mb-6">
           Complete raffle lisiting
         </div>
@@ -136,10 +143,12 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
         <div tw="flex border-solid border-r border-b border-l h-28 px-7 rounded-b-lg">
           <div tw="flex items-center">
             {isDepositing?(
+              <SpinnerCircularFixed thickness={100} color="#9C40CF" tw="mr-7"/>    
+            ):(isDeposited?(
               <img alt="metamask" src={check} tw="w-[42px] h-[42px] mr-7"/>
             ):(
-              <SpinnerCircularFixed thickness={100} color="#9C40CF" tw="mr-7"/>    
-            )}
+              <img alt="metamask" src={error} tw="w-[50px] h-[50px] mr-7"/>
+            ))}
             <div>
               <div tw="text-2xl text-gray-300 font-semibold">Listed for sale</div>
               <div tw="text-base text-gray-800">Sign message to finalise this raffle listing.</div>

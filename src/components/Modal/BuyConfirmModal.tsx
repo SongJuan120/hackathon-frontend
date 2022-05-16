@@ -1,16 +1,16 @@
 import tw from 'twin.macro';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'antd';
-import img1 from '../../assets/images/icon/nftSample.svg';
-import img2 from '../../assets/images/sample/sample_avatar2.png';
-import checkMarkBlue from '../../assets/images/icon/check-mark-blue.svg';
-import minuseButton from '../../assets/images/icon/minuse_button.svg'
-import plusButton from '../../assets/images/icon/plus_button.svg'
-import eth from '../../assets/images/icon/eth-icon.svg';
+import { useBuy } from '../../hooks';
+import { selectNftByTokenId } from "../../store/raffles/raffles.selectors";
+import { addressFormat } from '../../utils/helpers';
 
-const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
+const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
 
   const raffleNumber = '2 raffle tickets';
   const name = 'Azuki #1162';
+  const nft = useSelector(selectNftByTokenId);
 
   return(
     <Modal visible={props.isConfirmModalVisible} onOk={props.handleConfirmOk} onCancel={props.handleConfirmCancel} footer={null}>
@@ -21,20 +21,23 @@ const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, handleConfirmOk
         LFG! You successfully purchased <span tw="text-base text-gray-800 font-semibold">{raffleNumber}</span> <br></br>for <span tw="text-base text-gray-800 font-semibold">{name}</span>. Good luck!
       </div>
       <div tw="flex justify-center mt-4">
-        <img alt="metamask" src={img2} tw="w-[167px] h-[167px] rounded-xl"/>
+        <img alt="metamask" src={nft.metadata?.image} tw="w-[167px] h-[167px] rounded-xl"/>
       </div>
-      <div tw="w-[300px] border border-solid rounded-lg m-auto px-5 py-3 mt-6">
-        <div tw="grid grid-cols-2 gap-3">
-          <div>
-            <div tw="text-[#1d1d1d] text-xs">Status</div>
-            <div tw="text-[#522294] text-sm">Complete</div>
-          </div>
-          <div>
-            <div tw="text-[#1d1d1d] text-xs">Transaction Hash</div>
-            <div tw="text-[#522294] text-sm">0x25...94af</div>
+      {props.txHash && 
+        <div tw="w-[300px] border border-solid rounded-lg m-auto px-5 py-3 mt-6">
+          <div tw="grid grid-cols-2 gap-3">
+            <div>
+              <div tw="text-[#1d1d1d] text-xs">Status</div>
+              <div tw="text-[#522294] text-sm">{props.txHash?.status==1?'Completed':''}</div>
+            </div>
+            <div>
+              <div tw="text-[#1d1d1d] text-xs">Transaction Hash</div>
+              <div tw="text-[#522294] text-sm">{addressFormat(props.txHash?.transactionHash)}</div>
+              {/* <a tw="text-[#522294] text-sm" target="_blank" href={`https://rinkeby.etherscan.io/address/${props.txHash?.transactionHash}`}>{addressFormat(props.txHash?.transactionHash)}</a> */}
+            </div>
           </div>
         </div>
-      </div>
+      }
     </Modal>
   )
 }

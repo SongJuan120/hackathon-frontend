@@ -16,6 +16,8 @@ export interface GOwnedNft {
     timeLastUpdated: string;
     owneraccount: string;
     owner: GOwner;
+    creatorAddress: string;
+    creator: GOwner;
 }
 
 export interface GContract {

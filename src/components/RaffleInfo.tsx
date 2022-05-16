@@ -18,6 +18,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const [isBuyModalVisible, setBuyModalVisible] = useState(false);
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [txHash, setTxHashInfo] = useState();
   const [presaleDuration, setPresaleDuration] = useState<{
     days: number;
     hours: number;
@@ -66,7 +67,9 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     setPolicyModalVisible(false);
   };
 
-  const handleBuyOk = () => {
+  const handleBuyOk = (txHashInfo: any):void => {
+    console.log('this is txHash____________________111', txHashInfo)
+    setTxHashInfo(txHashInfo)
     setConfirmModalVisible(true);
     setBuyModalVisible(false);
   };
@@ -90,13 +93,13 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
       <div tw="grid grid-cols-3">
         <div tw="border-solid border-r py-3 bg-zinc-100">
           <div tw="text-gray-800 text-center text-xs lg:text-base mb-2">Total tickets</div>
-          <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{raffle.totalTickets.toLocaleString()}</div>
+          <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{raffle.totalTickets}</div>
         </div>
         <div tw="border-solid border-r py-3">
           <div tw="text-gray-800 text-center text-xs lg:text-base mb-2">Ticket price</div>
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-[14px] mr-2"/>
-            <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.ticketPrice)).toLocaleString()}</div>
+            <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.ticketPrice))}</div>
             <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${price.toLocaleString()})</div>
           </div>
         </div>
@@ -104,7 +107,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="text-gray-800 text-center text-xs lg:text-base mb-2">Total price</div>
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-[14px] mr-2"/>
-            <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.totalPrice)).toLocaleString()}</div>
+            <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.totalPrice))}</div>
             <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${price.toLocaleString()})</div>
           </div>
         </div>
@@ -145,8 +148,8 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
               <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
                 Buy tickets
               </button>
-              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
-              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={handleBuyOk} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
+              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
+              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash)=>handleBuyOk(txHash)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
               <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
             </div>  
           </div>
@@ -164,7 +167,7 @@ export const Progress = (props: {label: string, value: number, total: number})=>
         <div tw="text-zinc-400 text-xs lg:text-base">{props.label}</div>
         <div tw="text-gray-400 text-xs lg:text-base">{props.value}/{props.total}</div>
       </div>
-      <ProgressBar completed={props.value} isLabelVisible={false} height="13px" bgColor="linear-gradient(90deg, #68229D 0%, #A042D2 100%)"  />
+      <ProgressBar completed={props.value} isLabelVisible={false} maxCompleted={props.total} height="13px" bgColor="linear-gradient(90deg, #68229D 0%, #A042D2 100%)"  />
     </div>
   )
 }

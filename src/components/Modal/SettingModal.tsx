@@ -60,12 +60,12 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
         <div onClick={goProfileDashboard} tw="flex items-center cursor-pointer">
           <img alt="metamask" src={user.avatar} tw="w-11 h-11 rounded-full border-4 border-white"/>
           <div>
-            <div tw="flex items-center pl-2">
-              <div tw="text-base font-semibold text-gray-100">{user.name}</div>
-              <div tw="text-white text-xs bg-violet-200 py-0.5 px-2 ml-3 rounded-full" style={{height: 'fit-content'}}>LEVEL 8</div>
+            <div tw="flex items-center pl-2" style={{width: "200px"}}>
+              <div tw="text-base font-semibold text-gray-100" style={{textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{user.name}</div>
             </div>
             <div tw="flex items-center pl-2"> 
               <div tw="text-gray-500 text-xs">View profile</div> 
+              <div tw="text-white text-xs bg-violet-200 py-0.5 px-3 ml-2 rounded-full" style={{width: 'fit-content'}}>LEVEL 8</div>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
           <div tw="text-xs text-gray-500 text-right">${ethValue.toLocaleString()}</div>
         </div>
       </div>
-      <div tw="flex justify-between items-center mt-6">
+      {/* <div tw="flex justify-between items-center mt-6">
         <div tw="flex items-center">
           <img alt="ethIcon" src={ethPinkIcon} tw="w-6 rounded-full border-4 border-white"/>
           <div tw="ml-3">
@@ -115,11 +115,11 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
         <button tw="bg-white text-violet-200 font-semibold text-[13px] py-1 px-3 rounded border border-solid border-violet-200">
           Convert
         </button> 
-      </div>
-      <div tw="mt-10">
-        <button onClick={showModal} tw="text-white w-full bg-[#9C40CF] text-[13px] font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+      </div> */}
+      <div tw="mt-4">
+        {/* <button onClick={showModal} tw="text-white w-full bg-[#9C40CF] text-[13px] font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
           Add funds
-        </button>
+        </button> */}
         <button onClick={onDisconnet} tw="w-full bg-white text-violet-200 font-semibold text-[13px] py-2 px-5 rounded border border-solid border-violet-200 mt-3">
           Disconnect
         </button> 

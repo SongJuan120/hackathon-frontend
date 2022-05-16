@@ -70,9 +70,10 @@ const Header = ({ menuOpened, onToggleMenu,}: {
 
   return (
     <>
-      <header tw="px-[5%] w-full sticky top-0 bg-[#FBF8FB] z-30">
+     
+      <header tw="w-full sticky top-0 bg-[#FBF8FB] z-30">
         <LoadingBar />
-        <div tw="w-full h-[110px] flex justify-between items-center">
+        <div tw="px-[5%] w-full h-[110px] flex justify-between items-center">
           <div tw="flex items-center cursor-pointer">
             <img alt="logo" onClick={goBanner} src={imgLogo} tw="w-[114px]"/>
             <img alt="logo" src={imgBeta} tw="w-[33px] h-[14px] ml-1"/>
