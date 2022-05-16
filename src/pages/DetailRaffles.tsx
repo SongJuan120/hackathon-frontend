@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-
+import { useEagerConnect, useWeb3Listener } from '../hooks';
 import DetailImage from '../components/DetailImage';
 import NftInfo from '../components/NftInfo';
 import RaffleInfo from '../components/RaffleInfo';
@@ -28,6 +28,10 @@ interface Params {
 
 const DetailRaffles = () => {
   const dispatch = useDispatch();
+  
+  useEagerConnect();
+  useWeb3Listener();
+  
   const params: Params = useParams();
 
   useEffect(() => {
@@ -45,8 +49,8 @@ const DetailRaffles = () => {
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl pt-4 px-3 pb-32">
-        <div tw="lg:grid grid-cols-5 gap-8">
-          <div tw="col-start-3 col-end-6 text-gray-300">
+        <div tw="grid-cols-5 lg:grid gap-8">
+          <div tw="col-start-3 col-end-7 text-gray-300">
             <NftInfo nft={nft}></NftInfo>
           </div>
           <div tw="col-start-1 col-span-2 text-gray-300 mt-4 lg:mt-[-90px] px-2 lg:px-0">

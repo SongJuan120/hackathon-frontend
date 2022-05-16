@@ -7,15 +7,9 @@ import dot from '../../assets/images/icon/dot.png';
 const BuyPolicyModal = (props: {isPolicyModalVisible: boolean, handlePolicyOk: ()=>void, handlePolicyCancel: ()=>void }) =>{
 
   const [policyCheck, setPolicyCheck] = useState<Boolean>(false);
-  const raffleNumber = '2 raffle tickets';
-  const name = 'Azuki #1162';
 
   const onChange = (e: any) => {
     setPolicyCheck(e.target.checked);
-  }
-
-  const onContinue = () => {
-    
   }
 
   return(

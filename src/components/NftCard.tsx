@@ -81,7 +81,7 @@ export const Progress = (props: {label: string, value: number, total:number})=>{
         <div tw="text-zinc-400 text-xs">{props.label}</div>
         <div tw="text-gray-400 text-xs">{props.value}/{props.total}</div>
       </div>
-      <ProgressBar completed={props.value} isLabelVisible={false} height="4px"/>
+      <ProgressBar completed={props.value} maxCompleted={props.total} isLabelVisible={false} height="4px"/>
     </div>
   )
 }

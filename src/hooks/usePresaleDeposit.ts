@@ -3,55 +3,49 @@ import { useCallback, useContext, useState } from 'react';
 
 import RaffleMarketPlaceABI from '../constants/ABI/RaffleMarketPlace.json';
 import { Asset, RAFFLEMARKETPLACE_ADDRESS } from '../constants/contracts';
-import { UserContext } from '../contexts/UserContext';
-import { numberToFloat } from '../utils';
+import { GSellTicket } from '../types';
 import { useContract } from './useContract';
 import { useIsMounted } from './useIsMounted';
-import { usePresaleInfo } from './usePresaleInfo';
+import { showNotification } from '../utils/helpers';
 
 export const usePresaleDeposit = () => {
   const presaleContract = useContract(RAFFLEMARKETPLACE_ADDRESS, RaffleMarketPlaceABI, true);
   const [isDepositing, setIsDepositing] = useState(false);
+  const [isDeposited, setIsDeposited] = useState(false);
   const isMounted = useIsMounted();
-  const { setCurrencyAmount, setIsTransactionModalOpened } = useContext(UserContext);
-  const presaleInfo = usePresaleInfo();
 
   const deposit = useCallback(
-    (amount: number, asset: Asset) => {
-      if (presaleContract && presaleInfo.buyRate) {
-        let coinAmount = asset === 'ETH' ? amount : amount / presaleInfo.buyRate;
-        let tokenAmount = coinAmount * presaleInfo.buyRate;
+    (info: GSellTicket) => {
+      if (presaleContract) {
         setIsDepositing(true);
 
-        const coinBalance = parseEther(numberToFloat(coinAmount));
-        const tokenBalance = parseEther(numberToFloat(tokenAmount));
-
         presaleContract
-          .buyToken(tokenBalance, 0, { value: coinBalance })
+          .registerRaffle(info.nftAddress, info.tokenId, info.ticketType, parseEther(info.ticketPrice.toString()), info.duration, { value: parseEther("0.01") })
           .then((txPreHash: any) => txPreHash.wait())
           .then(async (txHash: any) => {
             if (isMounted.current) {
-              // triggerToast('SUCCESS');
-              setIsTransactionModalOpened(true);
-              setCurrencyAmount('');
-            }
+              setIsDeposited(true)
+              setIsDepositing(false);
+            }        
           })
           .catch((err: any) => {
             console.error(err);
-            // triggerToast('ERROR');
+            showNotification('Confirm Error', 'error');
           })
           .then(() => {
             if (isMounted.current) {
               setIsDepositing(false);
+              setIsDeposited(false);
             }
           });
       }
     },
-    [presaleInfo, presaleContract, isMounted, setIsTransactionModalOpened, setCurrencyAmount]
+    [presaleContract, isMounted]
   );
 
   return {
     deposit,
     isDepositing,
+    isDeposited
   };
 };

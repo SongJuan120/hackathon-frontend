@@ -1,7 +1,7 @@
 export * from './useContract';
 export * from './useEagerConnect';
 export * from './useERC721Approve';
-// export * from './useERC20Balance';
+export * from './useBuy';
 export * from './useIsMounted';
 export * from './useNetworkConnector';
 export * from './usePresaleDeposit';

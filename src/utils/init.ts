@@ -40,6 +40,17 @@ export const ASSET = {
     created: "",
     updated: "",
     __v: 0
+    },
+    creatorAddress: "",
+    creator: {
+    _id: "",
+    name: "",
+    avatar: "",
+    bio: "",
+    account: "",
+    created: "",
+    updated: "",
+    __v: 0
     }
 };
 
