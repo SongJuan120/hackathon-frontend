@@ -1,3 +1,4 @@
+import { GOwnedNft } from ".";
 export interface GRaffles {
     raffleId: number,
     raffleAddress: string,
@@ -23,6 +24,8 @@ export interface GSoldHistoryInfo {
     blockNumber: number,
     txHash: string,
     raffleId: string,
+    to?: string,
+    from?: string,
     buyer: string,
     tickets: string,
     timestamp: number,
@@ -39,3 +42,8 @@ export interface GBuyer {
     __v: number
 }
 
+export interface GRaffleSoldHistory {
+    nft: GOwnedNft,
+    history: GSoldHistoryInfo,
+    to: GBuyer | null
+} 

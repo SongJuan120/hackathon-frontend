@@ -68,7 +68,6 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   };
 
   const handleBuyOk = (txHashInfo: any):void => {
-    console.log('this is txHash____________________111', txHashInfo)
     setTxHashInfo(txHashInfo)
     setConfirmModalVisible(true);
     setBuyModalVisible(false);

@@ -207,3 +207,12 @@ export function getDurationDate(duration: number){
   const dateFrom = moment().add(duration,'d').format('LLL');
   return dateTo + " - " + dateFrom;
 }
+
+export function historyDate(soldDate: number){
+  const currentDate = Number(moment().format("X"));
+  const diff = currentDate - soldDate;
+
+  let days = Math.floor(diff/3600/24);
+
+  return `${days} days ago`;
+}

@@ -9,6 +9,9 @@ import { Divider, Select, Input } from 'antd';
 
 import ethIcon from '../../assets/images/icon/eth-small.png';
 import ethPinkIcon from '../../assets/images/icon/eth-pink.png'
+import imgMetaMask from '../../assets/images/icon/metamask.png';
+import imgCoinBase from '../../assets/images/icon/coinbase.png';
+import imgWallet from '../../assets/images/icon/walletconnet.png';
 
 const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   
@@ -57,7 +60,7 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
   return(
     <Modal tw="top-5 mr-5" visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={376}>
       <div tw="flex justify-between items-center mt-6">
-        <div onClick={goProfileDashboard} tw="flex items-center cursor-pointer">
+        <div tw="flex items-center cursor-pointer">
           <img alt="metamask" src={user.avatar} tw="w-11 h-11 rounded-full border-4 border-white"/>
           <div>
             <div tw="flex items-center pl-2" style={{width: "200px"}}>
@@ -69,27 +72,40 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
             </div>
           </div>
         </div>
-        <div tw="flex justify-center items-center">
-          <button onClick={goProfileEdit} tw="bg-white text-violet-200 font-semibold text-[13px] mx-1 py-1 px-4 rounded border border-solid border-violet-200">
-            Edit
-          </button>
-        </div>
       </div>
-      <div tw="flex justify-between mt-7">
+      <div tw="grid grid-cols-2 gap-2 mt-5 mb-5">
+        <button onClick={goProfileDashboard} tw="text-white w-full bg-[#9C40CF] text-[13px] font-semibold px-12 py-1 rounded border border-transparent hover:border-white">
+          Profile
+        </button> 
+        <button onClick={goProfileEdit} tw="bg-white text-violet-200 font-semibold text-[13px] py-1 px-4 rounded border border-solid border-violet-200">
+          Edit
+        </button>
+      </div>
+      <hr></hr>
+      <div tw="flex justify-between mt-5">
         <div tw="text-sm font-semibold text-[#1D1D1D]">
-          Connected
+          Change Wallet
         </div>
-        <div tw="text-sm font-semibold text-gray-500">
+        {/* <div tw="text-sm font-semibold text-gray-500">
           Manage wallets
-        </div>
+        </div> */}
       </div>
-      <Select defaultValue="lucy" tw="w-full mt-2 rounded-lg" onChange={handleChange}>
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="disabled" disabled>
-          Disabled
+      <Select defaultValue="lucymetamask" className="walletSelect" tw="w-full mt-2 rounded-lg h-[74px]" onChange={handleChange}>
+        <Option value="metamask">
+          <div  tw="h-[74px]">
+            <img alt="metamask" src={imgMetaMask} tw="w-[32px]"/>
+          </div>
         </Option>
-        <Option value="Yiminghe">yiminghe</Option>
+        <Option value="coinbase">
+          <>
+            <img alt="coinbase" src={imgCoinBase} tw="w-[32px]"/>
+          </>
+        </Option>
+        <Option value="walletconnet">
+          <>
+            <img alt="walletconnet" src={imgWallet} tw="w-[32px]"/>
+          </>
+        </Option>
       </Select>
       <div tw="flex justify-between items-center mt-8">
         <div tw="flex items-center">

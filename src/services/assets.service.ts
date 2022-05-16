@@ -1,6 +1,7 @@
 import { http } from './api'
 import {
   GNftData,
+  GOwnedNft
 } from '../types'
 
 class AssetsService {
@@ -11,7 +12,7 @@ class AssetsService {
   }
 
   async getAssetById (address: string, id: number) {
-    const res = await http.get<GNftData>(`/nfts/getAsset/${address}/${id}`)
+    const res = await http.get<GOwnedNft>(`/nfts/getAsset/${address}/${id}`)
     return res.data;
   }
 }

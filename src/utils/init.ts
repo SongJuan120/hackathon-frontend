@@ -15,8 +15,8 @@ export const ASSET = {
     },
     },
     balance: "",
-    title: "",
     description: "",
+    title: "",
     tokenUri: {
     raw: "",
     gateway: ""

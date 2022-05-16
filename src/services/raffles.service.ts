@@ -1,7 +1,8 @@
 import { http } from './api'
 import {
   GRaffles,
-  GSoldHistory
+  GSoldHistory,
+  GRaffleSoldHistory,
 } from '../types'
 
 class RafflesService {
@@ -19,6 +20,15 @@ class RafflesService {
   async getSoldHistory (id: number) {
     const res = await http.get<GSoldHistory[]>(`/raffles/getSoldHistory/${id}`)
     console.log('this is getSoldHistory', res);
+    return res.data;
+  }
+  async getRaffleListed (address: string) {
+    const res = await http.get<GRaffles[]>(`/raffles/getListedByOwner/${address}`)
+    return res.data;
+  }
+
+  async getRaffleSold (address: string) {
+    const res = await http.get<GRaffleSoldHistory[]>(`/raffles/getSoldFromOwner/${address}`)
     return res.data;
   }
 }

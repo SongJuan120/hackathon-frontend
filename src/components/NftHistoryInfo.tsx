@@ -10,6 +10,7 @@ const NftHistoryInfo = (props: {raffle: GRaffles}) => {
  
   const raffle: GRaffles = props.raffle;
   const [raffleHistory, setRaffleHistory] = useState<GSoldHistory[]>([]);
+  
   useEffect(() => {
     getNftInfo();
   }, [raffle]);
