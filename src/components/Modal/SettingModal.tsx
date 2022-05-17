@@ -8,35 +8,24 @@ import { selectUser } from "../../store/auth/auth.selectors";
 import { Divider, Select, Input } from 'antd';
 
 import ethIcon from '../../assets/images/icon/eth-small.png';
-import ethPinkIcon from '../../assets/images/icon/eth-pink.png'
 import imgMetaMask from '../../assets/images/icon/metamask.png';
 import imgCoinBase from '../../assets/images/icon/coinbase.png';
 import imgWallet from '../../assets/images/icon/walletconnet.png';
+import checkPink from '../../assets/images/icon/check-pink.svg';
+
 
 const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   
   const { Option } = Select;
 
-  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [selectWallet, setSelectWallet] = useState<string>("metamask");
+  
 
   const user = useSelector(selectUser);
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setSelectWallet(value)
   }
-
-  const showModal = () => {
-    setIsConfirmModalVisible(true);
-    // props.handleCancel(); 
-  };  
-
-  const handleOk = () => {
-    setIsConfirmModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsConfirmModalVisible(false);
-  };
 
   const goProfileDashboard = () => {
     window.location.href = '/profile/dashboard';
@@ -90,21 +79,42 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
           Manage wallets
         </div> */}
       </div>
-      <Select defaultValue="lucymetamask" className="walletSelect" tw="w-full mt-2 rounded-lg h-[74px]" onChange={handleChange}>
+      <Select defaultValue="metamask" className="walletSelect" tw="w-full mt-2 rounded-lg h-[74px]" onChange={handleChange}>
         <Option value="metamask">
-          <div  tw="h-[74px]">
-            <img alt="metamask" src={imgMetaMask} tw="w-[32px]"/>
+          <div tw="h-[74px] flex justify-between">
+            <div tw="flex items-center">
+              <img alt="metamask" src={imgMetaMask} tw="w-[32px]"/>
+              <div tw="ml-5">
+                <div tw="text-sm font-semibold text-gray-100">0x25F5c3...94AF</div>
+                <div tw="text-xs font-medium text-gray-500">Ethereum - $1,069.08</div>
+              </div>
+            </div>
+            {selectWallet == "metamask" && (<img alt="metamask" src={checkPink} tw="w-[32px]"/>)}
           </div>
         </Option>
         <Option value="coinbase">
-          <>
-            <img alt="coinbase" src={imgCoinBase} tw="w-[32px]"/>
-          </>
+          <div tw="h-[74px] flex justify-between">
+            <div tw="flex items-center">
+              <img alt="coinbase" src={imgWallet} tw="w-[32px]"/>
+              <div tw="ml-5">
+                <div tw="text-sm font-semibold text-gray-100">0x25F5c3...94AF</div>
+                <div tw="text-xs font-medium text-gray-500">Ethereum - $1,069.08</div>
+              </div>
+            </div>
+            {selectWallet == "coinbase" && (<img alt="coinbase" src={checkPink} tw="w-[32px]"/>)}
+          </div>
         </Option>
         <Option value="walletconnet">
-          <>
-            <img alt="walletconnet" src={imgWallet} tw="w-[32px]"/>
-          </>
+          <div tw="h-[74px] flex justify-between">
+            <div tw="flex items-center">
+              <img alt="walletconnet" src={imgCoinBase} tw="w-[32px]"/>
+              <div tw="ml-5">
+                <div tw="text-sm font-semibold text-gray-100">0x25F5c3...94AF</div>
+                <div tw="text-xs font-medium text-gray-500">Ethereum - $1,069.08</div>
+              </div>
+            </div>
+            {selectWallet == "walletconnet" && (<img alt="walletconnet" src={checkPink} tw="w-[32px]"/>)}
+          </div>
         </Option>
       </Select>
       <div tw="flex justify-between items-center mt-8">
