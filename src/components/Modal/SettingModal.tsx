@@ -1,9 +1,9 @@
 import tw from 'twin.macro';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Modal, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification } from '../../utils/helpers';
+import { showNotification, getRafflePrice, addressFormat, getPrice } from '../../utils/helpers';
 import { selectUser } from "../../store/auth/auth.selectors";
 import { Divider, Select, Input } from 'antd';
 
@@ -12,16 +12,27 @@ import imgMetaMask from '../../assets/images/icon/metamask.png';
 import imgCoinBase from '../../assets/images/icon/coinbase.png';
 import imgWallet from '../../assets/images/icon/walletconnet.png';
 import checkPink from '../../assets/images/icon/check-pink.svg';
-
+import { useNetworkConnector } from '../../hooks/useNetworkConnector';
+import { getNetworkLibrary } from '../../utils';
+import BigNumber from 'bignumber.js';
+import { getEthPrice } from '../../store/ethPrice/ethPrice.actions';
+import { selectEthPrice } from '../../store/ethPrice/ethPrice.selectors';
 
 const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
-  
+  const dispatch = useDispatch();
   const { Option } = Select;
 
   const [selectWallet, setSelectWallet] = useState<string>("metamask");
-  
-
+  const [balance, setBalance] = useState(0);
+  const network = useNetworkConnector();
+  const networkLibrary = getNetworkLibrary(network);
   const user = useSelector(selectUser);
+  const price = useSelector(selectEthPrice);
+ console.log('this is   const price = useSelector(selectEthPrice);', price, balance)
+  useEffect(() => {
+    networkLibrary.getBalance(user.account).then(res => setBalance(new BigNumber(res.toString()).shiftedBy(-18).toNumber()));
+    dispatch(getEthPrice());
+  }, [user])
 
   const handleChange = (value: string) => {
     setSelectWallet(value)
@@ -34,7 +45,7 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
   const goProfileEdit = () => {
     window.location.href = '/profile/edit';
   }
-
+  
   const onDisconnet = async() => {
     showNotification('Wallet Disconnected.');
     localStorage.clear();
@@ -85,8 +96,8 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
             <div tw="flex items-center">
               <img alt="metamask" src={imgMetaMask} tw="w-[32px]"/>
               <div tw="ml-5">
-                <div tw="text-sm font-semibold text-gray-100">0x25F5c3...94AF</div>
-                <div tw="text-xs font-medium text-gray-500">Ethereum - $1,069.08</div>
+                <a tw="text-sm font-semibold text-gray-100" target="_blank" href={`https://rinkeby.etherscan.io/address/${user.account}`}>{addressFormat(user.account)}</a>  
+                <div tw="text-xs font-medium text-gray-500">Ethereum - ($ {(balance*price).toFixed(2)})</div>
               </div>
             </div>
             {selectWallet == "metamask" && (<img alt="metamask" src={checkPink} tw="w-[32px]"/>)}
@@ -126,8 +137,8 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
           </div>
         </div> 
         <div tw="ml-3">
-          <div tw="text-sm text-gray-300 font-semibold text-right">0.3748</div>
-          <div tw="text-xs text-gray-500 text-right">${ethValue.toLocaleString()}</div>
+          <div tw="text-sm text-gray-300 font-semibold text-right">{balance.toFixed(5)}</div>
+          <div tw="text-xs text-gray-500 text-right">$ {(balance*price).toFixed(2)}</div>
         </div>
       </div>
       {/* <div tw="flex justify-between items-center mt-6">

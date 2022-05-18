@@ -16,6 +16,7 @@ import eth from '../assets/images/icon/eth-icon.svg';
 const NftCard = (props: {raffle: GRaffles}) => {
   const raffle: GRaffles = props.raffle;
   const [nftInfo, setNftInfo] = useState<any>();
+  const [apiCount, setApiCount] = useState(0);
   
   useEffect(() => {
     getNftInfo();
@@ -23,8 +24,17 @@ const NftCard = (props: {raffle: GRaffles}) => {
 
   // const nft = useSelector(selectNftByTokenId);
   const getNftInfo = async() => {
-    const nft = await assetsService.getAssetById(raffle.nftAddress, Number(raffle.tokenId));
-    setNftInfo(nft);
+    try {
+      const nft = await assetsService.getAssetById(raffle.nftAddress, Number(raffle.tokenId));
+      setNftInfo(nft);
+    } catch (e) {
+      if (apiCount < 10) {
+        setApiCount(apiCount + 1);
+        setTimeout(() => {
+          getNftInfo();
+        }, 100);
+      }
+    }
   }
   
   const leftTime = leftDate(Number(raffle.created), Number(raffle.duration));
