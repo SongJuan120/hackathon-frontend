@@ -22,7 +22,7 @@ const SoldCard = (props: {sold: GRaffleSoldHistory[] }) => {
         </div>
       </div>
       <div>
-        {sold? sold.map((item, index)=>{
+        {sold.length !== 0 ? sold.map((item, index)=>{
           return(
             <div key={index} tw="items-center grid grid-cols-7 gap-4 pb-4 pt-2 px-4">
               <div tw="flex items-center col-start-1 col-span-2 text-gray-100 text-sm">

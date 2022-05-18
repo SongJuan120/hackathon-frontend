@@ -8,7 +8,8 @@ import { SpinnerCircularFixed } from 'spinners-react';
 import { useERC721Approve, usePresaleDeposit } from '../../hooks';
 import { GTicket } from '../../types';
 import SellConfirmModal from './SellConfirmModal';
-import { getDurationDate } from '../../utils/helpers'
+import { getDurationDate } from '../../utils/helpers';
+import { selectEthPrice } from '../../store/ethPrice/ethPrice.selectors';
 import checkMarkBlue from '../../assets/images/icon/check-mark-blue.svg';
 import eth from '../../assets/images/icon/eth-icon.svg';
 import arrowDown from '../../assets/images/icon/arrow-down.png';
@@ -49,6 +50,8 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
     }
   }, [isDepositing, isDeposited, props.isModalVisible]);
 
+  const price = useSelector(selectEthPrice);
+
   const handleConfirmOk = () => {
     setIsConfirmModalVisible(false);
   };
@@ -60,9 +63,6 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
   const onDetail = () => {
     setDetail(!isDetail);
   }
-  
-  const price = 10000;
-  const total = 30;
 
   return(
     <>
@@ -92,7 +92,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
                 <img alt="metamask" src={eth} tw="w-4 h-4 mr-1"/>
                 <div tw="text-gray-300 text-center text-[22px] font-semibold">{(props.ticket?.totalPrice).toLocaleString()}</div>
               </div>
-              <div tw="text-gray-800 text-center text-xs">(${price.toLocaleString()})</div>
+              <div tw="text-gray-800 text-center text-xs">(${Number((props.ticket?.totalPrice*price).toFixed(2)).toLocaleString()})</div>
             </div>
             <img onClick={onDetail} alt="metamask" src={isDetail?arrowUp:arrowDown} tw="w-4 ml-3 cursor-pointer"/>
           </div>
@@ -110,9 +110,9 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
                 <div>
                   <div tw="flex items-center justify-end">
                     <img alt="metamask" src={eth} tw="w-3 h-3 mr-1"/>
-                    <div tw="text-gray-300 text-center text-base font-semibold">{(props.ticket?.perPrice).toLocaleString()}</div>
+                    <div tw="text-gray-300 text-center text-base font-semibold">{(props.ticket?.perPrice)}</div>
                   </div>
-                  <div tw="text-gray-800 text-right text-xs">(${price.toLocaleString()})</div>
+                  <div tw="text-gray-800 text-right text-xs">(${Number((props.ticket?.perPrice*price).toFixed(2)).toLocaleString()})</div>
                 </div>
               </div>
               <div tw="flex justify-between">

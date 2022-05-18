@@ -7,6 +7,7 @@ import { authReducer } from "./auth/auth.reducer";
 import { userReducer } from "./user/user.reducer";
 import { assetsReducer } from "./assets/assets.reducer";
 import { rafflesReducer } from "./raffles/raffles.reducer";
+import { ethPriceReducer } from "./ethPrice/ethPrice.reducer";
 
 const rootReducer = combineReducers({
   loadingBar: loadingBarReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   userModule: userReducer,
   assetsModule: assetsReducer,
   rafflesModule: rafflesReducer,
+  ethPriceModule: ethPriceReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

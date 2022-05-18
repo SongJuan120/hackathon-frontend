@@ -9,7 +9,7 @@ import { getAssetById } from '../store/assets/assets.actions';
 import { selectAssetById } from '../store/assets/assets.selectors';
 import { useEagerConnect, useWeb3Listener } from '../hooks';
 import SellRaffleInfo from '../components/SellRaffleInfo';
-import img4 from '../assets/images/sample/sample_avatar2.png';
+import { getEthPrice } from '../store/ethPrice/ethPrice.actions';
 
 const StyledPage = styled.div`
   ${tw`w-full`}
@@ -35,6 +35,7 @@ const SellDetailNft = () => {
   const tokenId = Number(params?.token_id);
   useEffect(() => {
     dispatch(getAssetById(params?.address, tokenId));
+    dispatch(getEthPrice());
   }, [dispatch]);
 
   const asset = useSelector(selectAssetById);

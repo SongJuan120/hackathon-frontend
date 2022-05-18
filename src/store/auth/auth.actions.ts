@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import { notification } from 'antd';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { AUTH_LOGIN, AUTH_LOGOUT, TIMER_INCREASE, AUTH_ME } from '../action-types';
+import { AUTH_LOGIN, AUTH_LOGOUT } from '../action-types';
 import errorHandler from '../error-handler';
 import { authService, userService } from '../../services';
 import { IUser } from '../../types';
@@ -64,19 +64,4 @@ export const updateUser = (address: string, payload: IUser) => async (dispatch: 
   }
 }
 
-export const increaseTime = (dispatch: Dispatch) => {
-
-  dispatch({ type: TIMER_INCREASE })
-};
-
-const loginSuccess = (tokens: {access_token: string, user: IUser}, dispatch: Dispatch) => {
-  setLocalStorageForAUth(tokens.user);
-
-  dispatch({
-      type: AUTH_LOGIN,
-      payload: {
-          user: tokens.user
-      },
-  });
-}
 

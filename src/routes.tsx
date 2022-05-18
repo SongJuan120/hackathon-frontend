@@ -36,6 +36,11 @@ export const routes = {
       exact: true
     },
     {
+      path: "/profile/dashboard/:id",
+      component: SellDashboard,
+      exact: true
+    },
+    {
       path: "/sell/detail/:address/:token_id",
       component: SellDetailNft,
       exact: true

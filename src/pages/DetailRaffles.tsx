@@ -10,6 +10,7 @@ import RaffleInfo from '../components/RaffleInfo';
 import NftHistoryInfo from '../components/NftHistoryInfo';
 import NftDetailInfo from '../components/NftDetailInfo';
 import { getRafflesById } from '../store/raffles/raffles.actions';
+import { getEthPrice } from '../store/ethPrice/ethPrice.actions';
 import { selectRaffleById, selectNftByTokenId } from "../store/raffles/raffles.selectors";
 
 
@@ -36,6 +37,7 @@ const DetailRaffles = () => {
 
   useEffect(() => {
     dispatch(getRafflesById(Number(params?.raffle_id)));
+    dispatch(getEthPrice());
   }, [dispatch]);
 
   const raffle = useSelector(selectRaffleById);

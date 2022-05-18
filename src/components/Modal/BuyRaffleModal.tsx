@@ -9,20 +9,25 @@ import minuseButton from '../../assets/images/icon/minuse_button.svg'
 import plusButton from '../../assets/images/icon/plus_button.svg'
 import eth from '../../assets/images/icon/eth-icon.svg';
 import { selectRaffleById, selectNftByTokenId } from "../../store/raffles/raffles.selectors";
-import { leftDateDetail, getRafflePrice, getEndDate } from '../../utils/helpers';
+import { selectEthPrice } from "../../store/ethPrice/ethPrice.selectors";
+import { getRafflePrice, getPrice } from '../../utils/helpers';
 import { useBuy } from '../../hooks';
+import { getRafflesById } from '../../store/raffles/raffles.actions';
+import { SpinnerCircularFixed } from 'spinners-react';
 
 const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any)=>void, handleBuyCancel: ()=>void }) =>{
-
+  const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const { buy, isBuying, isBuyed, txHashInfo } = useBuy();
 
   const raffle = useSelector(selectRaffleById);
   const nft = useSelector(selectNftByTokenId);
-
+  const price = useSelector(selectEthPrice);
+  
   useEffect(() => {
     if (props.isBuyModalVisible){
       if (isBuyed) {
+        dispatch(getRafflesById(Number(raffle.raffleId)));
         props.handleBuyOk(txHashInfo);
       }
     }
@@ -50,10 +55,9 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
     }
     buy(buyData);
   }
-  const price = 10000;
 
   return(
-    <Modal visible={props.isBuyModalVisible} onCancel={props.handleBuyCancel} footer={null} width={620}>
+    <Modal closable={!isBuying} maskClosable={false} visible={props.isBuyModalVisible} onCancel={props.handleBuyCancel} footer={null} width={620}>
       <div tw="text-gray-300 text-2xl font-semibold text-center">
         Buy raffle tickets
       </div>
@@ -81,8 +85,8 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
           <div tw="text-gray-800 text-center text-base mb-1">Ticket price</div>
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-4 h-4 mr-1"/>
-            <div tw="text-gray-300 text-center text-[22px] font-semibold">{getRafflePrice(Number(raffle.totalPrice))}</div>
-            <div tw="text-gray-800 text-center text-sm ml-2">(${price.toLocaleString()})</div>
+            <div tw="text-gray-300 text-center text-[22px] font-semibold">{getRafflePrice(Number(raffle.ticketPrice))}</div>
+            <div tw="text-gray-800 text-center text-sm ml-2">(${getPrice(Number(raffle.ticketPrice), price)})</div>
           </div>
         </div>
         <div>
@@ -99,14 +103,20 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-4 h-4 mr-1 cursor-pointer"/>
             <div tw="text-gray-300 text-center text-[22px] font-semibold">{getRafflePrice(Number(raffle.ticketPrice) * count)}</div>
-            <div tw="text-gray-800 text-center text-sm ml-2">(${price.toLocaleString()})</div>
+            <div tw="text-gray-800 text-center text-sm ml-2">(${getPrice(Number(raffle.ticketPrice) * count, price)})</div>
           </div>
         </div>
       </div>
       <div tw="flex justify-center mt-10">
-        <button onClick={onBuyOk} tw="text-white bg-[#9C40CF] text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
-          Buy tickets
-        </button>
+        {!isBuying?(
+          <button onClick={onBuyOk} tw="text-white bg-[#9C40CF] text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+            Buy tickets
+          </button>
+        ):(
+          <button disabled={isBuying} tw="flex items-center text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-6 py-2 rounded border border-[#C1A3C1] hover:border-white">
+            <SpinnerCircularFixed size={25} thickness={100} color="#9C40CF" tw="mr-2"/> Buy tickets
+          </button>
+        )}
       </div>  
     </Modal>
   )

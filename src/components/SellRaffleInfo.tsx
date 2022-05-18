@@ -2,15 +2,17 @@ import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { Divider, Select, Input } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import { useERC721Approve } from '../hooks';
-import { GTicket } from '../types'
+import { GTicket } from '../types';
+import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
 import ethSmall from '../assets/images/icon/eth-small.png';
 import tooltip from '../assets/images/icon/tooltip.png';
 import SellRaffleComponentModal from './Modal/SellRaffleComponentModal'
 import raffle from '../assets/images/icon/raffle.png';
 import dollar from '../assets/images/icon/dollar.png';
 import hummer from '../assets/images/icon/hummer.png';
-
+import { getPrice } from '../utils/helpers';
 
 const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const { Option } = Select;
@@ -30,6 +32,8 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
     perPrice: 0,
     duration: 0,
   });
+
+  const price = useSelector(selectEthPrice);
 
   const onTicketSell = () => {
     setTicket({
@@ -108,7 +112,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
 
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Price</div>
-        <div tw="text-xs text-gray-900">$90,100 total</div>
+        <div tw="text-xs text-gray-900">${Number((amount*price).toFixed(2)).toLocaleString()} total</div>
       </div>
 
       <div tw="flex justify-between items-center">

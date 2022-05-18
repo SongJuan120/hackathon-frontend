@@ -11,6 +11,7 @@ import { selectUser } from "../store/auth/auth.selectors";
 import { selectAssets } from "../store/assets/assets.selectors";
 import { getAllAssets } from '../store/assets/assets.actions';
 import { GRaffles, GRaffleSoldHistory } from '../types'
+import { useParams } from 'react-router';
 
 const StyledPage = styled.div`
   ${tw`w-full`}
@@ -18,13 +19,18 @@ const StyledPage = styled.div`
   background: linear-gradient(180deg, #FBF8FB 100px, #FFFFFF 100px) !important;
 `;
 const { TabPane } = Tabs;
+interface Params {
+  id: string
+}
 
 const SellDashboard = () => {
   const [raffleList, setRaffleList]  = useState<GRaffles[]>([]);
   const [raffleSold, setRaffleSold]  = useState<GRaffleSoldHistory[]>([]);
-
+ 
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const params: Params = useParams();
+  
   useEffect(() => {
     dispatch(getAllAssets(user.account));
     getRaffleList();
@@ -49,7 +55,7 @@ const SellDashboard = () => {
         <div tw="pt-14">
           <Tabs type="line">
             <TabPane tab={`Collected  ${assets?.totalCount}`} key="1">
-              {assets.ownedNfts? (
+              {assets.totalCount !== 0? (
                 <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                   { assets?.ownedNfts.map((item, id)=>{
                     return(<div key={id}>{(item.tokenUri.raw!=="" && item.tokenUri.raw) && <SellNftCard nft={item}></SellNftCard>}</div>)
@@ -61,9 +67,9 @@ const SellDashboard = () => {
                 </div>
               )}
             </TabPane>
-            <TabPane tab={`Listed  ${raffleList?.length}`}  key="2">
+            <TabPane tab={`Listed  ${raffleList?.length}`} key={params.id}>
               <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                {raffleList? raffleList.map((item, id)=>{
+                {raffleList?.length !== 0? raffleList.map((item, id)=>{
                   return(<div key={id} tw="text-gray-300"><NftCard raffle={item}></NftCard></div>)
                 }):(
                   <div tw="flex justify-center mt-20 text-[#818181] text-4xl font-semibold">
@@ -72,7 +78,7 @@ const SellDashboard = () => {
                 )}
               </div>
             </TabPane>
-            <TabPane tab={`Sold  ${raffleSold?.length}`}  key="3">
+            <TabPane tab={`Sold  ${raffleSold?.length}`} key="3">
               <div>
                 <SoldCard sold={raffleSold}></SoldCard>
               </div>

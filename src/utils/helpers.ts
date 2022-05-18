@@ -6,6 +6,8 @@ import { message, notification } from 'antd';
 import { NotificationPlacement } from 'antd/lib/notification';
 import Web3 from 'web3';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
 
 const DEFAULT_NUM_DECIMALS = 18;
 const DEFAULT_DESIRED_DECIMALS = 2;
@@ -189,6 +191,21 @@ export function leftDateDetail(createdDate: number, duration: number){
 
 export function getRafflePrice(price: number){
   return new BigNumber(price).shiftedBy(-18).toNumber();
+}
+
+// export function getPrice(price: number, rate: number){
+//   const eth = new BigNumber(price).shiftedBy(-18).toNumber();
+//   return eth*rate
+// }
+
+export function getPrice(
+  price: number,
+  rate: number,
+  numDecimals = DEFAULT_NUM_DECIMALS,
+  formatDecimals = DEFAULT_DESIRED_DECIMALS
+): any {
+  let number = new BigNumber(price * rate).shiftedBy(-1 * numDecimals).toFixed(formatDecimals, 1);
+  return Number(number).toLocaleString()
 }
 
 export function getEndDate(createdDate: number, duration: number){

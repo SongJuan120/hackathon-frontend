@@ -7,7 +7,7 @@ import { selectAssetById } from '../../store/assets/assets.selectors';
 const SellConfirmModal = (props: {isConfirmModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   const asset = useSelector(selectAssetById);
   const goRaffleList = () => {
-    window.location.href = '/buy/raffles';
+    window.location.href = '/profile/dashboard/2';
   }
 
   return(

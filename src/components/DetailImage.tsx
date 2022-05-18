@@ -21,7 +21,7 @@ const DetailImage = (props:{status: DetailStatusMODEL, image: string | undefined
       (<img alt="metamask" src={props?.image} tw="w-full rounded-2xl h-auto shadow-xl"/>)
       :(<div tw="w-full rounded-2xl h-[432px] bg-zinc-300 animate-pulse"></div>)
       }
-      <div tw="pt-4">
+      {/* <div tw="pt-4">
         <div tw="flex justify-between">
           <div tw="flex">
             <div tw="flex items-center">
@@ -36,7 +36,7 @@ const DetailImage = (props:{status: DetailStatusMODEL, image: string | undefined
             <img alt="metamask" src={goBack} tw="w-4 h-4"/>
           </div>  
         </div>
-      </div>            
+      </div>             */}
     </div>
   );
 };

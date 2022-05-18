@@ -2,7 +2,7 @@ import { Action, Reducer } from 'redux';
 import { handleActions } from 'redux-actions';
 
 import { IUser } from '../../types';
-import { AUTH_LOGIN, AUTH_LOGOUT, TIMER_INCREASE, AUTH_ME, USER_UPDATE } from '../action-types';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ME, USER_UPDATE } from '../action-types';
 export interface AuthState {
   user: IUser,
   loggedIn: boolean,
@@ -16,9 +16,6 @@ interface AuthAction extends Action {
     elapsedTime: number
   }
 }
-
-const role = localStorage.getItem('role');
-const status = localStorage.getItem('status');
 
 const initialState: AuthState = {
   user: {
@@ -58,10 +55,7 @@ export const authReducer: Reducer<AuthState, AuthAction> = handleActions(
       loggedIn: false,
       elapsedTime: 0,
     }),
-    [TIMER_INCREASE]: (state: AuthState) => ({
-      ...state,
-      elapsedTime: state.elapsedTime + 1,
-    }),
+   
     [AUTH_ME]: (state: AuthState, { payload: { user }}: AuthAction) => ({
       ...state
     }),

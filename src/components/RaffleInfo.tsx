@@ -2,16 +2,16 @@ import tw from 'twin.macro';
 import { useState, useEffect, useCallback } from 'react';
 import { Modal, Button } from 'antd';
 import ProgressBar from '@ramonak/react-progress-bar';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { GRaffles } from '../types';
-import { leftDateDetail, getRafflePrice, getEndDate } from '../utils/helpers';
+import { getRafflePrice, getEndDate, getPrice } from '../utils/helpers';
+import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
 import BuyPolicyModal from './Modal/BuyPolicyModal'
 import BuyRaffleModal from './Modal/BuyRaffleModal';
 import BuyConfirmModal from './Modal/BuyConfirmModal';
 import showMark from '../assets/images/icon/show-mark.svg';
 import eth from '../assets/images/icon/eth-icon.svg';
 import moment from 'moment';
-
 
 const RaffleInfo = (props: {raffle: GRaffles}) => {
   const raffle: GRaffles = props.raffle;
@@ -46,6 +46,8 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     })
   },[raffle])
 
+  const price = useSelector(selectEthPrice);
+
   useEffect(() => {
     leftDateDetail();
     const timer = setInterval(() => leftDateDetail(), 1000);
@@ -53,6 +55,8 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
       clearInterval(timer);
     };
   }, [leftDateDetail]);
+
+
 
   const onBuyTicket = () => {
     setPolicyModalVisible(true);
@@ -85,7 +89,6 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     setConfirmModalVisible(false);
   };
 
-  const price = 10000;
   const total = 100;
   return (
     <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
@@ -99,7 +102,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-[14px] mr-2"/>
             <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.ticketPrice))}</div>
-            <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${price.toLocaleString()})</div>
+            <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${getPrice(Number(raffle.ticketPrice), price)})</div>
           </div>
         </div>
         <div tw="py-3">
@@ -107,7 +110,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="flex justify-center items-baseline">
             <img alt="metamask" src={eth} tw="w-[14px] mr-2"/>
             <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{getRafflePrice(Number(raffle.totalPrice))}</div>
-            <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${price.toLocaleString()})</div>
+            <div tw="text-gray-800 text-center text-sm ml-2 hidden lg:block">(${getPrice(Number(raffle.totalPrice), price)})</div>
           </div>
         </div>
       </div>
