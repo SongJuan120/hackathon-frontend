@@ -49,13 +49,13 @@ const NftCard = (props: {raffle: GRaffles}) => {
         <img
           alt="metamask"
           src={nftInfo?.metadata?.image}
-          tw="w-full h-52 rounded-t-lg"
+          tw="w-full h-[207px] rounded-t-lg"
         />
       ):(
         <div tw="w-full h-52 rounded-t-lg bg-zinc-300 animate-pulse"></div>  
       )}
-      <div tw="p-2">
-        <div tw="grid grid-cols-3 gap-2 mb-4">
+      <div tw="px-3 py-4">
+        <div tw="grid grid-cols-3 gap-2 mb-6">
             <div>
               <div tw="text-zinc-400 text-xs text-center">Time left</div>
               <div tw="text-gray-400 text-sm text-center font-semibold">{leftTime}</div>
@@ -88,8 +88,8 @@ export const Progress = (props: {label: string, value: number, total:number})=>{
   return(
     <div>
       <div tw="flex justify-between mb-1">
-        <div tw="text-zinc-400 text-xs">{props.label}</div>
-        <div tw="text-gray-400 text-xs">{props.value}/{props.total}</div>
+        <div tw="text-zinc-400 text-xs font-medium">{props.label}</div>
+        <div tw="text-gray-400 text-xs font-medium">{props.value}/{props.total}</div>
       </div>
       <ProgressBar completed={props.value} maxCompleted={props.total} isLabelVisible={false} height="4px"/>
     </div>

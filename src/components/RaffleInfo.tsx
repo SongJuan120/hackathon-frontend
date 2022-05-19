@@ -99,7 +99,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   return (
     <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
       <div tw="grid grid-cols-3">
-        <div tw="border-solid border-r py-3 bg-zinc-100">
+        <div tw="border-solid border-r py-3 rounded-tl-lg bg-zinc-100" >
           <div tw="text-gray-800 text-center text-xs lg:text-base mb-2">Total tickets</div>
           <div tw="text-gray-300 text-center text-xl lg:text-3xl font-semibold">{raffle.totalTickets}</div>
         </div>

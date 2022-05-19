@@ -19,7 +19,7 @@ const Banner = () => {
         <img alt="logo" src={imgLogo} tw="w-[183px]"/>
         <img alt="logo" src={imgBeta} tw="w-[43px] ml-1"/>
       </div>
-      <div tw='text-6xl text-gray-100 text-center mb-4 font-bold'>
+      <div tw='text-6xl text-gray-100 text-center mb-4 font-semibold'>
         Greater value for NFTS
       </div>
       <div tw='text-lg text-gray-300 text-center  mb-8'>
@@ -28,7 +28,7 @@ const Banner = () => {
       </div>
       <div tw='py-4 flex justify-center items-center gap-4'>
         <button
-          onClick={goWalletConnect} tw='bg-[#9C40CF] text-white text-lg px-8 py-2.5 rounded border border-transparent hover:border-white'
+          onClick={goWalletConnect} tw='bg-[#9C40CF] font-semibold text-white text-lg px-8 py-2.5 rounded border border-transparent hover:border-white'
         >
           Connect wallet 
         </button>
