@@ -48,7 +48,7 @@ const NftHistoryInfo = (props: {raffle: GRaffles}) => {
                   <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{getDateBySecond(item?.history?.timestamp)}</td>
                   <td tw="text-blue-100 text-xs lg:text-sm font-normal text-center">{item.buyer?item?.buyer?.name:addressFormat(item?.history?.buyer)}</td>
                   <td>
-                  <a tw="text-base text-violet-200 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.history?.buyer}`}>
+                  <a tw="text-base text-violet-200 cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/tx/${item?.history?.txHash}`}>
                     <img alt="metamask" src={openDetail} tw="w-4 h-4"/>
                   </a>  
                   </td>

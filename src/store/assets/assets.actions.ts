@@ -10,6 +10,11 @@ export const getAllAssets = (address: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(showLoading());
         const res = await assetsService.getAssets(address);
+        res.ownedNfts.map(item=>{
+            if (item.error || !item.metadata){
+                res.totalCount = res.totalCount-1;
+            }
+        })
         dispatch(hideLoading());
 
         dispatch({

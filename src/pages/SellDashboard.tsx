@@ -29,6 +29,7 @@ const SellDashboard = () => {
  
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const assets = useSelector(selectAssets);
   const params: Params = useParams();
   
   useEffect(() => {
@@ -47,7 +48,7 @@ const SellDashboard = () => {
     setRaffleSold(rafflesSoldRes);
   }
 
-  const assets = useSelector(selectAssets);
+  
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl px-3 pb-32">
@@ -58,7 +59,7 @@ const SellDashboard = () => {
               {assets.totalCount !== 0? (
                 <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                   { assets?.ownedNfts.map((item, id)=>{
-                    return(<div key={id}>{(item.tokenUri.raw!=="" && item.tokenUri.raw) && <SellNftCard nft={item}></SellNftCard>}</div>)
+                    return(<>{!item?.error && item?.metadata && (<div key={id}>{(item.tokenUri.raw!=="" && item.tokenUri.raw) && <SellNftCard nft={item}></SellNftCard>}</div>)}</>)
                   })}
                 </div>
               ):(
@@ -68,7 +69,6 @@ const SellDashboard = () => {
               )}
             </TabPane>
             <TabPane tab={`Listed  ${raffleList?.length}`} key={params.id}>
-              
                 {raffleList?.length !== 0? (
                   <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                     {raffleList.map((item, id)=>{

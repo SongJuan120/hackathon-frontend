@@ -19,6 +19,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [txHash, setTxHashInfo] = useState();
+  const [ticketNumber, setTicketNumber] = useState<number>(0);
   const [presaleDuration, setPresaleDuration] = useState<{
     days: number;
     hours: number;
@@ -56,8 +57,6 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     };
   }, [leftDateDetail]);
 
-
-
   const onBuyTicket = () => {
     setPolicyModalVisible(true);
   };
@@ -71,8 +70,9 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     setPolicyModalVisible(false);
   };
 
-  const handleBuyOk = (txHashInfo: any):void => {
-    setTxHashInfo(txHashInfo)
+  const handleBuyOk = (txHashInfo: any, count: number):void => {
+    setTxHashInfo(txHashInfo);
+    setTicketNumber(count);
     setConfirmModalVisible(true);
     setBuyModalVisible(false);
   };
@@ -88,8 +88,14 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const handleConfirmCancel = () => {
     setConfirmModalVisible(false);
   };
+ 
+  const onBuyFlag = (): boolean => {
+    if (raffle.soldTickets === raffle.totalTickets) {
+      return false;
+    }
+    return true;
+  }
 
-  const total = 100;
   return (
     <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
       <div tw="grid grid-cols-3">
@@ -147,11 +153,18 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
               </div>
             </div>
             <div>
+            {onBuyFlag()?(
               <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
                 Buy tickets
               </button>
-              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
-              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash)=>handleBuyOk(txHash)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
+            ):(
+              <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
+                Buy tickets
+              </button>
+            )}
+              
+              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
+              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber)=>handleBuyOk(txHash, ticketNumber)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
               <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
             </div>  
           </div>

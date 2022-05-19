@@ -28,7 +28,6 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
   const networkLibrary = getNetworkLibrary(network);
   const user = useSelector(selectUser);
   const price = useSelector(selectEthPrice);
- console.log('this is   const price = useSelector(selectEthPrice);', price, balance)
   useEffect(() => {
     networkLibrary.getBalance(user.account).then(res => setBalance(new BigNumber(res.toString()).shiftedBy(-18).toNumber()));
     dispatch(getEthPrice());

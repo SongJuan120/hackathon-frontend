@@ -15,9 +15,9 @@ import { useBuy } from '../../hooks';
 import { getRafflesById } from '../../store/raffles/raffles.actions';
 import { SpinnerCircularFixed } from 'spinners-react';
 
-const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any)=>void, handleBuyCancel: ()=>void }) =>{
+const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any, count: number)=>void, handleBuyCancel: ()=>void }) =>{
   const dispatch = useDispatch();
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState<number>(1);
   const { buy, isBuying, isBuyed, txHashInfo } = useBuy();
 
   const raffle = useSelector(selectRaffleById);
@@ -28,14 +28,15 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
     if (props.isBuyModalVisible){
       if (isBuyed) {
         dispatch(getRafflesById(Number(raffle.raffleId)));
-        props.handleBuyOk(txHashInfo);
+        setCount(1);
+        props.handleBuyOk(txHashInfo, count);
       }
     }
-  }, [isBuying, isBuyed, props.isBuyModalVisible]);
+  }, [isBuying, isBuyed, txHashInfo, props.isBuyModalVisible]);
 
   const onCountPlus = () => {
     const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
-    if (count >= remainTickets) 
+    if (count >= remainTickets || count >= 5) 
       { setCount(count)} 
       else {setCount(count + 1)};
   }

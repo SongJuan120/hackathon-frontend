@@ -43,14 +43,14 @@ const LiveRaffles = () => {
         </div>
 
         <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {raffles && raffles.map((item, index)=>{
+          {raffles.length !== 0 && raffles.map((item, index)=>{
             return(<div key={index} tw="text-gray-300"><NftCard raffle={item}></NftCard></div>)
           })}
-          {!raffles && ( 
-            <div tw="flex justify-center mt-20 text-[#818181] text-4xl font-semibold">
-              No items to display
-            </div>)}
         </div>
+        {raffles.length === 0 && ( 
+          <div tw="flex justify-center mt-20 text-[#818181] text-4xl font-semibold">
+            No items to display
+          </div>)}
       </div>
     </StyledPage>
   );

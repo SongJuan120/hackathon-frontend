@@ -65,7 +65,7 @@ const Header = ({ menuOpened, onToggleMenu,}: {
   }
 
   const goBanner = () => {
-    window.location.href = '/';
+    window.location.href = '/buy/raffles';
   }
 
   return (

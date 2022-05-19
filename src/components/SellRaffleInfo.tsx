@@ -1,9 +1,7 @@
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
-import ProgressBar from '@ramonak/react-progress-bar';
-import { Divider, Select, Input } from 'antd';
+import { Divider, Select, InputNumber } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useERC721Approve } from '../hooks';
 import { GTicket } from '../types';
 import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
 import ethSmall from '../assets/images/icon/eth-small.png';
@@ -12,7 +10,7 @@ import SellRaffleComponentModal from './Modal/SellRaffleComponentModal'
 import raffle from '../assets/images/icon/raffle.png';
 import dollar from '../assets/images/icon/dollar.png';
 import hummer from '../assets/images/icon/hummer.png';
-import { getPrice } from '../utils/helpers';
+import { showNotification } from '../utils/helpers';
 
 const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const { Option } = Select;
@@ -36,6 +34,10 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const price = useSelector(selectEthPrice);
 
   const onTicketSell = () => {
+    if (amount <= 0 ) {
+      showNotification('Please input ticket total value again.', 'error');
+      return
+    }
     setTicket({
       type: selectType,
       typeId: selectNumber==10?0:selectNumber==100?1:2,
@@ -67,8 +69,9 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
     return amount/number
   }
 
-  const onChangeAmount = (e: any) => {
-    setAmount(Number(e.target.value));
+  const onChangeAmount = (value: string) => {
+    console.log('...........', value)
+    setAmount(Number(value));
   }
   
   const onSetDuration = (e: string) => {
@@ -128,7 +131,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
           <img alt="metamask" src={ethSmall} tw="w-[8px] lg:w-[10px] mb-1 mr-3"/>
           <div>ETH</div>
         </div>
-        <Input type="number" min={0} step ="any" onChange={(e)=>onChangeAmount(e)}/>
+        <InputNumber type="number" tw="w-full" min="0" step ="any" onChange={onChangeAmount} stringMode/>
       </div>
     
       <div tw="flex justify-between items-center mb-1 mt-10">

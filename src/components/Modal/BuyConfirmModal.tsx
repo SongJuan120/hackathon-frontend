@@ -6,9 +6,9 @@ import { useBuy } from '../../hooks';
 import { selectNftByTokenId } from "../../store/raffles/raffles.selectors";
 import { addressFormat } from '../../utils/helpers';
 
-const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
+const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, ticketNumber: number, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
 
-  const raffleNumber = '2 raffle tickets';
+  const raffleNumber = `${props.ticketNumber} raffle tickets`;
   const name = 'Azuki #1162';
   const nft = useSelector(selectNftByTokenId);
 

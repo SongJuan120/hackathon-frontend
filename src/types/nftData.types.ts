@@ -7,6 +7,7 @@ export interface GNftData {
 export interface GOwnedNft {
     contract: GContract;
     id: GId;
+    error?: string;
     balance: string;
     title:string;
     description: string;
