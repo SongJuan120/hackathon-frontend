@@ -230,6 +230,20 @@ export function historyDate(soldDate: number){
   const diff = currentDate - soldDate;
 
   let days = Math.floor(diff/3600/24);
-
-  return `${days} days ago`;
+  if (days > 0) {
+    return `${days} days ago`;
+  } else {
+    let hours = Math.floor((diff/3600) % 24);
+    if (hours > 0) {
+      return `${hours} hours ago`;
+    } else {
+      let minutes = Math.floor((diff % 3600)/60);
+      if(minutes> 0){
+        return `${minutes} minutes ago`;    
+      }else{
+        let second = (diff % 3600)%60;
+        return `${second} seconds ago`;    
+      }
+    }
+  } 
 }
