@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useWeb3Provider } from './useWeb3Provider';
 import { BigNumber, constants } from 'ethers';
 import { useIsMounted } from './useIsMounted';
+import { showNotification } from '../utils/helpers';
 // import { triggerToast } from '../utils';
 
 export const useERC721Approve = (address: string, tokenId: number) => {
@@ -27,7 +28,7 @@ export const useERC721Approve = (address: string, tokenId: number) => {
           }
         })
         .catch((err: any) => {
-          // triggerToast('ERROR');
+          showNotification('Approve Error', 'error');
         })
         .then(() => {
           if (isMounted.current) {

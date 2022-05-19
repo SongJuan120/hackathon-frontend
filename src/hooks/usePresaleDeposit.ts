@@ -24,8 +24,7 @@ export const usePresaleDeposit = () => {
           .then((txPreHash: any) => txPreHash.wait())
           .then(async (txHash: any) => {
             if (isMounted.current) {
-              setIsDeposited(true)
-              setIsDepositing(false);
+              setIsDeposited(true);
             }        
           })
           .catch((err: any) => {
@@ -35,7 +34,6 @@ export const usePresaleDeposit = () => {
           .then(() => {
             if (isMounted.current) {
               setIsDepositing(false);
-              setIsDeposited(false);
             }
           });
       }

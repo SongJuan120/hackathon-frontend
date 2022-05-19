@@ -11,7 +11,7 @@ const SellConfirmModal = (props: {isConfirmModalVisible: boolean, handleOk: ()=>
   }
 
   return(
-    <Modal visible={props.isConfirmModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null}>
+    <Modal closable={false} maskClosable={false} visible={props.isConfirmModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null}>
       <div tw="text-gray-300 text-2xl font-semibold text-center">
         You have raffle listed this item!
       </div>

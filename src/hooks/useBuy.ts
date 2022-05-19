@@ -32,7 +32,6 @@ export const useBuy = () => {
             }        
           })
           .catch((err: any) => {
-            console.log('aaaaaaaaaaa',  err);
             showNotification('Confirm Error', 'error');
           })
           .then(() => {

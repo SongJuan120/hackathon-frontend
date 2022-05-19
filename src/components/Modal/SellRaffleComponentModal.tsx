@@ -23,12 +23,15 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
   const asset = useSelector(selectAssetById);
   const { isApproved, isApproving, approve } = useERC721Approve(asset.contract.address , Number(asset.id.tokenId));
   const { deposit, isDepositing, isDeposited } = usePresaleDeposit();
+  const [modalFlag, setModalFlag] = useState(true);
 
   useEffect(() => {
     if (props.isModalVisible){
-      if (!isApproved) { 
+      if (!isApproved && !isApproving) { 
+        console.log('this is approve__________1')
         approve();  
-      }else{
+      }else if(isApproved && !isDepositing && !isDeposited) {
+        console.log('this is approve__________2')
         let depositData = {
           registerRaffle: 0.01,
           nftAddress: asset.contract.address,
@@ -40,11 +43,12 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
         deposit(depositData);
       }
     }
-  }, [isApproved, isApproving, props.isModalVisible])
+  }, [isApproved, isApproving, isDepositing, isDeposited, props.isModalVisible])
 
   useEffect(() => {
     if (props.isModalVisible){
       if (isDeposited) {
+        setModalFlag(false);
         setIsConfirmModalVisible(true);
       }
     }
@@ -67,7 +71,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
   return(
     <>
       <SellConfirmModal isConfirmModalVisible={isConfirmModalVisible} handleOk={handleConfirmOk} handleCancel={handleConfirmCancel}/>
-      <Modal visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
+      <Modal maskClosable={false} visible={props.isModalVisible && modalFlag} onOk={props.handleOk} onCancel={props.handleCancel} footer={null} width={620}>
         <div tw="text-gray-300 text-2xl font-semibold text-center mb-6">
           Complete raffle lisiting
         </div>
