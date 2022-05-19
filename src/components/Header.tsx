@@ -88,7 +88,7 @@ const Header = ({ menuOpened, onToggleMenu,}: {
                 </li>
               ))}
             </ul> */}
-            <ul tw="flex gap-2.5">
+            <ul tw="flex gap-2.5 cursor-pointer">
               {user._id?(user.avatar?(<img alt="avatar" onClick={showModal} src={user.avatar} tw="w-[36px] h-[36px] rounded-full"/>)
                 :(<img alt="avatar" src={avatar} tw="w-[36px] h-[36px] rounded-full"/>))
                 :(<></>)
