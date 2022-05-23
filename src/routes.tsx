@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import LiveRaffles from './pages/LiveRaffles';
 import DetailRaffles from './pages/DetailRaffles';
 import SellDashboard from './pages/SellDashboard';
-import SellDashboard_1 from './pages/SellDashboard_1';
+import DetailProfileRaffles from './pages/DetailProfileRaffles';
 import SellDetailNft from './pages/SellDetailNft';
 import Profile from './pages/Profile';
 import WalletConnet from './pages/WalletConnet';
@@ -38,6 +38,11 @@ export const routes = {
     {
       path: "/profile/dashboard/:id",
       component: SellDashboard,
+      exact: true
+    },
+    {
+      path: "/profile/listed/:raffle_id",
+      component: DetailProfileRaffles,
       exact: true
     },
     {

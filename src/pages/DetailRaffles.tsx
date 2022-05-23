@@ -44,13 +44,13 @@ const DetailRaffles = () => {
   const nft = useSelector(selectNftByTokenId);
 
   const status = {
-    views:  1280,
+    views: 1280,
     likes: 243
   }
 
   return (
     <StyledPage>
-      <div tw="mx-auto max-w-6xl pt-4 px-3 pb-32">
+      <div tw="mx-auto max-w-7xl pt-4 px-3 pb-32">
         <div tw="grid-cols-5 lg:grid gap-8">
           <div tw="col-start-3 col-end-7 text-gray-300">
             <NftInfo nft={nft}></NftInfo>

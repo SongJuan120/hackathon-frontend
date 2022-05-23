@@ -4,6 +4,7 @@ export const RAFFLEMARKETPLACE_ADDRESS = envVars.RAFFLEMARKETPLACE_ADDRESS;
 
 export const ETHCOIN_DECIMALS = 18;
 export const DIYTOKEN_DECIMALS = 18;
+export const PEDINGDATE = 7;
 
 export type Asset = 'ETH' | 'DIY';
 

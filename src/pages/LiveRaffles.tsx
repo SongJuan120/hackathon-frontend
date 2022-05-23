@@ -44,7 +44,7 @@ const LiveRaffles = () => {
 
         <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
           {raffles.length !== 0 && raffles.map((item, index)=>{
-            return(<div key={index} tw="text-gray-300"><NftCard raffle={item}></NftCard></div>)
+            return(<div key={index} tw="text-gray-300"><NftCard raffle={item} state={"buy"}></NftCard></div>)
           })}
         </div>
         {raffles.length === 0 && ( 

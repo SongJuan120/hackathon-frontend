@@ -8,23 +8,23 @@ import { useContract } from './useContract';
 import { useIsMounted } from './useIsMounted';
 import { showNotification } from '../utils/helpers';
 
-export const usePresaleDeposit = () => {
+export const useExcuteRaffle = () => {
   const raffleMarketContract = useContract(RAFFLEMARKETPLACE_ADDRESS, RaffleMarketPlaceABI, true);
-  const [isDepositing, setIsDepositing] = useState(false);
-  const [isDeposited, setIsDeposited] = useState(false);
+  const [isExcuteDrawing, setIsExcuteDrawing] = useState(false);
+  const [isExcuteDrawed, setIsExcuteDrawed] = useState(false);
   const isMounted = useIsMounted();
 
-  const deposit = useCallback(
-    (info: GSellTicket) => {
+  const excuteDraw = useCallback(
+    (raffleId) => {
       if (raffleMarketContract) {
-        setIsDepositing(true);
+        setIsExcuteDrawing(true);
 
         raffleMarketContract
-          .registerRaffle(info.nftAddress, info.tokenId, info.ticketType, parseEther(info.ticketPrice.toString()), info.duration, { value: parseEther("0.01") })
+          .excuteRaffle(raffleId)
           .then((txPreHash: any) => txPreHash.wait())
           .then(async (txHash: any) => {
             if (isMounted.current) {
-              setIsDeposited(true);
+              setIsExcuteDrawed(true);
             }        
           })
           .catch((err: any) => {
@@ -33,7 +33,7 @@ export const usePresaleDeposit = () => {
           })
           .then(() => {
             if (isMounted.current) {
-              setIsDepositing(false);
+              setIsExcuteDrawing(false);
             }
           });
       }
@@ -42,8 +42,8 @@ export const usePresaleDeposit = () => {
   );
 
   return {
-    deposit,
-    isDepositing,
-    isDeposited
+    excuteDraw,
+    isExcuteDrawing,
+    isExcuteDrawed
   };
 };

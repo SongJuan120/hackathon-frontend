@@ -72,7 +72,7 @@ const SellDashboard = () => {
                 {raffleList?.length !== 0? (
                   <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                     {raffleList.map((item, id)=>{
-                      return(<div key={id} tw="text-gray-300"><NftCard raffle={item}></NftCard></div>)}
+                      return(<div key={id} tw="text-gray-300"><NftCard raffle={item} state={"listed"}></NftCard></div>)}
                     )}
                   </div>)
                 :(

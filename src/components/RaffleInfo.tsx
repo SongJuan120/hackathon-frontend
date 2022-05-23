@@ -1,5 +1,5 @@
 import tw from 'twin.macro';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Modal, Button } from 'antd';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,11 +10,20 @@ import BuyPolicyModal from './Modal/BuyPolicyModal'
 import BuyRaffleModal from './Modal/BuyRaffleModal';
 import BuyConfirmModal from './Modal/BuyConfirmModal';
 import showMark from '../assets/images/icon/show-mark.svg';
+import warning from '../assets/images/icon/warning.png';
 import eth from '../assets/images/icon/eth-icon.svg';
 import moment from 'moment';
+import { PEDINGDATE } from '../constants/contracts';
+import { getRafflesById } from '../store/raffles/raffles.actions';
+import { useCancelRaffle } from '../hooks';
 
 const RaffleInfo = (props: {raffle: GRaffles}) => {
+  const dispatch = useDispatch();
+
   const raffle: GRaffles = props.raffle;
+  const price = useSelector(selectEthPrice);
+
+  const { cancelRaffle, isRaffleCanceling, isRaffleCanceled } = useCancelRaffle();
   const [isBuyModalVisible, setBuyModalVisible] = useState(false);
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -27,27 +36,53 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     secs: number;
   }>({ days: 0, hours: 0, mins: 0, secs: 0});
 
+  const [pendingDuration, setPendingDuration] = useState<{
+    days: number;
+    hours: number;
+    mins: number;
+    secs: number;
+  }>({ days: 0, hours: 0, mins: 0, secs: 0});
+
   const leftDateDetail = useCallback(()=>{
-    const endDate = Number(raffle.created) + Number(raffle.duration);
+    let pendingDate: number
+    if (raffle.raffleState === "1"){
+      pendingDate = PEDINGDATE;
+    }else{ pendingDate = 0; }
+
+    const endDate = Number(raffle.created) + Number(raffle.duration) + pendingDate*3600*24;
     const currentDate = Number(moment().format("X"));
     const diff = endDate - currentDate;
-  
-    let days = Math.floor(diff/3600/24);
-    let hours = Math.floor((diff/3600) % 24);
-    let minutes = Math.floor((diff % 3600)/60);
-    let seconde = (diff % 3600)%60;
-  
-    if ( diff < 0 ){ days = 0; hours = 0; minutes = 0; seconde = 0;}
+    let days: number;
+    let hours: number;
+    let minutes: number;
+    let seconde: number;
 
-    setPresaleDuration({
+    if (diff <= 0 && raffle.raffleState === "0"){
+      dispatch(getRafflesById(Number(raffle?.raffleId)));
+    }
+
+    if ( diff <= 0 ){ 
+      days = 0; hours = 0; minutes = 0; seconde = 0;
+    }else{
+      days = Math.floor(diff/3600/24);
+      hours = Math.floor((diff/3600) % 24);
+      minutes = Math.floor((diff % 3600)/60);
+      seconde = (diff % 3600)%60;
+    }
+
+    let timer = { 
       days: days,
       hours: hours,
       mins: minutes,
-      secs: seconde,
-    })
-  },[raffle])
+      secs: seconde
+    }
 
-  const price = useSelector(selectEthPrice);
+    if (raffle.raffleState === "1"){
+      setPendingDuration(timer) 
+    }else{ setPresaleDuration(timer)}
+   
+  },[raffle, dispatch])
+
 
   useEffect(() => {
     leftDateDetail();
@@ -60,6 +95,10 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const onBuyTicket = () => {
     setPolicyModalVisible(true);
   };
+
+  const onCancelRaffle = () => {
+    cancelRaffle(raffle.raffleId);
+  }
 
   const handlePolicyOk = () => {
     setPolicyModalVisible(false);
@@ -96,6 +135,98 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     return true;
   }
 
+  const raffleBuyState = useMemo(() => {
+    return (
+      <div tw="grid grid-cols-1">
+        <div tw="border-solid border-t px-5 py-4">
+          <div tw="lg:flex items-center justify-between"> 
+            <div>
+              <div tw="flex items-center justify-center lg:justify-start">
+                <img alt="metamask" src={warning} tw="w-[28px] h-[25px] mr-1"/>
+                <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
+              </div>
+              <div tw="flex items-baseline mt-2 justify-center lg:justify-start">
+                {presaleDuration.days !== 0 && (
+                  <>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.days}</div>
+                    <div tw="text-gray-800 text-center text-xs lg:text-base">Days</div>
+                  </>
+                )}
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.hours}</div>
+                <div tw="text-gray-800 text-center text-xs lg:text-base">Hours</div>
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.mins}</div>
+                <div tw="text-gray-800 text-center text-xs lg:text-base">Minutes</div>
+                {presaleDuration.days === 0 && (
+                  <>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.secs}</div>
+                    <div tw="text-gray-800 text-center text-xs lg:text-base">Seconds</div>
+                  </>
+                )}
+              </div>
+            </div>
+            <div>
+              {onBuyFlag()?(
+                <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+                  Buy tickets
+                </button>
+              ):(
+                <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
+                  Sold out
+                </button>
+              )}
+            </div>  
+          </div>
+        </div>
+      </div>
+    );
+  }, [presaleDuration]);
+
+  const rafflePendingState = useMemo(() => {
+    return (
+      <div tw="grid grid-cols-1">
+        <div tw="border-solid border-t px-5 py-5">
+          <div> 
+            <div tw="lg:grid lg:grid-cols-2 lg:gap-4">
+              <div tw="flex items-start justify-center lg:justify-start">
+                <img alt="metamask" src={warning} tw="w-[28px] h-[25px] mr-1"/>
+                <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ended - please select one of the <span tw="font-bold">three</span> options below within <span tw="font-bold">7 days</span></div>
+              </div>
+              <div tw="flex justify-between items-baseline lg:mt-0 mt-3">
+                <div>
+                  <div tw="text-gray-300 text-center text-xl font-semibold">{pendingDuration.days}</div>
+                  <div tw="text-gray-800 text-center text-xs lg:text-base">Days</div>
+                </div>
+                <div>
+                  <div tw="text-gray-300 text-center text-xl font-semibold">{pendingDuration.hours}</div>
+                  <div tw="text-gray-800 text-center text-xs lg:text-base">Hours</div>
+                </div>
+                <div>
+                  <div tw="text-gray-300 text-center text-xl font-semibold">{pendingDuration?.mins}</div>
+                  <div tw="text-gray-800 text-center text-xs lg:text-base">Minutes</div>
+                </div>
+                <div>
+                  <div tw="text-gray-300 text-center text-xl font-semibold">{pendingDuration?.secs}</div>
+                  <div tw="text-gray-800 text-center text-xs lg:text-base">Seconds</div>
+                </div>
+              </div>
+            </div>
+            <div tw="flex justify-end mt-3">
+              {onBuyFlag()?(
+                <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+                  Buy tickets
+                </button>
+              ):(
+                <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
+                  Sold out
+                </button>
+              )}
+            </div>  
+          </div>
+        </div>
+      </div>
+    );
+  }, [raffle.raffleState, pendingDuration]);
+
   return (
     <div tw="border-solid border border-zinc-300 rounded-lg w-full">   
       <div tw="grid grid-cols-3">
@@ -120,56 +251,29 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           </div>
         </div>
       </div>
-      <div tw="grid grid-cols-1 bg-zinc-100">
+      <div tw="bg-zinc-100">
         <div tw="border-solid border-t px-4 pt-6 pb-5">
-          <Progress label={'Remaining tickets'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
+          {!onBuyFlag()?(
+            <>
+              <div tw="flex justify-between mb-2">
+                <div tw="text-zinc-400 text-xs lg:text-base">Raffle in progress...</div>
+                <div tw="text-gray-400 font-semibold text-xs lg:text-base">selecting winner</div>
+              </div>
+              <div tw="relative w-full bg-gray-200 rounded">
+                <div tw="w-full top-0 h-[13px] rounded-full" className="shim-red"></div>
+              </div>
+            </>
+          ):(
+            <Progress label={'Remaining tickets'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
+          )}
         </div>
       </div>
-      <div tw="grid grid-cols-1">
-        <div tw="border-solid border-t px-5 py-4">
-          <div tw="lg:flex items-center justify-between"> 
-            <div>
-              <div tw="flex items-center justify-center lg:justify-start">
-                <img alt="metamask" src={showMark} tw="w-6 h-6 mr-1.5"/>
-                <div tw="text-gray-800 text-center text-xs lg:text-base">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
-              </div>
-              <div tw="flex items-baseline mt-2 justify-center lg:justify-start">
-                {presaleDuration.days !== 0 && (
-                  <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.days}</div>
-                    <div tw="text-gray-800 text-center text-xs lg:text-base">Days</div>
-                  </>
-                )}
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.hours}</div>
-                <div tw="text-gray-800 text-center text-xs lg:text-base">Hours</div>
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.mins}</div>
-                <div tw="text-gray-800 text-center text-xs lg:text-base">Minutes</div>
-                {presaleDuration.days === 0 && (
-                  <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.secs}</div>
-                    <div tw="text-gray-800 text-center text-xs lg:text-base">Seconds</div>
-                  </>
-                )}
-              </div>
-            </div>
-            <div>
-            {onBuyFlag()?(
-              <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
-                Buy tickets
-              </button>
-            ):(
-              <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
-                Buy tickets
-              </button>
-            )}
-              
-              <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
-              <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber)=>handleBuyOk(txHash, ticketNumber)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
-              <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
-            </div>  
-          </div>
-        </div>
-      </div>
+
+      {raffle?.raffleState === '0'? raffleBuyState : rafflePendingState}
+
+      <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
+      <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber)=>handleBuyOk(txHash, ticketNumber)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
+      <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
     </div>
   );
 };

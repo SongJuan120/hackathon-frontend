@@ -8,3 +8,5 @@ export * from './usePresaleDeposit';
 export * from './usePresaleInfo';
 export * from './useWeb3Listener';
 export * from './useWeb3Provider';
+export * from './useCancelRaffle';
+export * from './useExcuteRaffle';

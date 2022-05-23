@@ -13,7 +13,7 @@ import { selectNftByTokenId } from "../store/raffles/raffles.selectors";
 import eth from '../assets/images/icon/eth-icon.svg';
 
 
-const NftCard = (props: {raffle: GRaffles}) => {
+const NftCard = (props: {raffle: GRaffles, state: string}) => {
   const raffle: GRaffles = props.raffle;
   const [nftInfo, setNftInfo] = useState<any>();
   const [apiCount, setApiCount] = useState(0);
@@ -40,7 +40,11 @@ const NftCard = (props: {raffle: GRaffles}) => {
   const leftTime = leftDate(Number(raffle.created), Number(raffle.duration));
 
   const goRaffleDetail = () => {
-    window.location.href = `/buy/raffles/${raffle.raffleId}`;
+    if (props.state === "buy"){
+      window.location.href = `/buy/raffles/${raffle.raffleId}`;
+    }else if(props.state === "listed"){
+      window.location.href = `/profile/listed/${raffle.raffleId}`;
+    }
   }
   
   return (
