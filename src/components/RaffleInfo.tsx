@@ -11,6 +11,7 @@ import BuyRaffleModal from './Modal/BuyRaffleModal';
 import BuyConfirmModal from './Modal/BuyConfirmModal';
 import showMark from '../assets/images/icon/show-mark.svg';
 import warning from '../assets/images/icon/warning.png';
+import time from '../assets/images/icon/time.png';
 import eth from '../assets/images/icon/eth-icon.svg';
 import moment from 'moment';
 import { PEDINGDATE } from '../constants/contracts';
@@ -142,7 +143,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="lg:flex items-center justify-between"> 
             <div>
               <div tw="flex items-center justify-center lg:justify-start">
-                <img alt="metamask" src={warning} tw="w-[28px] h-[25px] mr-1"/>
+                <img alt="metamask" src={time} tw="w-[28px] h-[25px] mr-1"/>
                 <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
               </div>
               <div tw="flex items-baseline mt-2 justify-center lg:justify-start">

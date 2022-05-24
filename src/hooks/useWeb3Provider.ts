@@ -5,6 +5,7 @@ import { showNotification } from '../utils/helpers';
 import {
   Connector,
   INJECTED_CONNECTOR,
+  COINBASE_CONNECTOR,
   WALLETCONNECT_CONNECTOR,
 } from '../constants';
 import { UserContext } from '../contexts/UserContext';
@@ -15,6 +16,8 @@ const getConnector = (type: Connector) => {
   switch (type) {
     case 'Injected':
       return INJECTED_CONNECTOR;
+    case 'CoinBase':
+      return COINBASE_CONNECTOR;
     case 'WalletConnect':
       return WALLETCONNECT_CONNECTOR;
   }

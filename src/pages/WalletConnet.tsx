@@ -53,7 +53,7 @@ const WalletConnet = () => {
               <div tw="text-base font-semibold text-black ml-3">Metamask</div>
             </div>
           </div>
-          <div tw="border border-solid rounded-lg border-zinc-200 px-7 py-3 mb-3 cursor-pointer hover:bg-[#FBF8FB]">
+          <div onClick={() => activate('CoinBase')} tw="border border-solid rounded-lg border-zinc-200 px-7 py-3 mb-3 cursor-pointer hover:bg-[#FBF8FB]">
             <div tw="flex items-center">
               <img alt="coinbase" src={imgCoinBase} tw="w-[32px]"/>
               <div tw="text-base font-semibold text-black ml-3">Coinbase Wallet</div>

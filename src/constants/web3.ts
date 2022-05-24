@@ -1,7 +1,8 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 
-import { IS_TESTNET } from './env';
+import { IS_TESTNET, INFURA_KEY } from './env';
 const TESTNET_CHAINID = 4;
 const TESTNET_RPC =
   'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
@@ -22,13 +23,19 @@ export const INJECTED_CONNECTOR = new InjectedConnector({
   supportedChainIds: SUPPORTED_CHAINIDS,
 });
 
+export const COINBASE_CONNECTOR = new WalletLinkConnector({
+  url: NETWORK_RPC,
+  appName: "GOOBIG",
+  supportedChainIds: SUPPORTED_CHAINIDS,
+});
+
 export const WALLETCONNECT_CONNECTOR = new WalletConnectConnector({
   bridge: 'https://bridge.walletconnect.org',
   chainId: NETWORK_CHAINID,
   clientMeta: {
     description: 'Algorithmic Liquidity Market Protocol on Avalanche',
     icons: ['https://app.benqi.fi/svgs/qi_black_text.svg'],
-    name: 'BENQI',
+    name: 'GOOBIG',
     url: 'https://app.benqi.fi',
   },
   qrcode: true,
@@ -38,4 +45,4 @@ export const WALLETCONNECT_CONNECTOR = new WalletConnectConnector({
   supportedChainIds: [NETWORK_CHAINID],
 });
 
-export type Connector = 'Injected' | 'WalletConnect';
+export type Connector = 'Injected' | 'WalletConnect' | 'CoinBase';
