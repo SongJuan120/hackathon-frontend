@@ -9,6 +9,7 @@ import { GRaffles, GOwnedNft } from '../types';
 import { leftDate, getRafflePrice } from '../utils/helpers';
 import { getRafflesById } from '../store/raffles/raffles.actions';
 import { selectNftByTokenId } from "../store/raffles/raffles.selectors";
+import { imageConvert } from "../utils/helpers";
 
 import eth from '../assets/images/icon/eth-icon.svg';
 
@@ -52,7 +53,7 @@ const NftCard = (props: {raffle: GRaffles, state: string}) => {
       {nftInfo?.metadata?.image?(
         <img
           alt="metamask"
-          src={nftInfo?.metadata?.image}
+          src={imageConvert(nftInfo?.metadata?.image)}
           tw="w-full h-[207px] rounded-t-lg"
         />
       ):(

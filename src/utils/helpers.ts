@@ -253,3 +253,8 @@ export function historyDate(soldDate: number){
     }
   } 
 }
+
+export function imageConvert(url: string | undefined){
+  if (!url || !url.includes("ipfs://")) return url;
+  return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
+}

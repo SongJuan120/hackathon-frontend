@@ -2,7 +2,7 @@ import tw, { styled } from 'twin.macro';
 import { useState, useEffect } from 'react';
 import img2 from '../assets/images/icon/check-mark-blue.svg';
 import { GNftData, GOwnedNft } from '../types';
-
+import { imageConvert } from '../utils/helpers';
 const SellNftCard = (props: {nft: GOwnedNft }) => {
 
   const nft: GOwnedNft = props.nft;
@@ -10,7 +10,7 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
   const [selectCardImg, setSelectCardImg]  = useState<string>('');
 
   useEffect(() => {
-    setSelectCardImg(`url('${nft?.metadata?.image}')`)
+    setSelectCardImg(`url('${imageConvert(nft?.metadata?.image)}')`)
   }, [nft]);
 
   const onMouseEnter = ()=>{

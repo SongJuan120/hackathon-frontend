@@ -3,6 +3,7 @@ import { Modal, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import img2 from '../../assets/images/sample/sample_avatar2.png';
 import { selectAssetById } from '../../store/assets/assets.selectors';
+import { imageConvert } from "../../utils/helpers";
 
 const SellConfirmModal = (props: {isConfirmModalVisible: boolean, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   const asset = useSelector(selectAssetById);
@@ -16,7 +17,7 @@ const SellConfirmModal = (props: {isConfirmModalVisible: boolean, handleOk: ()=>
         You have raffle listed this item!
       </div>
       <div tw="flex justify-center mt-8">
-        <img alt="metamask" src={asset.metadata?.image} tw="w-[167px] h-[167px] rounded-xl shadow-xl"/> 
+        <img alt="metamask" src={imageConvert(asset.metadata?.image)} tw="w-[167px] h-[167px] rounded-xl shadow-xl"/> 
       </div>
       <div tw="flex justify-center mt-12">
         <button onClick={goRaffleList} tw="text-white bg-[#9C40CF] text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">

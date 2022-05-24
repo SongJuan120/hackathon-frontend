@@ -5,6 +5,7 @@ import { Modal, Button } from 'antd';
 import { useBuy } from '../../hooks';
 import { selectNftByTokenId } from "../../store/raffles/raffles.selectors";
 import { addressFormat } from '../../utils/helpers';
+import { imageConvert } from "../../utils/helpers";
 
 const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, ticketNumber: number, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
 
@@ -21,7 +22,7 @@ const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, ti
         LFG! You successfully purchased <span tw="text-base text-gray-800 font-semibold">{raffleNumber}</span> <br></br>for <span tw="text-base text-gray-800 font-semibold">{name}</span>. Good luck!
       </div>
       <div tw="flex justify-center mt-4">
-        <img alt="metamask" src={nft.metadata?.image} tw="w-[167px] h-[167px] rounded-xl"/>
+        <img alt="metamask" src={imageConvert(nft.metadata?.image)} tw="w-[167px] h-[167px] rounded-xl"/>
       </div>
       {props.txHash && 
         <div tw="w-[300px] border border-solid rounded-lg m-auto px-5 py-3 mt-6">

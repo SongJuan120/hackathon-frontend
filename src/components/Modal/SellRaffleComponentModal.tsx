@@ -16,6 +16,7 @@ import arrowDown from '../../assets/images/icon/arrow-down.png';
 import arrowUp from '../../assets/images/icon/arrow-up.png';
 import check from '../../assets/images/icon/check.png';
 import error from '../../assets/images/icon/tooltip.png';
+import { imageConvert } from "../../utils/helpers";
 
 const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTicket, handleOk: ()=>void, handleCancel: ()=>void }) =>{
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -28,18 +29,17 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
   useEffect(() => {
     if (props.isModalVisible){
       if (!isApproved && !isApproving) { 
-        console.log('this is approve__________1')
         approve();  
       }else if(isApproved && !isDepositing && !isDeposited) {
-        console.log('this is approve__________2')
+
         let depositData = {
           registerRaffle: 0.01,
           nftAddress: asset.contract.address,
           tokenId: Number(asset.id.tokenId),
           ticketType: props.ticket.typeId,
           ticketPrice: props.ticket.perPrice,
-          // duration: props.ticket.duration * 3600 * 24
-          duration: 3600 * 1.5
+          duration: props.ticket.duration * 3600 * 24
+          // duration: 3600 * 1.5
         }
         deposit(depositData);
       }
@@ -78,7 +78,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
         </div>
         <div tw="flex justify-between items-center">
           <div tw="flex items-center mt-3 relative">
-            <img alt="metamask" src={asset.metadata?.image} tw="w-[141px] h-[141px] rounded-[12px] shadow-xl"/> 
+            <img alt="metamask" src={imageConvert(asset.metadata?.image)} tw="w-[141px] h-[141px] rounded-[12px] shadow-xl"/> 
             <div tw="mr-4 ml-5">
               <div tw="flex">
                 <div tw="flex items-center">

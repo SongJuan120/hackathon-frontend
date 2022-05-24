@@ -12,7 +12,7 @@ import NftDetailInfo from '../components/NftDetailInfo';
 import { getRafflesById } from '../store/raffles/raffles.actions';
 import { getEthPrice } from '../store/ethPrice/ethPrice.actions';
 import { selectRaffleById, selectNftByTokenId } from "../store/raffles/raffles.selectors";
-
+import { imageConvert } from "../utils/helpers";
 
 const StyledPage = styled.div`
   ${tw`w-full`}
@@ -56,7 +56,7 @@ const DetailProfileRaffles = () => {
             <NftInfo nft={nft}></NftInfo>
           </div>
           <div tw="col-start-1 col-span-2 text-gray-300 mt-4 lg:mt-[-90px] px-2 lg:px-0">
-            <DetailImage status={status} image={nft?.metadata?.image}></DetailImage>
+            <DetailImage status={status} image={imageConvert(nft?.metadata?.image)}></DetailImage>
             <div tw="mt-6 hidden lg:block">
               <NftDetailInfo nft={nft}></NftDetailInfo>
             </div>

@@ -10,6 +10,7 @@ import { selectAssetById } from '../store/assets/assets.selectors';
 import { useEagerConnect, useWeb3Listener } from '../hooks';
 import SellRaffleInfo from '../components/SellRaffleInfo';
 import { getEthPrice } from '../store/ethPrice/ethPrice.actions';
+import { imageConvert } from "../utils/helpers";
 
 const StyledPage = styled.div`
   ${tw`w-full`}
@@ -49,7 +50,7 @@ const SellDetailNft = () => {
           </div>
           <div tw="col-span-full px-2 lg:px-0 mt-4 text-gray-300 lg:col-span-2 lg:mt-[-90px] ">
             {asset?.metadata?.image?(
-              <img alt="metamask" src={asset?.metadata?.image} tw="w-full rounded-2xl h-auto shadow-xl"/>
+              <img alt="metamask" src={imageConvert(asset?.metadata?.image)} tw="w-full rounded-2xl h-auto shadow-xl"/>
             ):(
               <div tw="w-full rounded-2xl h-[432px] bg-zinc-300 animate-pulse"></div>
             )}

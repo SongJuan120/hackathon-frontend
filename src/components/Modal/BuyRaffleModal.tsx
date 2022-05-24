@@ -14,6 +14,7 @@ import { getRafflePrice, getPrice } from '../../utils/helpers';
 import { useBuy } from '../../hooks';
 import { getRafflesById } from '../../store/raffles/raffles.actions';
 import { SpinnerCircularFixed } from 'spinners-react';
+import { imageConvert } from "../../utils/helpers";
 
 const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any, count: number)=>void, handleBuyCancel: ()=>void }) =>{
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
         Buy raffle tickets
       </div>
       <div tw="flex items-center mt-3 relative">
-        <img alt="metamask" src={nft.metadata?.image} tw="w-[72px] h-[72px] rounded-[12px]"/>
+        <img alt="metamask" src={imageConvert(nft.metadata?.image)} tw="w-[72px] h-[72px] rounded-[12px]"/>
         {/* <div tw="absolute top-8 left-[60px]"><img alt="metamask" src={img1} tw="w-6 h-6 rounded-full"/></div> */}
         <div tw="mr-4 ml-5">
           <div tw="text-base font-semibold text-gray-300">{nft.title}</div>

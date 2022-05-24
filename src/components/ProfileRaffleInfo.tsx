@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GRaffles } from '../types';
 import { getRafflePrice, getEndDate, getPrice } from '../utils/helpers';
 import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
-import BuyPolicyModal from './Modal/BuyPolicyModal'
+import BuyPolicyModal from './Modal/BuyPolicyModal';
 import BuyRaffleModal from './Modal/BuyRaffleModal';
 import BuyConfirmModal from './Modal/BuyConfirmModal';
+import CancelRaffleModal from './Modal/CancelRaffleModal';
+import CancelConfirmModal from './Modal/CancelConfirmModal';
 import showMark from '../assets/images/icon/show-mark.svg';
 import warning from '../assets/images/icon/warning.png';
 import eth from '../assets/images/icon/eth-icon.svg';
@@ -28,6 +30,8 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
   const [isBuyModalVisible, setBuyModalVisible] = useState(false);
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [isCancelModalVisible, setCancelModalVisible] = useState(false);
+  const [isCancelConfirmModalVisible, setCancelConfirmModalVisible] = useState(false);
   const [txHash, setTxHashInfo] = useState();
   const [ticketNumber, setTicketNumber] = useState<number>(0);
   const [presaleDuration, setPresaleDuration] = useState<{
@@ -98,7 +102,7 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
   };
 
   const onCancelRaffle = () => {
-    cancelRaffle(raffle.raffleId);
+    setCancelModalVisible(true);
   }
 
   const onExcuteRaffle = () => {
@@ -132,7 +136,24 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
   const handleConfirmCancel = () => {
     setConfirmModalVisible(false);
   };
- 
+
+  const handleCancelOk = () => {
+    setCancelConfirmModalVisible(true);
+    setCancelModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setCancelModalVisible(false);
+  };
+
+  const handleCancelConfirmOk = () => {
+    setCancelConfirmModalVisible(false);
+  };
+
+  const handleCancelConfirmCancel = () => {
+    setCancelConfirmModalVisible(false);
+  };
+
   const onBuyFlag = (): boolean => {
     if (raffle.soldTickets === raffle.totalTickets) {
       return false;
@@ -223,11 +244,19 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
               <button tw="bg-[#9C40CF] w-full lg:w-auto text-white text-base font-semibold px-14 py-2 rounded border border-transparent">
                 Extend draw
               </button>
-              <button onClick={onExcuteRaffle} tw="text-[#A042D2] bg-[#FBF8FB] text-base font-semibold px-14 py-2 rounded border border-[#A042D2]">
-                Execute draw
-              </button>
+              {raffle.soldTickets !== "0"? (
+                <button onClick={onExcuteRaffle} tw="text-[#A042D2] bg-[#FBF8FB] text-base font-semibold px-14 py-2 rounded border border-[#A042D2]">
+                  Execute draw
+                </button>  
+              ):(
+                <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
+                  Execute draw
+                </button>
+              )}
               <div onClick={onCancelRaffle} tw="text-[#A042D2] font-semibold text-base underline cursor-pointer">Cancel draw</div>
             </div>  
+            <CancelConfirmModal isCancelConfirmModalVisible={isCancelConfirmModalVisible} handleCancelConfirmOk={handleCancelConfirmOk} handleCancelConfirmCancel={handleCancelConfirmCancel}></CancelConfirmModal>
+            <CancelRaffleModal isCancelModalVisible={isCancelModalVisible} handleCancelOk={handleCancelOk} handleCancel={handleCancel}></CancelRaffleModal>
           </div>
         </div>
       </div>
