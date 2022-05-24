@@ -38,8 +38,8 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
           tokenId: Number(asset.id.tokenId),
           ticketType: props.ticket.typeId,
           ticketPrice: props.ticket.perPrice,
-          duration: props.ticket.duration * 3600 * 24
-          // duration: 3600 * 1.5
+          // duration: props.ticket.duration * 3600 * 24
+          duration: 3600 * 1
         }
         deposit(depositData);
       }

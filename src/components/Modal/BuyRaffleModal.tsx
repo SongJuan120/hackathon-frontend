@@ -37,7 +37,7 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
 
   const onCountPlus = () => {
     const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
-    if (count >= remainTickets || count >= 5) 
+    if (count >= remainTickets) 
       { setCount(count)} 
       else {setCount(count + 1)};
   }
