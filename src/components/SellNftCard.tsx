@@ -15,11 +15,11 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
 
   const onMouseEnter = ()=>{
     setSelectCard(true);
-    setSelectCardImg(`linear-gradient(to top,rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), url('${nft?.metadata?.image}')`)
+    setSelectCardImg(`linear-gradient(to top,rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), url('${imageConvert(nft?.metadata?.image)}')`)
   }
   const onMouseLeave = ()=>{
     setSelectCard(false);
-    setSelectCardImg(`url('${nft?.metadata?.image}')`)
+    setSelectCardImg(`url('${imageConvert(nft?.metadata?.image)}')`)
   }
 
   const CardImage = styled.div(() => ({
@@ -47,6 +47,9 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
             <button tw="bg-white text-violet-200 font-semibold text-xs mx-1 py-2 px-5 rounded border border-solid border-white">
               Transfer
             </button>
+            {/* <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-xs font-semibold py-2 px-5 rounded border border-[#C1A3C1] hover:border-white">
+              Transfer
+            </button> */}
           </div>}
       </CardImage>)
       :(<div tw="w-full h-52 rounded-t-lg bg-zinc-300 animate-pulse"></div>)}
