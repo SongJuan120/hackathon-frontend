@@ -45,4 +45,4 @@ export const WALLETCONNECT_CONNECTOR = new WalletConnectConnector({
   supportedChainIds: [NETWORK_CHAINID],
 });
 
-export type Connector = 'Injected' | 'WalletConnect' | 'CoinBase';
+export type Connector = 'Injected' | 'CoinBase' | 'WalletConnect' ;

@@ -15,6 +15,13 @@ class AssetsService {
     const res = await http.get<GOwnedNft>(`/nfts/getAsset/${address}/${id}`)
     return res.data;
   }
+
+  async postRequestRarity (address: string) {
+    const payload = {
+      nftAddress: address
+    }
+    const res = await http.post(`/nfts/requestRarity`, payload)
+  }
 }
 
 export const assetsService = new AssetsService()

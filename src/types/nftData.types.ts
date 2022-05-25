@@ -60,6 +60,7 @@ export interface GAttributes {
 export interface GAttributes {
     value: string;
     trait_type: string;
+    rarity_percentage?: number;
 }
 
 export interface GOwner {

@@ -54,7 +54,7 @@ const SellDashboard = () => {
       <div tw="mx-auto max-w-6xl px-3 pb-32">
         <SellUserInfo></SellUserInfo>
         <div tw="pt-14">
-          <Tabs type="line">
+          <Tabs type="line" defaultActiveKey={params.id || "1"}>
             <TabPane tab={`Collected  ${assets?.totalCount}`} key="1">
               {assets.totalCount !== 0? (
                 <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
@@ -68,7 +68,7 @@ const SellDashboard = () => {
                 </div>
               )}
             </TabPane>
-            <TabPane tab={`Listed  ${raffleList?.length}`} key={params.id}>
+            <TabPane tab={`Listed  ${raffleList?.length}`} key="2">
                 {raffleList?.length !== 0? (
                   <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                     {raffleList.map((item, id)=>{

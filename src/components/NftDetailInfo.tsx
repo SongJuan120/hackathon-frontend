@@ -13,7 +13,7 @@ const NftDetailInfo = (props:{nft: GOwnedNft}) => {
         {nft?.metadata?.attributes.map((item,index)=>{
           return(
             <div key={index}>
-              <ItemInfo value={item.value} label={item.trait_type} percent={5}></ItemInfo>
+              <ItemInfo value={item.value} label={item.trait_type} percent={item?.rarity_percentage?`${item?.rarity_percentage.toFixed(1)}%`:"--"}></ItemInfo>
             </div>
           )
         })}
@@ -44,13 +44,13 @@ const NftDetailInfo = (props:{nft: GOwnedNft}) => {
 export default NftDetailInfo;
 
 
-export const ItemInfo = (props: {label: string, value: string, percent: number})=>{
+export const ItemInfo = (props: {label: string, value: string, percent: string})=>{
   return(
     <div tw="bg-[#FBF8FB] px-3 py-2 rounded">
       <div tw="text-gray-50 text-xs mb-1">{props.label}</div>
       <div tw="flex justify-between">
         <div tw="text-gray-800 text-sm truncate">{props.value}</div>
-        <div tw="text-gray-800 text-xs pl-3">{props.percent}%</div>
+        <div tw="text-gray-800 text-xs pl-3">{props.percent}</div>
       </div>
     </div>
   )

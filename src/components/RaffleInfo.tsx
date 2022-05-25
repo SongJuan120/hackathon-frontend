@@ -143,7 +143,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="lg:flex items-center justify-between"> 
             <div>
               <div tw="flex items-center justify-center lg:justify-start">
-                <img alt="metamask" src={time} tw="w-[28px] h-[25px] mr-1"/>
+                <img alt="metamask" src={time}  tw="w-[28px] h-[39px] mr-1"/>
                 <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
               </div>
               <div tw="flex items-baseline mt-2 justify-center lg:justify-start">
@@ -189,7 +189,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
           <div> 
             <div tw="lg:grid lg:grid-cols-2 lg:gap-4">
               <div tw="flex items-start justify-center lg:justify-start">
-                <img alt="metamask" src={warning} tw="w-[28px] h-[25px] mr-1"/>
+                <img alt="metamask" src={warning} tw="w-[28px] h-[24px] mr-1"/>
                 <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ended - please select one of the <span tw="font-bold">three</span> options below within <span tw="font-bold">7 days</span></div>
               </div>
               <div tw="flex justify-between items-baseline lg:mt-0 mt-3">

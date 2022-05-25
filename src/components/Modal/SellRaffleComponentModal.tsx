@@ -17,14 +17,17 @@ import arrowUp from '../../assets/images/icon/arrow-up.png';
 import check from '../../assets/images/icon/check.png';
 import error from '../../assets/images/icon/tooltip.png';
 import { imageConvert } from "../../utils/helpers";
+import { assetsService } from '../../services';
 
 const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTicket, handleOk: ()=>void, handleCancel: ()=>void }) =>{
+
+  const { deposit, isDepositing, isDeposited } = usePresaleDeposit();
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isDetail, setDetail] = useState(false);
-  const asset = useSelector(selectAssetById);
-  const { isApproved, isApproving, approve } = useERC721Approve(asset.contract.address , Number(asset.id.tokenId));
-  const { deposit, isDepositing, isDeposited } = usePresaleDeposit();
   const [modalFlag, setModalFlag] = useState(true);
+  const asset = useSelector(selectAssetById);
+  const price = useSelector(selectEthPrice);
+  const { isApproved, isApproving, approve } = useERC721Approve(asset.contract.address , Number(asset.id.tokenId));
 
   useEffect(() => {
     if (props.isModalVisible){
@@ -51,11 +54,14 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
       if (isDeposited) {
         setModalFlag(false);
         setIsConfirmModalVisible(true);
+        requestRarity();
       }
     }
   }, [isDepositing, isDeposited, props.isModalVisible]);
 
-  const price = useSelector(selectEthPrice);
+  const requestRarity = async() =>{
+    await assetsService.postRequestRarity(asset.contract.address);
+  }
 
   const handleConfirmOk = () => {
     setIsConfirmModalVisible(false);

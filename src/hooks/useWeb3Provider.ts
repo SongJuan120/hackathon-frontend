@@ -32,9 +32,20 @@ export const useWeb3Provider = () => {
 
   const connect = useCallback(
     async (connectorType: Connector) => {
+
       setLoading(true);
       
       const connector = getConnector(connectorType);
+
+      if (connectorType === 'CoinBase') {
+        const coinBaseProvider =
+          await COINBASE_CONNECTOR.getProvider();
+
+        if (coinBaseProvider) {
+          // @ts-ignore
+          connector.coinBaseProvider = undefined;
+        }
+      }
 
       if (connectorType === 'WalletConnect') {
         const walletConnectProvider =
@@ -45,6 +56,7 @@ export const useWeb3Provider = () => {
           connector.walletConnectProvider = undefined;
         }
       }
+
       activate(connector, undefined, true)
         .then(() => {
           showNotification('Wallet Connected. Ready to sign.');
