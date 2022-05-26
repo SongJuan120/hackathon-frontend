@@ -13,7 +13,7 @@ const NftDetailInfo = (props:{nft: GOwnedNft}) => {
         {nft?.metadata?.attributes.map((item,index)=>{
           return(
             <div key={index}>
-              <ItemInfo value={item.value} label={item.trait_type} percent={item?.rarity_percentage?`${item?.rarity_percentage.toFixed(1)}%`:"--"}></ItemInfo>
+              <ItemInfo value={item.value} label={item.trait_type} percent={item?.rarity_percentage?`${Math.round(item?.rarity_percentage)}%`:"--"}></ItemInfo>
             </div>
           )
         })}

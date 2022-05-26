@@ -65,7 +65,7 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
         </div>
         <div tw="flex justify-between mt-1">
           <div tw="text-gray-300 text-xs font-semibold">
-            {nft?.title}
+            {nft?.metadata?.name?nft?.metadata?.name:nft?.title}
           </div>
           <div tw="flex items-center">
             {/* <img alt="metamask" src={img3} tw="w-3 h-3 mr-1"/> */}

@@ -42,7 +42,7 @@ const NftHistoryInfo = (props: {raffle: GRaffles}) => {
             </tr>
           </thead>
           <tbody>
-            {raffleHistory.map((item, index)=>{
+            {raffleHistory.slice(0).reverse().map((item, index)=>{
               return(
                 <tr key={index} tw="border-solid border-t border-zinc-300 h-12">
                   <td tw="text-gray-800 text-xs lg:text-sm font-normal text-center">{item?.history?.tickets}</td>

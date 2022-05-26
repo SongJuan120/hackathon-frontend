@@ -7,10 +7,10 @@ import { selectNftByTokenId } from "../../store/raffles/raffles.selectors";
 import { addressFormat } from '../../utils/helpers';
 import { imageConvert } from "../../utils/helpers";
 
-const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, ticketNumber: number, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
+const BuyConfirmModal = (props: {isConfirmModalVisible: boolean, txHash: any, ticketNumber: number, ticketName: string, handleConfirmOk: ()=>void, handleConfirmCancel: ()=>void }) =>{
 
   const raffleNumber = `${props.ticketNumber} raffle tickets`;
-  const name = 'Azuki #1162';
+  const name = props.ticketName;
   const nft = useSelector(selectNftByTokenId);
 
   return(

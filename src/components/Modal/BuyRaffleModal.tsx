@@ -10,13 +10,12 @@ import plusButton from '../../assets/images/icon/plus_button.svg'
 import eth from '../../assets/images/icon/eth-icon.svg';
 import { selectRaffleById, selectNftByTokenId } from "../../store/raffles/raffles.selectors";
 import { selectEthPrice } from "../../store/ethPrice/ethPrice.selectors";
-import { getRafflePrice, getPrice } from '../../utils/helpers';
+import { getRafflePrice, getPrice, addressFormat, imageConvert } from '../../utils/helpers';
 import { useBuy } from '../../hooks';
 import { getRafflesById } from '../../store/raffles/raffles.actions';
 import { SpinnerCircularFixed } from 'spinners-react';
-import { imageConvert } from "../../utils/helpers";
 
-const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any, count: number)=>void, handleBuyCancel: ()=>void }) =>{
+const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHashInfo: any, count: number, name: string)=>void, handleBuyCancel: ()=>void }) =>{
   const dispatch = useDispatch();
   const [count, setCount] = useState<number>(1);
   const { buy, isBuying, isBuyed, txHashInfo } = useBuy();
@@ -30,7 +29,7 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
       if (isBuyed) {
         dispatch(getRafflesById(Number(raffle.raffleId)));
         setCount(1);
-        props.handleBuyOk(txHashInfo, count);
+        props.handleBuyOk(txHashInfo, count, nft.metadata?.name?nft.metadata?.name:nft.title);
       }
     }
   }, [isBuying, isBuyed, txHashInfo, props.isBuyModalVisible]);
@@ -72,12 +71,12 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
             <div tw="flex items-center">
               <div tw="text-gray-50 text-sm">Collection:</div>
               <img alt="metamask" src={checkMarkBlue} tw="w-3 h-3 mx-1.5"/>
-              <div tw="text-blue-100 pr-1.5 text-sm">{nft.title}</div>  
+              <div tw="text-blue-100 pr-1.5 text-sm">{nft.metadata?.name?nft.metadata?.name:nft.title}</div>  
             </div>  
             <div tw="text-gray-50 px-3">·</div>
             <div tw="flex items-center">
               <div tw="text-gray-50 text-sm mr-1.5">Owned by:</div>
-              <div tw="text-blue-100 pr-1.5 text-sm">LeylaGul</div>  
+              <a tw="text-blue-100 pr-1.5 text-sm cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${nft?.owneraccount}`}>{nft?.owner?.name?nft?.owner?.name:addressFormat(nft?.owneraccount)}</a>  
             </div>
           </div>
         </div>        

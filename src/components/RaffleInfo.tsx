@@ -30,6 +30,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [txHash, setTxHashInfo] = useState();
   const [ticketNumber, setTicketNumber] = useState<number>(0);
+  const [ticketName, setTicketName] = useState<string>("");
   const [presaleDuration, setPresaleDuration] = useState<{
     days: number;
     hours: number;
@@ -110,9 +111,10 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     setPolicyModalVisible(false);
   };
 
-  const handleBuyOk = (txHashInfo: any, count: number):void => {
+  const handleBuyOk = (txHashInfo: any, count: number, name: string):void => {
     setTxHashInfo(txHashInfo);
     setTicketNumber(count);
+    setTicketName(name);
     setConfirmModalVisible(true);
     setBuyModalVisible(false);
   };
@@ -149,17 +151,17 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
               <div tw="flex items-baseline mt-2 justify-center lg:justify-start">
                 {presaleDuration.days !== 0 && (
                   <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.days}</div>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2 w-[30px] lg:w-[60px]">{presaleDuration.days}</div>
                     <div tw="text-gray-800 text-center text-xs lg:text-base">Days</div>
                   </>
                 )}
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration.hours}</div>
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2 w-[30px] lg:w-[60px]">{presaleDuration.hours}</div>
                 <div tw="text-gray-800 text-center text-xs lg:text-base">Hours</div>
-                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.mins}</div>
+                <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2 w-[30px] lg:w-[60px]">{presaleDuration?.mins}</div>
                 <div tw="text-gray-800 text-center text-xs lg:text-base">Minutes</div>
                 {presaleDuration.days === 0 && (
                   <>
-                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2">{presaleDuration?.secs}</div>
+                    <div tw="text-gray-300 text-center text-xl font-semibold lg:pl-7 pr-2 w-[30px] lg:w-[60px]">{presaleDuration?.secs}</div>
                     <div tw="text-gray-800 text-center text-xs lg:text-base">Seconds</div>
                   </>
                 )}
@@ -190,7 +192,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
             <div tw="lg:grid lg:grid-cols-2 lg:gap-4">
               <div tw="flex items-start justify-center lg:justify-start">
                 <img alt="metamask" src={warning} tw="w-[28px] h-[24px] mr-1"/>
-                <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ended - please select one of the <span tw="font-bold">three</span> options below within <span tw="font-bold">7 days</span></div>
+                <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ended {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
               </div>
               <div tw="flex justify-between items-baseline lg:mt-0 mt-3">
                 <div>
@@ -272,8 +274,8 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
 
       {raffle?.raffleState === '0'? raffleBuyState : rafflePendingState}
 
-      <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
-      <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber)=>handleBuyOk(txHash, ticketNumber)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
+      <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} ticketName={ticketName} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
+      <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber, name)=>handleBuyOk(txHash, ticketNumber, name)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
       <BuyPolicyModal isPolicyModalVisible={isPolicyModalVisible} handlePolicyOk={handlePolicyOk} handlePolicyCancel={handlePolicyCancel}></BuyPolicyModal>
     </div>
   );

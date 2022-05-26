@@ -89,11 +89,11 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
               <div tw="flex">
                 <div tw="flex items-center">
                   <div tw="text-gray-50 text-sm font-normal">Collection:</div>
-                  <div tw="text-blue-100 text-sm ml-1.5">{asset.metadata?.name}</div>  
+                  <div tw="text-blue-100 text-sm ml-1.5">{asset.title}</div>  
                   <img alt="metamask" src={checkMarkBlue} tw="w-3 h-3 mx-1.5"/>
                 </div>  
               </div>
-              <div tw="text-[22px] font-semibold text-gray-300 mt-1">{asset.title}</div>
+              <div tw="text-[22px] font-semibold text-gray-300 mt-1">{asset.metadata?.name?asset.metadata?.name:asset.title}</div>
             </div>        
           </div>
           <div tw="flex items-center">

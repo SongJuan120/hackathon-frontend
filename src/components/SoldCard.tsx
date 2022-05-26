@@ -2,8 +2,10 @@ import tw, { styled } from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { GRaffleSoldHistory, GRaffles } from '../types';
 import { rafflesService } from '../services';
-import { getRafflePrice, addressFormat, historyDate } from '../utils/helpers';
+import { getRafflePrice, addressFormat, historyDate, getPrice } from '../utils/helpers';
 import showMark from '../assets/images/icon/check-mark-blue.svg';
+import { useSelector } from 'react-redux';
+import { selectEthPrice } from '../store/ethPrice/ethPrice.selectors';
 
 const SoldCard = (props: {sold: GRaffleSoldHistory[] }) => {
 
@@ -29,10 +31,10 @@ const SoldCard = (props: {sold: GRaffleSoldHistory[] }) => {
                 <img alt="metamask" src={item?.nft.metadata?.image} tw="w-[82px] rounded-lg h-auto shadow-xl"/>
                 <div tw="ml-3">
                   <div tw="flex items-center">
-                    <div tw="text-gray-700 text-sm">{item.nft?.metadata?.name}</div>
+                    <div tw="text-gray-700 text-sm">{item.nft?.title}</div>
                     <img alt="metamask" src={showMark} tw="w-3 h-3 ml-2"/>
                   </div>
-                  <div tw="text-gray-300 text-sm font-semibold">{item.nft?.title}</div>
+                  <div tw="text-gray-300 text-sm font-semibold">{item.nft?.metadata?.name?item.nft?.metadata?.name:item.nft?.title}</div>
                 </div>
               </div>
               <div tw="col-start-3 col-span-1 text-gray-100 text-sm">
@@ -60,7 +62,8 @@ export default SoldCard;
 export const Price = (props: {raffleId: string})=>{
 
   const [raffle, setRaffle]  = useState<GRaffles>();
-  const price = 91000;
+  const price = useSelector(selectEthPrice);
+  // const price = 91000;
 
   useEffect(() => {
     getRaffle();
@@ -72,9 +75,9 @@ export const Price = (props: {raffleId: string})=>{
   }
 
   return(
-    <div tw="pr-10">
+    <div tw="pr-10 w-[fit-content]">
       <div tw="text-gray-300 text-sm font-semibold text-right">{getRafflePrice(Number(raffle?.totalPrice))}</div>
-      <div tw="text-[#797979] text-xs text-right">${price.toLocaleString()}</div>
+      <div tw="text-[#797979] text-xs text-right">${getPrice(Number(raffle?.totalPrice), price)}</div>
     </div>
   )
 }
