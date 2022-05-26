@@ -18,6 +18,7 @@ import check from '../../assets/images/icon/check.png';
 import error from '../../assets/images/icon/tooltip.png';
 import { imageConvert } from "../../utils/helpers";
 import { assetsService } from '../../services';
+import BigNumber from 'bignumber.js';
 
 const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTicket, handleOk: ()=>void, handleCancel: ()=>void }) =>{
 
@@ -123,7 +124,7 @@ const SellRaffleComponentModal = (props: {isModalVisible: boolean, ticket: GTick
                     <img alt="metamask" src={eth} tw="w-3 h-3 mr-1"/>
                     <div tw="text-gray-300 text-center text-base font-semibold">{(props.ticket?.perPrice)}</div>
                   </div>
-                  <div tw="text-gray-800 text-right text-xs">(${Number((props.ticket?.perPrice*price).toFixed(2)).toLocaleString()})</div>
+                  <div tw="text-gray-800 text-right text-xs">($ {(new BigNumber(props.ticket.perPrice).multipliedBy(price.toString())).toFixed(2).toLocaleString()})</div>
                 </div>
               </div>
               <div tw="flex justify-between">

@@ -3,7 +3,7 @@ export interface GTicket {
     typeId: number,
     totalPrice: number,
     quantity: number,
-    perPrice: number,
+    perPrice: string,
     duration: number,
 }
 
@@ -12,6 +12,6 @@ export interface GSellTicket {
     nftAddress: string,
     tokenId: number,
     ticketType: number,
-    ticketPrice: number,
+    ticketPrice: string,
     duration: number
 }

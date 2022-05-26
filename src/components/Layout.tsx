@@ -3,14 +3,13 @@ import 'twin.macro';
 import { ReactNode, useEffect } from 'react';
 
 import { useLocation } from 'react-router-dom';
-import Footer from './Footer';
 import Header from './Header';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/auth/auth.selectors';
 import { rafflesService } from '../services';
 import { GNotification } from '../types';
-import { imageConvert } from '../utils/helpers';
-
+import { addressLongestFormat, imageConvert } from '../utils/helpers';
+import notification from 'antd/lib/notification';
 
 const Layout = ({
   children,
@@ -24,28 +23,43 @@ const Layout = ({
   const { pathname } = useLocation();
   const user = useSelector(selectUser);
 
-  const notification = async() => {
+  const openNotification = (item: GNotification) => {
+    notification.open({
+      message: <div tw="ml-[50px]">{user.account === item.to?"YOU HAVE WON!" : "NFT SOLD OUT"} </div>,
+      icon: <img src={`${imageConvert(item.image)}`} tw="w-[80px] h-[80px] rounded-md"/>,
+      description: <div tw="ml-[50px]">
+        <div tw="flex items-center"><div tw="w-[50px]">Seller </div> : <a tw="ml-2 text-blue-100 text-sm cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.from}`}>{addressLongestFormat(item?.from || "")}</a></div> 
+        <div tw="flex items-center"><div tw="w-[50px]">Buyer </div> : <a tw="ml-2 text-blue-100 text-sm cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.to}`}>{addressLongestFormat(item?.to || "")}</a></div> 
+      </div>,
+      placement: "topRight",
+      style: {height: 120},
+      duration: 30
+    });
+  };
+
+  const notifications = async() => {
     if (user){
       const rafflesSoldRes = await rafflesService.getNotification(user.account); 
       if (rafflesSoldRes){
         rafflesSoldRes.map((item: GNotification)=>{
-          new Notification("NFT SOLD OUT", {
-            body: `Seller: ${item.from} 
-Buyer: ${item.to} `,
-            icon: imageConvert(item.image)
-          });
+          openNotification(item);
+//           new Notification("NFT SOLD OUT", {
+//             body: `Seller: ${item.from} 
+// Buyer: ${item.to} `,
+//             icon: imageConvert(item.image)
+//           });
         })
       }
     }
   }
 
   useEffect(() => {
-    notification();
-    const timer = setInterval(() => notification(), 30000);
+    notifications();
+    const timer = setInterval(() => notifications(), 10000);
     return () => {
       clearInterval(timer);
     };
-  }, [notification]);
+  }, [notifications]);
 
   useEffect(() => {
     Notification.requestPermission(function(result) {

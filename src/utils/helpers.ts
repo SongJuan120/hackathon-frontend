@@ -91,7 +91,7 @@ export function copyToClipBoard(text: string) {
   message.success({ content: 'copied to clipboard' });
 }
 export function showNotification(
-
+  
   message: string,
   type: 'success' | 'error' | 'info' = 'success',
   placement: NotificationPlacement = 'bottomRight'
@@ -155,6 +155,13 @@ export function addressLongFormat(address: string){
   const word2 = address.slice(address.length-4, address.length);
   return word1 + '...' + word2;
 }   
+
+export function addressLongestFormat(address: string){
+  const word1 = address.slice(0, 10);
+  const word2 = address.slice(address.length-8, address.length);
+  return word1 + '...' + word2;
+}   
+
 
 export function joinDateFormat(date: string | Date){
   return moment(date).format("DD MMM · YYYY")
@@ -257,4 +264,17 @@ export function historyDate(soldDate: number){
 export function imageConvert(url: string | undefined){
   if (!url || !url.includes("ipfs://")) return url;
   return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
+}
+
+export function formattedNumberWithoutZeroDecimal(value: string) {
+  let res = value;
+  if (res.indexOf('.') > -1) {
+    while (res[res.length - 1] === "0") {
+      res = res.substring(0, res.length - 1);
+    }
+    if (res[res.length - 1] === ".") {
+      res = res.substring(0, res.length - 1);
+    }
+  }
+  return res;
 }

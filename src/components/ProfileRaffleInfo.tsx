@@ -171,7 +171,7 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
           <div tw="lg:flex items-center justify-between"> 
             <div>
               <div tw="flex items-center justify-center lg:justify-start">
-                <img alt="metamask" src={time} tw="w-[28px] h-[39px] mr-1"/>
+                <img alt="metamask" src={time} tw="w-[20px] h-[20px] mr-1"/>
                 <div tw="text-gray-800 text-center text-xs lg:text-base text-left">Raffle ends {getEndDate(Number(raffle.created), Number(raffle.duration))}</div>
               </div>
               <div tw="flex items-baseline mt-2 justify-center lg:justify-start">

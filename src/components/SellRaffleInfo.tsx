@@ -10,7 +10,8 @@ import SellRaffleComponentModal from './Modal/SellRaffleComponentModal'
 import raffle from '../assets/images/icon/raffle.png';
 import dollar from '../assets/images/icon/dollar.png';
 import hummer from '../assets/images/icon/hummer.png';
-import { showNotification } from '../utils/helpers';
+import { formattedNumberWithoutZeroDecimal, showNotification } from '../utils/helpers';
+import BigNumber from 'bignumber.js';
 
 const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   const { Option } = Select;
@@ -27,7 +28,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
     typeId: 0,
     totalPrice: 0,
     quantity: 0,
-    perPrice: 0,
+    perPrice: "0",
     duration: 0,
   });
 
@@ -43,7 +44,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
       typeId: selectNumber==10?0:selectNumber==100?1:2,
       totalPrice: amount,
       quantity: selectNumber, 
-      perPrice: getPricePerTicket(selectNumber),
+      perPrice: getPricePerTicket(selectNumber).toString(),
       duration: duration
     });
     setIsModalVisible(true);
@@ -65,8 +66,8 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
     setSelectNumber(key);
   }
 
-  const getPricePerTicket = (number: number): number => {
-    return amount/number
+  const getPricePerTicket = (number: number): BigNumber => {
+    return (new BigNumber(amount).dividedBy(new BigNumber(number)));
   }
 
   const onChangeAmount = (value: string) => {
@@ -115,7 +116,7 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
 
       <div tw="flex justify-between items-center mb-1 mt-10">
         <div tw="font-semibold text-base">Price</div>
-        <div tw="text-xs text-gray-900">${Number((amount*price).toFixed(2)).toLocaleString()} total</div>
+        <div tw="text-xs text-gray-900">${(new BigNumber(amount).multipliedBy(new BigNumber(price))).toFixed(2).toLocaleString()} total</div>
       </div>
 
       <div tw="flex justify-between items-center">
@@ -127,8 +128,8 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
           </Option>
           <Option value="Yiminghe">yiminghe</Option>
         </Select> */}
-        <div tw="flex border-solid border border-zinc-300 rounded-lg px-6 py-0.5 mr-2">
-          <img alt="metamask" src={ethSmall} tw="w-[8px] lg:w-[10px] mb-1 mr-3"/>
+        <div tw="flex items-center justify-center border-solid border border-zinc-300 rounded-lg px-6 py-0.5 mr-2">
+          <img alt="metamask" src={ethSmall} tw="w-[10px] h-[16px] mr-3"/>
           <div>ETH</div>
         </div>
         <InputNumber type="number" tw="w-full" min="0" step ="any" onChange={onChangeAmount} stringMode/>
@@ -143,21 +144,21 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
           <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total1.toLocaleString()}</div>
           <div tw="flex justify-center items-center">
             <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{getPricePerTicket(10)} per ticket</div>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{formattedNumberWithoutZeroDecimal(getPricePerTicket(10).toFixed(15))} per ticket</div>
           </div>
         </div>
         <div onClick={()=>onSeletNumber(100)} style={selectNumber==100?{background:'#FBF8FB'}:{}} tw="border-solid border-b lg:border-r lg:border-b-0 py-4 hover:bg-zinc-100 cursor-pointer">
           <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total2.toLocaleString()}</div>
           <div tw="flex justify-center items-center">
             <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{getPricePerTicket(100)} per ticket</div>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{formattedNumberWithoutZeroDecimal(getPricePerTicket(100).toFixed(14))} per ticket</div>
           </div>
         </div>
         <div onClick={()=>onSeletNumber(1000)} style={selectNumber==1000?{background:'#FBF8FB'}:{}} tw="py-4 hover:bg-zinc-100 cursor-pointer rounded-b-lg lg:rounded-b-none lg:rounded-r-lg">
           <div tw="text-gray-300 text-center text-[22px] lg:text-2xl font-semibold">{total3.toLocaleString()}</div>
           <div tw="flex justify-center items-center">
             <img alt="metamask" src={ethSmall} tw="w-[10px] lg:w-[12px] mb-1"/>
-            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{getPricePerTicket(1000)} per ticket</div>
+            <div tw="text-gray-800 text-center text-xs lg:text-base ml-2">{formattedNumberWithoutZeroDecimal(getPricePerTicket(1000).toFixed(14))} per ticket</div>
           </div>
         </div>
       </div>
