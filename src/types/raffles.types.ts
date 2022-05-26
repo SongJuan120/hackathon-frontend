@@ -41,9 +41,18 @@ export interface GBuyer {
     updated: string | Date,
     __v: number
 }
-
 export interface GRaffleSoldHistory {
     nft: GOwnedNft,
     history: GSoldHistoryInfo,
     to: GBuyer | null
+} 
+export interface GNotification {
+    txHash: string,
+    raffleId: string,
+    image: string,
+    to?: string,
+    from?: string,
+    nftAddress: string,
+    tokenId: string,
+    timestamp: number,
 } 

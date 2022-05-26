@@ -35,7 +35,7 @@ export const WALLETCONNECT_CONNECTOR = new WalletConnectConnector({
   clientMeta: {
     description: 'Algorithmic Liquidity Market Protocol on Avalanche',
     icons: ['https://app.benqi.fi/svgs/qi_black_text.svg'],
-    name: 'GOOBIG',
+    name: 'BENQI',
     url: 'https://app.benqi.fi',
   },
   qrcode: true,

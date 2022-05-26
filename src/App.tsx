@@ -10,6 +10,7 @@ import { UserContext, UserContextProvider } from './contexts/UserContext';
 
 import Layout from './components/Layout';
 import MobileMenu from './components/MobileMenu';
+import { rafflesService } from './services';
 
 const App = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);

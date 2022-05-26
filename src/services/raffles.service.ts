@@ -3,6 +3,7 @@ import {
   GRaffles,
   GSoldHistory,
   GRaffleSoldHistory,
+  GNotification,
 } from '../types'
 
 class RafflesService {
@@ -29,6 +30,11 @@ class RafflesService {
 
   async getRaffleSold (address: string) {
     const res = await http.get<GRaffleSoldHistory[]>(`/raffles/getSoldFromOwner/${address}`)
+    return res.data;
+  }
+
+  async getNotification (address: string) {
+    const res = await http.get<GNotification[]>(`/raffles/unreadSoldNFTHistory/${address}`)
     return res.data;
   }
 }
