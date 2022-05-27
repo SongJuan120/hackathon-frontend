@@ -20,7 +20,7 @@ class AssetsService {
     const payload = {
       nftAddress: address
     }
-    const res = await http.post(`/nfts/requestRarity`, payload)
+    await http.post(`/nfts/requestRarity`, payload)
   }
 }
 

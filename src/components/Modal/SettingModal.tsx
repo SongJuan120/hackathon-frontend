@@ -38,7 +38,7 @@ const SettingModal = (props: {isModalVisible: boolean, handleOk: ()=>void, handl
   }
 
   const goProfileDashboard = () => {
-    window.location.href = '/profile/dashboard';
+    window.location.href = `/profile/dashboard`;
   }
   
   const goProfileEdit = () => {

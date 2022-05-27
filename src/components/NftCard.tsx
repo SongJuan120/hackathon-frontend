@@ -12,13 +12,15 @@ import { selectNftByTokenId } from "../store/raffles/raffles.selectors";
 import { imageConvert } from "../utils/helpers";
 
 import eth from '../assets/images/icon/eth-icon.svg';
+import { selectUser } from '../store/auth/auth.selectors';
 
 
 const NftCard = (props: {raffle: GRaffles, state: string}) => {
   const raffle: GRaffles = props.raffle;
   const [nftInfo, setNftInfo] = useState<any>();
   const [apiCount, setApiCount] = useState(0);
-  
+  const user = useSelector(selectUser);
+
   useEffect(() => {
     getNftInfo();
   }, []);

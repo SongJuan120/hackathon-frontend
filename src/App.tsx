@@ -11,6 +11,7 @@ import { UserContext, UserContextProvider } from './contexts/UserContext';
 import Layout from './components/Layout';
 import MobileMenu from './components/MobileMenu';
 import { rafflesService } from './services';
+import { AuthGuard } from "./guards";
 
 const App = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -24,13 +25,37 @@ const App = () => {
       <UserContextProvider>
         <Router>
           <WithScrollTop>
-            <Route
-              path={[...routes.dashboard.map(({ path }) => path)]}
-              component={(props: any) => (
-                <Layout {...props}>
-                  <Switch {...props}>
-                    {routes.dashboard.map((route, idx) => {
-                      return (
+            <AuthGuard authorized>
+              <Route
+                path={[...routes.dashboard.map(({ path }) => path)]}
+                component={(props: any) => (
+                  <Layout {...props}>
+                    <Switch {...props}>
+                      {routes.dashboard.map((route, idx) => {
+                        return (
+                          <Route
+                            key={idx}
+                            path={route.path}
+                            exact={route.exact}
+                            component={(props: any) => (
+                              <route.component {...props} key={idx} />
+                            )}
+                          />
+                        )
+                      })}
+                    </Switch>
+                  </Layout>
+                )}
+              />
+            </AuthGuard>
+
+            <AuthGuard authorized={false}>
+              <Route
+                path={[...routes.minimal.map(({ path }) => path)]}
+                component={(props: any) => (
+                  <Layout {...props}>
+                    <Switch {...props}>
+                      {routes.minimal.map((route, idx) => (
                         <Route
                           key={idx}
                           path={route.path}
@@ -39,12 +64,12 @@ const App = () => {
                             <route.component {...props} key={idx} />
                           )}
                         />
-                      )
-                    })}
-                  </Switch>
-                </Layout>
-              )}
-            />
+                      ))}
+                    </Switch>
+                  </Layout>
+                )}
+              />
+            </AuthGuard>
             {isMenuOpened && <MobileMenu onClose={() => setIsMenuOpened(false)} />}
           </WithScrollTop>
         </Router>

@@ -9,15 +9,10 @@ import Profile from './pages/Profile';
 import WalletConnet from './pages/WalletConnet';
 
 export const routes = {
-  dashboard: [
+  dashboard: [ 
     {
       path: "/",
       component: Home,
-      exact: true
-    },
-    {
-      path: "/wallet",
-      component: WalletConnet,
       exact: true
     },
     {
@@ -59,6 +54,23 @@ export const routes = {
       path: "**",
       exact: true,
       component: () => <Redirect to="/" />
+    },
+  ],
+  minimal: [
+    {
+      path: "/",
+      component: Home,
+      exact: true
+    },
+    {
+      path: "/wallet",
+      component: WalletConnet,
+      exact: true
+    },
+    {
+      path: "**",
+      exact: true,
+      component: () => <Redirect to="/" />,
     },
   ],
 };

@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import img2 from '../../assets/images/sample/sample_avatar2.png';
 import { selectAssetById } from '../../store/assets/assets.selectors';
 import { imageConvert } from "../../utils/helpers";
+import { selectUser } from '../../store/auth/auth.selectors';
 
 const CancelConfirmModal = (props: {isCancelConfirmModalVisible: boolean, handleCancelConfirmOk: ()=>void, handleCancelConfirmCancel: ()=>void }) =>{
   const asset = useSelector(selectAssetById);
+  const user = useSelector(selectUser);
   const goRaffleList = () => {
-    window.location.href = '/profile/dashboard';
+    window.location.href = `/profile/dashboard`;
   }
 
   return(

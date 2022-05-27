@@ -9,6 +9,7 @@ const StyledPage = styled.div`
 `;
 
 const Home = () => {
+  localStorage.clear();
   return (
     <StyledPage>
       <Banner />

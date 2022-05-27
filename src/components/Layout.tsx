@@ -55,7 +55,7 @@ const Layout = ({
 
   useEffect(() => {
     notifications();
-    const timer = setInterval(() => notifications(), 10000);
+    const timer = setInterval(() => notifications(), 3000);
     return () => {
       clearInterval(timer);
     };

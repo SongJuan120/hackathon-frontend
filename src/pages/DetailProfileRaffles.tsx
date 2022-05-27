@@ -13,6 +13,8 @@ import { getRafflesById } from '../store/raffles/raffles.actions';
 import { getEthPrice } from '../store/ethPrice/ethPrice.actions';
 import { selectRaffleById, selectNftByTokenId } from "../store/raffles/raffles.selectors";
 import { imageConvert } from "../utils/helpers";
+import { userInfo } from 'os';
+import { selectUser } from '../store/auth/auth.selectors';
 
 const StyledPage = styled.div`
   ${tw`w-full`}
@@ -34,7 +36,8 @@ const DetailProfileRaffles = () => {
   useWeb3Listener();
   
   const params: Params = useParams();
-
+  const user = useSelector(selectUser);
+  
   useEffect(() => {
     dispatch(getRafflesById(Number(params?.raffle_id)));
     dispatch(getEthPrice());
@@ -47,6 +50,15 @@ const DetailProfileRaffles = () => {
     views: 1280,
     likes: 243
   }
+
+  useEffect(() => {
+    if (raffle.seller){
+      if (raffle.seller.toLowerCase() !== user.account.toLowerCase()){
+        window.location.href = '/profile/dashboard';
+      }   
+    }
+   
+  }, [raffle.seller]);
 
   return (
     <StyledPage>

@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux'
-import { notification } from 'antd';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 import { AUTH_LOGIN, AUTH_LOGOUT } from '../action-types';

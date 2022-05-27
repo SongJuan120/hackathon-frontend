@@ -100,12 +100,16 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
         </div>
         <div>
           <div tw="text-gray-800 text-center text-base mb-1">Quantity</div>
-          <div tw="flex justify-between items-center px-7">
+          <div tw="flex justify-between items-center px-7" className="quantity">
             <img alt="metamask" onClick={onCountMinuse} src={minuseButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
             {/* <div tw="text-gray-300 text-center text-[22px] font-semibold">{count}</div> */}
-            <InputNumber controls={false} type="number" tw="text-gray-300 text-[22px] font-semibold w-20" min="1" step ="any" value={count.toString()} onChange={onChangeAmount} stringMode/>
+            <InputNumber style={{textAlign: "center"}} controls={false} type="number" tw="text-center text-gray-300 text-[22px] font-semibold w-20" min="1" step ="any" value={count.toString()} onChange={onChangeAmount} stringMode/>
             <img alt="metamask" onClick={onCountPlus} src={plusButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
           </div>
+          {/* {(Number(raffle.totalTickets) - Number(raffle.soldTickets)<count)?(
+            <div tw="text-gray-800 text-center text-xs mb-1">Quantity</div>
+          ):(<div></div>)} */}
+          
         </div>
         
         <div>

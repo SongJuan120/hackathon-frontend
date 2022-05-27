@@ -5,7 +5,6 @@ import { RAFFLES_GET_ALL, RAFFLES_GET_BY_ID, NFT_GET_BY_ID } from '../action-typ
 import errorHandler from '../error-handler';
 import { rafflesService } from '../../services';
 import { assetsService } from '../../services';
-import { GRaffles } from '../../types';
 
 export const getAllRaffles = () => async (dispatch: Dispatch) => {
     try {

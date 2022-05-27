@@ -3,9 +3,13 @@ import { useState, useEffect } from 'react';
 import img2 from '../assets/images/icon/check-mark-blue.svg';
 import { GNftData, GOwnedNft } from '../types';
 import { imageConvert } from '../utils/helpers';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/auth/auth.selectors';
+
 const SellNftCard = (props: {nft: GOwnedNft }) => {
 
   const nft: GOwnedNft = props.nft;
+  const user = useSelector(selectUser);
   const [selectCard, setSelectCard]  = useState<boolean>(false);
   const [selectCardImg, setSelectCardImg]  = useState<string>('');
 
