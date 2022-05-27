@@ -38,6 +38,8 @@ const DetailProfileRaffles = () => {
   const params: Params = useParams();
   const user = useSelector(selectUser);
   
+  const [flag, setFlag] = useState<boolean>(false);
+
   useEffect(() => {
     dispatch(getRafflesById(Number(params?.raffle_id)));
     dispatch(getEthPrice());
@@ -55,38 +57,44 @@ const DetailProfileRaffles = () => {
     if (raffle.seller){
       if (raffle.seller.toLowerCase() !== user.account.toLowerCase()){
         window.location.href = '/profile/dashboard';
-      }   
+      }else{
+        setFlag(true)
+      }
     }
    
   }, [raffle.seller]);
 
   return (
-    <StyledPage>
-      <div tw="mx-auto max-w-7xl pt-4 px-3 pb-32">
-        <div tw="grid-cols-5 lg:grid gap-8">
-          <div tw="col-start-3 col-end-7 text-gray-300">
-            <NftInfo nft={nft}></NftInfo>
-          </div>
-          <div tw="col-start-1 col-span-2 text-gray-300 mt-4 lg:mt-[-90px] px-2 lg:px-0">
-            <DetailImage status={status} image={imageConvert(nft?.metadata?.image)}></DetailImage>
-            <div tw="mt-6 hidden lg:block">
+    <>
+      {flag &&
+        <StyledPage>
+        <div tw="mx-auto max-w-7xl pt-4 px-3 pb-32">
+          <div tw="grid-cols-5 lg:grid gap-8">
+            <div tw="col-start-3 col-end-7 text-gray-300">
+              <NftInfo nft={nft}></NftInfo>
+            </div>
+            <div tw="col-start-1 col-span-2 text-gray-300 mt-4 lg:mt-[-90px] px-2 lg:px-0">
+              <DetailImage status={status} image={imageConvert(nft?.metadata?.image)}></DetailImage>
+              <div tw="mt-6 hidden lg:block">
+                <NftDetailInfo nft={nft}></NftDetailInfo>
+              </div>
+            </div>
+            <div tw="col-start-3 col-end-6 text-gray-300">
+              <div tw="mt-10">
+              </div>
+                <ProfileRaffleInfo raffle={raffle} raffleId={params?.raffle_id}></ProfileRaffleInfo>
+              <div tw="mt-7">
+                <NftHistoryInfo raffle={raffle} raffleId={params?.raffle_id}></NftHistoryInfo>
+              </div>
+            </div>
+            <div tw="mt-6 lg:hidden">
               <NftDetailInfo nft={nft}></NftDetailInfo>
             </div>
           </div>
-          <div tw="col-start-3 col-end-6 text-gray-300">
-            <div tw="mt-10">
-            </div>
-              <ProfileRaffleInfo raffle={raffle} raffleId={params?.raffle_id}></ProfileRaffleInfo>
-            <div tw="mt-7">
-              <NftHistoryInfo raffle={raffle} raffleId={params?.raffle_id}></NftHistoryInfo>
-            </div>
-          </div>
-          <div tw="mt-6 lg:hidden">
-            <NftDetailInfo nft={nft}></NftDetailInfo>
-          </div>
         </div>
-      </div>
-    </StyledPage>
+      </StyledPage>
+      }
+    </>
   );
 };
 
