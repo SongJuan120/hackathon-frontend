@@ -79,3 +79,25 @@
 .quantity input {
   text-align: center !important;
 }
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+  color: #151515 !important;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.ant-tabs-tab .ant-tabs-tab-btn{
+  color: #7D7C88 !important;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active {
+  border-bottom: 2px solid #522294 !important;
+  border-bottom-width: 4px !important;
+  z-index: 2;
+}
+
+.ant-tabs-tab {
+  padding: 8px 0 !important;
+}

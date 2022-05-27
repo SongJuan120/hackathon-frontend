@@ -48,12 +48,12 @@ const SellNftCard = (props: {nft: GOwnedNft }) => {
             <button onClick={goSell} tw="bg-white text-violet-200 font-semibold text-xs mx-1 py-2 px-5 rounded border border-solid border-white">
               Sell
             </button>
-            <button tw="bg-white text-violet-200 font-semibold text-xs mx-1 py-2 px-5 rounded border border-solid border-white">
-              Transfer
-            </button>
-            {/* <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-xs font-semibold py-2 px-5 rounded border border-[#C1A3C1] hover:border-white">
+            {/* <button tw="bg-white text-violet-200 font-semibold text-xs mx-1 py-2 px-5 rounded border border-solid border-white">
               Transfer
             </button> */}
+            <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-xs font-semibold py-2 px-5 rounded border border-[#C1A3C1]">
+              Transfer
+            </button>
           </div>}
       </CardImage>)
       :(<div tw="w-full h-52 rounded-t-lg bg-zinc-300 animate-pulse"></div>)}

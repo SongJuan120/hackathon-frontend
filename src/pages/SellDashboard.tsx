@@ -48,14 +48,13 @@ const SellDashboard = () => {
     setRaffleSold(rafflesSoldRes);
   }
 
-  
   return (
     <StyledPage>
       <div tw="mx-auto max-w-6xl px-3 pb-32">
         <SellUserInfo></SellUserInfo>
         <div tw="pt-14">
-          <Tabs type="line" defaultActiveKey={params.id || "1"}>
-            <TabPane tab={`Collected  ${assets?.totalCount}`} key="1">
+          <Tabs type="line" defaultActiveKey={params.id || "1"} animated={false}>
+            <TabPane tab={<>Collected <span tw="text-[#7D7C88] text-sm font-normal ml-2">{assets?.totalCount}</span></>} key="1">
               {assets.totalCount !== 0? (
                 <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                   { assets?.ownedNfts.map((item, id)=>{
@@ -68,7 +67,7 @@ const SellDashboard = () => {
                 </div>
               )}
             </TabPane>
-            <TabPane tab={`Listed  ${raffleList?.length}`} key="2">
+            <TabPane tab={<>Listed <span tw="text-[#7D7C88] text-sm font-normal ml-2">{raffleList?.length}</span></>} key="2">
                 {raffleList?.length !== 0? (
                   <div tw="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                     {raffleList.map((item, id)=>{
@@ -81,7 +80,7 @@ const SellDashboard = () => {
                   </div>
                 )}
             </TabPane>
-            <TabPane tab={`Sold  ${raffleSold?.length}`} key="3">
+            <TabPane tab={<>Sold <span tw="text-[#7D7C88] text-sm font-normal ml-2">{raffleSold?.length}</span></>} key="3">
               <div>
                 <SoldCard sold={raffleSold}></SoldCard>
               </div>
