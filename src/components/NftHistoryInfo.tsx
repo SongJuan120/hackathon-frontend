@@ -6,7 +6,7 @@ import openDetail from '../assets/images/icon/open-detail.svg';
 import { GRaffles, GSoldHistory } from '../types';
 import { getDateBySecond, addressFormat } from '../utils/helpers'
 
-const NftHistoryInfo = (props: {raffle: GRaffles}) => {
+const NftHistoryInfo = (props: {raffle: GRaffles, raffleId: string}) => {
  
   const raffle: GRaffles = props.raffle;
   const [raffleHistory, setRaffleHistory] = useState<GSoldHistory[]>([]);
@@ -16,7 +16,7 @@ const NftHistoryInfo = (props: {raffle: GRaffles}) => {
   }, [raffle]);
   
   const getNftInfo = async() => {
-    const history = await rafflesService.getSoldHistory(raffle.raffleId);
+    const history = await rafflesService.getSoldHistory(Number(props.raffleId));
     setRaffleHistory(history);
   }
   return (

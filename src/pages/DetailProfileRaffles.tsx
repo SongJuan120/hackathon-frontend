@@ -64,9 +64,9 @@ const DetailProfileRaffles = () => {
           <div tw="col-start-3 col-end-6 text-gray-300">
             <div tw="mt-10">
             </div>
-              <ProfileRaffleInfo raffle={raffle}></ProfileRaffleInfo>
+              <ProfileRaffleInfo raffle={raffle} raffleId={params?.raffle_id}></ProfileRaffleInfo>
             <div tw="mt-7">
-              <NftHistoryInfo raffle={raffle}></NftHistoryInfo>
+              <NftHistoryInfo raffle={raffle} raffleId={params?.raffle_id}></NftHistoryInfo>
             </div>
           </div>
           <div tw="mt-6 lg:hidden">

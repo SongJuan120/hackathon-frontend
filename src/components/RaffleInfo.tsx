@@ -18,7 +18,7 @@ import { PEDINGDATE } from '../constants/contracts';
 import { getRafflesById } from '../store/raffles/raffles.actions';
 import { useCancelRaffle } from '../hooks';
 
-const RaffleInfo = (props: {raffle: GRaffles}) => {
+const RaffleInfo = (props: {raffle: GRaffles, raffleId: string}) => {
   const dispatch = useDispatch();
 
   const raffle: GRaffles = props.raffle;
@@ -29,6 +29,8 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [txHash, setTxHashInfo] = useState();
+  const [closeFlag, setCloseFlag] = useState(false);
+  const [pendingFlag, setPendingFlag] = useState(false);
   const [ticketNumber, setTicketNumber] = useState<number>(0);
   const [ticketName, setTicketName] = useState<string>("");
   const [presaleDuration, setPresaleDuration] = useState<{
@@ -48,6 +50,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
   const leftDateDetail = useCallback(()=>{
     let pendingDate: number
     if (raffle.raffleState === "1"){
+      setPendingFlag(true);
       pendingDate = PEDINGDATE;
     }else{ pendingDate = 0; }
 
@@ -60,7 +63,7 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     let seconde: number;
 
     if (diff <= 0 && raffle.raffleState === "0"){
-      dispatch(getRafflesById(Number(raffle?.raffleId)));
+      dispatch(getRafflesById(Number(props.raffleId)));
     }
 
     if ( diff <= 0 ){ 
@@ -80,9 +83,19 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
     }
 
     if (raffle.raffleState === "1"){
-      setPendingDuration(timer) 
-    }else{ setPresaleDuration(timer)}
-   
+      setPendingDuration(timer);
+    }else{ setPresaleDuration(timer); }
+
+    if (raffle.soldTickets === raffle.totalTickets){
+      console.log('this is raffleState', raffle.raffleState )
+      if (raffle.raffleState === "3"){
+        setCloseFlag(true);
+      }else{ 
+        dispatch(getRafflesById(Number(props.raffleId)));
+        setCloseFlag(false)
+      };
+    }
+    
   },[raffle, dispatch])
 
 
@@ -257,22 +270,31 @@ const RaffleInfo = (props: {raffle: GRaffles}) => {
       <div tw="bg-zinc-100">
         <div tw="border-solid border-t px-4 pt-6 pb-5">
           {!onBuyFlag()?(
-            <>
-              <div tw="flex justify-between mb-2">
-                <div tw="text-zinc-400 text-xs lg:text-base">Raffle in progress...</div>
-                <div tw="text-gray-400 font-semibold text-xs lg:text-base">selecting winner</div>
-              </div>
-              <div tw="relative w-full bg-gray-200 rounded">
-                <div tw="w-full top-0 h-[13px] rounded-full" className="shim-red"></div>
-              </div>
-            </>
+            !closeFlag?(
+              <>
+                <div tw="flex justify-between mb-2">
+                  <div tw="text-zinc-400 text-xs lg:text-base">Raffle in progress...</div>
+                  <div tw="text-gray-400 font-semibold text-xs lg:text-base">selecting winner</div>
+                </div>
+                <div tw="relative w-full bg-gray-200 rounded">
+                  <div tw="w-full top-0 h-[13px] rounded-full" className="shim-red"></div>
+                </div>
+              </>
+            ):(
+              <div>
+                <div tw="flex justify-between mb-2">
+                  <div tw="text-zinc-400 text-xs lg:text-base"></div>
+                  <div tw="text-gray-400 text-xs lg:text-base">Winner selected</div>
+                </div>
+                <ProgressBar completed={Number(raffle.totalTickets)} isLabelVisible={false} maxCompleted={Number(raffle.totalTickets)} height="13px" bgColor="linear-gradient(90deg, #68229D 0%, #A042D2 100%)"  />
+              </div>)   
           ):(
-            <Progress label={'Remaining tickets'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
+            <Progress label={'Tickets Sold'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
           )}
         </div>
       </div>
 
-      {raffle?.raffleState === '0'? raffleBuyState : rafflePendingState}
+      {pendingFlag? rafflePendingState : raffleBuyState }
 
       <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} ticketName={ticketName} handleConfirmOk={handleConfirmOk} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
       <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber, name)=>handleBuyOk(txHash, ticketNumber, name)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>

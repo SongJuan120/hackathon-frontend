@@ -71,7 +71,6 @@ const SellRaffleInfo = (props:{address: string, tokenId: number}) => {
   }
 
   const onChangeAmount = (value: string) => {
-    console.log('...........', value)
     setAmount(Number(value));
   }
   

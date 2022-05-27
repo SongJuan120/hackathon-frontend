@@ -31,7 +31,7 @@ const LiveRaffles = () => {
     <StyledPage>
       <div tw="mx-auto max-w-6xl px-3 pt-14 pb-32">
         <div tw="flex justify-between items-center mb-10">
-          <div tw="text-gray-300 text-3xl font-semibold">Current raffle lisitings</div>
+          <div tw="text-gray-300 text-3xl font-semibold">Current raffle listings</div>
           {/* <div tw="flex">
             <Select defaultValue="Sort" tw="w-full rounded-lg" onChange={handleChange}>
               <Option value="jack">Sort</Option>

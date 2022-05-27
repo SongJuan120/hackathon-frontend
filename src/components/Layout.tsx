@@ -25,7 +25,7 @@ const Layout = ({
 
   const openNotification = (item: GNotification) => {
     notification.open({
-      message: <div tw="ml-[50px]">{user.account === item.to?"YOU HAVE WON!" : "NFT SOLD OUT"} </div>,
+      message: <div tw="ml-[50px]">{user.account === item.to?"Congratulations! You are the winner of the raffle." : "Winner has been selected."} </div>,
       icon: <img src={`${imageConvert(item.image)}`} tw="w-[80px] h-[80px] rounded-md"/>,
       description: <div tw="ml-[50px]">
         <div tw="flex items-center"><div tw="w-[50px]">Seller </div> : <a tw="ml-2 text-blue-100 text-sm cursor-pointer" target="_blank" href={`https://rinkeby.etherscan.io/address/${item?.from}`}>{addressLongestFormat(item?.from || "")}</a></div> 

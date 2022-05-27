@@ -2,7 +2,7 @@ import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseEther } from 'ethers/lib/utils';
-import { Modal, Button } from 'antd';
+import { Modal, Button, InputNumber } from 'antd';
 import img1 from '../../assets/images/icon/nftSample.svg';
 import checkMarkBlue from '../../assets/images/icon/check-mark-blue.svg';
 import minuseButton from '../../assets/images/icon/minuse_button.svg'
@@ -37,8 +37,8 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
   const onCountPlus = () => {
     const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
     if (count >= remainTickets) 
-      { setCount(count)} 
-      else {setCount(count + 1)};
+      { setCount(count);} 
+      else {setCount(count + 1);}
   }
 
   const onCountMinuse = () => {
@@ -55,6 +55,14 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
       tickets: count,
     }
     buy(buyData);
+  }
+
+  const onChangeAmount = (value: string) => {
+    const remainTickets = Number(raffle.totalTickets) - Number(raffle.soldTickets);
+    if (Number(value) >= remainTickets) 
+      { setCount(remainTickets)} 
+      else {setCount(Number(value));}
+    
   }
 
   return(
@@ -94,7 +102,8 @@ const BuyRaffleModal = (props: {isBuyModalVisible: boolean, handleBuyOk: (txHash
           <div tw="text-gray-800 text-center text-base mb-1">Quantity</div>
           <div tw="flex justify-between items-center px-7">
             <img alt="metamask" onClick={onCountMinuse} src={minuseButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
-            <div tw="text-gray-300 text-center text-[22px] font-semibold">{count}</div>
+            {/* <div tw="text-gray-300 text-center text-[22px] font-semibold">{count}</div> */}
+            <InputNumber controls={false} type="number" tw="text-gray-300 text-[22px] font-semibold w-20" min="1" step ="any" value={count.toString()} onChange={onChangeAmount} stringMode/>
             <img alt="metamask" onClick={onCountPlus} src={plusButton} tw="w-5 h-5 border border-transparent cursor-pointer hover:border-white"/>
           </div>
         </div>

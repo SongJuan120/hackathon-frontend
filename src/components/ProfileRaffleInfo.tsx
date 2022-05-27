@@ -20,7 +20,7 @@ import { PEDINGDATE } from '../constants/contracts';
 import { getRafflesById } from '../store/raffles/raffles.actions';
 import { useCancelRaffle, useExcuteRaffle } from '../hooks';
 
-const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
+const ProfileRaffleInfo = (props: {raffle: GRaffles, raffleId: string}) => {
   const dispatch = useDispatch();
 
   const raffle: GRaffles = props.raffle;
@@ -32,8 +32,10 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
   const [isPolicyModalVisible, setPolicyModalVisible] = useState(false);
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [isCancelModalVisible, setCancelModalVisible] = useState(false);
+  const [closeFlag, setCloseFlag] = useState(false);
   const [isCancelConfirmModalVisible, setCancelConfirmModalVisible] = useState(false);
   const [txHash, setTxHashInfo] = useState();
+  const [pendingFlag, setPendingFlag] = useState(false);
   const [ticketNumber, setTicketNumber] = useState<number>(0);
   const [ticketName, setTicketName] = useState<string>("");
   const [presaleDuration, setPresaleDuration] = useState<{
@@ -53,6 +55,7 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
   const leftDateDetail = useCallback(()=>{
     let pendingDate: number
     if (raffle.raffleState === "1"){
+      setPendingFlag(true);
       pendingDate = PEDINGDATE;
     }else{ pendingDate = 0; }
 
@@ -65,7 +68,7 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
     let seconde: number;
 
     if (diff <= 0 && raffle.raffleState === "0"){
-      dispatch(getRafflesById(Number(raffle?.raffleId)));
+      dispatch(getRafflesById(Number(props.raffleId)));
     }
 
     if ( diff <= 0 ){ 
@@ -88,6 +91,16 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
       setPendingDuration(timer) 
     }else{ setPresaleDuration(timer)}
    
+    if (raffle.soldTickets === raffle.totalTickets){
+      console.log('this is raffleState', raffle.raffleState )
+      if (raffle.raffleState === "3"){
+        setCloseFlag(true);
+      }else{ 
+        dispatch(getRafflesById(Number(props.raffleId)));
+        setCloseFlag(false)
+      };
+    }
+
   },[raffle, dispatch])
 
 
@@ -194,15 +207,15 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
               </div>
             </div>
             <div>
-            {onBuyFlag()?(
-              <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
-                Buy tickets
-              </button>
-            ):(
-              <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
-                Sold out
-              </button>
-            )}
+              {onBuyFlag()?(
+                <button onClick={onBuyTicket} tw="bg-[#9C40CF] w-full lg:w-auto mt-3 text-white text-base font-semibold px-12 py-2 rounded border border-transparent hover:border-white">
+                  Buy tickets
+                </button>
+              ):(
+                <button tw="text-[#C1A3C1] bg-[#D6C1D6] text-base font-semibold px-12 py-2 rounded border border-[#C1A3C1] hover:border-white">
+                  Sold out
+                </button>
+              )}
               
               <BuyConfirmModal isConfirmModalVisible={isConfirmModalVisible} txHash={txHash} ticketNumber={ticketNumber} handleConfirmOk={handleConfirmOk} ticketName={ticketName} handleConfirmCancel={handleConfirmCancel}></BuyConfirmModal>
               <BuyRaffleModal isBuyModalVisible={isBuyModalVisible} handleBuyOk={(txHash, ticketNumber, name)=>handleBuyOk(txHash, ticketNumber, name)} handleBuyCancel={handleBuyCancel}></BuyRaffleModal>
@@ -293,21 +306,30 @@ const ProfileRaffleInfo = (props: {raffle: GRaffles}) => {
       <div tw="bg-zinc-100">
         <div tw="border-solid border-t px-4 pt-6 pb-5">
           {!onBuyFlag()?(
-            <>
-              <div tw="flex justify-between mb-2">
-                <div tw="text-zinc-400 text-xs lg:text-base">Raffle in progress...</div>
-                <div tw="text-gray-400 font-semibold text-xs lg:text-base">selecting winner</div>
-              </div>
-              <div tw="relative w-full bg-gray-200 rounded">
-                <div tw="w-full top-0 h-[13px] rounded-full" className="shim-red"></div>
-              </div>
-            </>
+            !closeFlag?(
+              <>
+                <div tw="flex justify-between mb-2">
+                  <div tw="text-zinc-400 text-xs lg:text-base">Raffle in progress...</div>
+                  <div tw="text-gray-400 font-semibold text-xs lg:text-base">selecting winner</div>
+                </div>
+                <div tw="relative w-full bg-gray-200 rounded">
+                  <div tw="w-full top-0 h-[13px] rounded-full" className="shim-red"></div>
+                </div>
+              </>
+            ):(
+              <div>
+                <div tw="flex justify-between mb-2">
+                  <div tw="text-zinc-400 text-xs lg:text-base"></div>
+                  <div tw="text-gray-400 text-xs lg:text-base">Winner selected</div>
+                </div>
+                <ProgressBar completed={Number(raffle.totalTickets)} isLabelVisible={false} maxCompleted={Number(raffle.totalTickets)} height="13px" bgColor="linear-gradient(90deg, #68229D 0%, #A042D2 100%)"  />
+              </div>)   
           ):(
             <Progress label={'Remaining tickets'} value={Number(raffle.soldTickets)} total={Number(raffle.totalTickets)}></Progress>
           )}
         </div>
       </div>
-      {raffle?.raffleState === '0'? raffleBuyState : rafflePendingState}
+      {pendingFlag? rafflePendingState : raffleBuyState}
     </div>
   );
 };

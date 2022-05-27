@@ -40,7 +40,7 @@ const DetailRaffles = () => {
     dispatch(getEthPrice());
   }, [dispatch]);
 
-  const raffle = useSelector(selectRaffleById);
+  const raffle = useSelector(selectRaffleById) || {};
   const nft = useSelector(selectNftByTokenId);
 
   const status = {
@@ -64,9 +64,9 @@ const DetailRaffles = () => {
           <div tw="col-start-3 col-end-6 text-gray-300">
             <div tw="mt-10">
             </div>
-              <RaffleInfo raffle={raffle}></RaffleInfo>
+              <RaffleInfo raffle={raffle} raffleId={params?.raffle_id}></RaffleInfo>
             <div tw="mt-7">
-              <NftHistoryInfo raffle={raffle}></NftHistoryInfo>
+              <NftHistoryInfo raffle={raffle} raffleId={params?.raffle_id}></NftHistoryInfo>
             </div>
           </div>
           <div tw="mt-6 lg:hidden">
